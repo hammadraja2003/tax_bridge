@@ -1,0 +1,318 @@
+-- MySQL dump 10.13  Distrib 8.0.42, for Win64 (x86_64)
+--
+-- Host: 127.0.0.1    Database: tax_bridge
+-- ------------------------------------------------------
+-- Server version	8.0.42
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `cache`
+--
+
+DROP TABLE IF EXISTS `cache`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `cache` (
+  `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `expiration` int NOT NULL,
+  PRIMARY KEY (`key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `cache`
+--
+
+LOCK TABLES `cache` WRITE;
+/*!40000 ALTER TABLE `cache` DISABLE KEYS */;
+/*!40000 ALTER TABLE `cache` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `cache_locks`
+--
+
+DROP TABLE IF EXISTS `cache_locks`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `cache_locks` (
+  `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `owner` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `expiration` int NOT NULL,
+  PRIMARY KEY (`key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `cache_locks`
+--
+
+LOCK TABLES `cache_locks` WRITE;
+/*!40000 ALTER TABLE `cache_locks` DISABLE KEYS */;
+/*!40000 ALTER TABLE `cache_locks` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `failed_jobs`
+--
+
+DROP TABLE IF EXISTS `failed_jobs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `failed_jobs` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `failed_jobs`
+--
+
+LOCK TABLES `failed_jobs` WRITE;
+/*!40000 ALTER TABLE `failed_jobs` DISABLE KEYS */;
+/*!40000 ALTER TABLE `failed_jobs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `job_batches`
+--
+
+DROP TABLE IF EXISTS `job_batches`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `job_batches` (
+  `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `total_jobs` int NOT NULL,
+  `pending_jobs` int NOT NULL,
+  `failed_jobs` int NOT NULL,
+  `failed_job_ids` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `options` mediumtext COLLATE utf8mb4_unicode_ci,
+  `cancelled_at` int DEFAULT NULL,
+  `created_at` int NOT NULL,
+  `finished_at` int DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `job_batches`
+--
+
+LOCK TABLES `job_batches` WRITE;
+/*!40000 ALTER TABLE `job_batches` DISABLE KEYS */;
+/*!40000 ALTER TABLE `job_batches` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `jobs`
+--
+
+DROP TABLE IF EXISTS `jobs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `jobs` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `queue` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `attempts` tinyint unsigned NOT NULL,
+  `reserved_at` int unsigned DEFAULT NULL,
+  `available_at` int unsigned NOT NULL,
+  `created_at` int unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `jobs_queue_index` (`queue`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `jobs`
+--
+
+LOCK TABLES `jobs` WRITE;
+/*!40000 ALTER TABLE `jobs` DISABLE KEYS */;
+/*!40000 ALTER TABLE `jobs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `migrations`
+--
+
+DROP TABLE IF EXISTS `migrations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `migrations` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `migrations`
+--
+
+LOCK TABLES `migrations` WRITE;
+/*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
+INSERT INTO `migrations` VALUES (1,'0001_01_01_000000_create_users_table',1),(2,'0001_01_01_000001_create_cache_table',1),(3,'0001_01_01_000002_create_jobs_table',1),(4,'2025_06_30_043756_create_xero_invoices_table',2);
+/*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `password_reset_tokens`
+--
+
+DROP TABLE IF EXISTS `password_reset_tokens`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `password_reset_tokens` (
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `password_reset_tokens`
+--
+
+LOCK TABLES `password_reset_tokens` WRITE;
+/*!40000 ALTER TABLE `password_reset_tokens` DISABLE KEYS */;
+/*!40000 ALTER TABLE `password_reset_tokens` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sessions`
+--
+
+DROP TABLE IF EXISTS `sessions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sessions` (
+  `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` bigint unsigned DEFAULT NULL,
+  `ip_address` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `user_agent` text COLLATE utf8mb4_unicode_ci,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_activity` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `sessions_user_id_index` (`user_id`),
+  KEY `sessions_last_activity_index` (`last_activity`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sessions`
+--
+
+LOCK TABLES `sessions` WRITE;
+/*!40000 ALTER TABLE `sessions` DISABLE KEYS */;
+INSERT INTO `sessions` VALUES ('Q0O3TNZZY32qFaRQiV9ni4zBTFnH3bhXMbC1eBg8',NULL,'127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36','YTo1OntzOjY6Il90b2tlbiI7czo0MDoidFJ1YVhvNFdqaDRzdkJuUGpibUF6ZHkwM1MxcDlYazZ6eW5Rc3dvRSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzg6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC94ZXJvL2RiLWludm9pY2VzIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czoxMToib2F1dGgyc3RhdGUiO3M6MzI6IjJiZWE5YWY5NDFjMDE1Y2JmM2NlZWMyNjMyYzM0NTgzIjtzOjEwOiJ4ZXJvX3Rva2VuIjtPOjM4OiJMZWFndWVcT0F1dGgyXENsaWVudFxUb2tlblxBY2Nlc3NUb2tlbiI6NTp7czoxNDoiACoAYWNjZXNzVG9rZW4iO3M6MTI1ODoiZXlKaGJHY2lPaUpTVXpJMU5pSXNJbXRwWkNJNklqRkRRVVk0UlRZMk56Y3lSRFpFUXpBeU9FUTJOekkyUmtRd01qWXhOVGd4TlRjd1JVWkRNVGtpTENKMGVYQWlPaUpLVjFRaUxDSjROWFFpT2lKSVN5MVBXbTVqZEdKalFXOHhia3AyTUVOWlZtZFdZMDlmUW1zaWZRLmV5SnVZbVlpT2pFM05URXlOVGM0T0RJc0ltVjRjQ0k2TVRjMU1USTFPVFk0TWl3aWFYTnpJam9pYUhSMGNITTZMeTlwWkdWdWRHbDBlUzU0WlhKdkxtTnZiU0lzSW1GMVpDSTZJbWgwZEhCek9pOHZhV1JsYm5ScGRIa3VlR1Z5Ynk1amIyMHZjbVZ6YjNWeVkyVnpJaXdpWTJ4cFpXNTBYMmxrSWpvaU1VVkZNa0UzUlRZeE5ERkZORVZDUmtGRU1EUTFOVUkzTTBNNFF6TXlPVVlpTENKemRXSWlPaUkxWkRJeE0yVTVNRGRsT0RjMU1tUXpPVEF4TlRobE56RXpNakkwWkRGbE15SXNJbUYxZEdoZmRHbHRaU0k2TVRjMU1USTFOemMwT1N3aWVHVnliMTkxYzJWeWFXUWlPaUkwWVRjelpXRm1ZaTB4T1RabUxUUTNZVFl0T1RJME5TMHhZemd5WXpZNU5tRTJOR1lpTENKbmJHOWlZV3hmYzJWemMybHZibDlwWkNJNkltWTJOV1ZrTW1JMU56VmtaalE0TVRsaFpXRTRZMkkwWkRkak9USXhNMk13SWl3aWMybGtJam9pWmpZMVpXUXlZalUzTldSbU5EZ3hPV0ZsWVRoallqUmtOMk01TWpFell6QWlMQ0pxZEdraU9pSkVOakl5UWtJNU1UQTVRVGszTWtJMVFqVTNNRFV4TjBVeE1rVTBPVEV6TWlJc0ltRjFkR2hsYm5ScFkyRjBhVzl1WDJWMlpXNTBYMmxrSWpvaU56TXlaREl5TnpBdE0yUTRZUzAwWVRnekxUZzJPVEF0TURBM09HWXhZelkxTjJNeElpd2ljMk52Y0dVaU9sc2laVzFoYVd3aUxDSndjbTltYVd4bElpd2liM0JsYm1sa0lpd2lZV05qYjNWdWRHbHVaeTUwY21GdWMyRmpkR2x2Ym5NaUxDSnZabVpzYVc1bFgyRmpZMlZ6Y3lKZExDSmhiWElpT2xzaWNIZGtJbDE5LkpkWkQ5Tkx6ZU9NdFljTmVkR253YmdIa0Zhbmc3dEdzeFVCQjZRZU9kdGdWd2xYWTBiaXRsTkFlU213RDlYb3JFSnpzUHh3QzlPY0ZZS0ZZNjJqZzhSZF8tZWZJMmVVYmx1NHBBWnlEZXpPenN6eHFZMW5ySDNxaks2elRaR0xkSGZrbFRMY2VQNWphd29ia2I2NjhrUDdwVVFTZWd3QzlFN0hIVFdsTmcxWmcwY3RHV0hJRkxtamZYRzNxemlWMHgwQ3FnSHczdDFmOEtzX0plVDFWbG5uWGZYbHhkUzNhMzhYSk1mU21HalhFXzFtaHc1YjUya3hha1FaUUt6dGhtMlpvdy1wYjZaVGF2WDJhcG81bGRwbkotMWU1X0c1ZEFXaFc2aXp1bk8tRzM1Nm1TQUFOeU8wdE85XzRDN3E0dV8zeUF3RzRXV0hFODg2TGhtamFuUSI7czoxMDoiACoAZXhwaXJlcyI7aToxNzUxMjU5Njk2O3M6MTU6IgAqAHJlZnJlc2hUb2tlbiI7czo0MzoiNWJCalA1enhIak5qSXpBVzBUZUJkckJzM0Mxd1dmRDVxV2wwRVdsazdCNCI7czoxODoiACoAcmVzb3VyY2VPd25lcklkIjtOO3M6OToiACoAdmFsdWVzIjthOjM6e3M6ODoiaWRfdG9rZW4iO3M6MTI2MjoiZXlKaGJHY2lPaUpTVXpJMU5pSXNJbXRwWkNJNklqRkRRVVk0UlRZMk56Y3lSRFpFUXpBeU9FUTJOekkyUmtRd01qWXhOVGd4TlRjd1JVWkRNVGtpTENKMGVYQWlPaUpLVjFRaUxDSjROWFFpT2lKSVN5MVBXbTVqZEdKalFXOHhia3AyTUVOWlZtZFdZMDlmUW1zaWZRLmV5SnVZbVlpT2pFM05URXlOVGM0T0RJc0ltVjRjQ0k2TVRjMU1USTFPREU0TWl3aWFYTnpJam9pYUhSMGNITTZMeTlwWkdWdWRHbDBlUzU0WlhKdkxtTnZiU0lzSW1GMVpDSTZJakZGUlRKQk4wVTJNVFF4UlRSRlFrWkJSREEwTlRWQ056TkRPRU16TWpsR0lpd2lhV0YwSWpveE56VXhNalUzT0RneUxDSmhkRjlvWVhOb0lqb2lNbWxMYjIxYWNWZGZRblV4U2tWeGJGaHlkR0ZSWnlJc0luTmZhR0Z6YUNJNklrSlBNRGxpTWpsd1IwUlJRM3B6ZFhGdFJtMW1VVUVpTENKemFXUWlPaUptTmpWbFpESmlOVGMxWkdZME9ERTVZV1ZoT0dOaU5HUTNZemt5TVROak1DSXNJbk4xWWlJNklqVmtNakV6WlRrd04yVTROelV5WkRNNU1ERTFPR1UzTVRNeU1qUmtNV1V6SWl3aVlYVjBhRjkwYVcxbElqb3hOelV4TWpVM056UTVMQ0o0WlhKdlgzVnpaWEpwWkNJNklqUmhOek5sWVdaaUxURTVObVl0TkRkaE5pMDVNalExTFRGak9ESmpOamsyWVRZMFppSXNJbWRzYjJKaGJGOXpaWE56YVc5dVgybGtJam9pWmpZMVpXUXlZalUzTldSbU5EZ3hPV0ZsWVRoallqUmtOMk01TWpFell6QWlMQ0p3Y21WbVpYSnlaV1JmZFhObGNtNWhiV1VpT2lKb1lXMXRZV1F1WVd4cFFHWXpkR1ZqYUc1dmJHOW5hV1Z6TG1WMUlpd2laVzFoYVd3aU9pSm9ZVzF0WVdRdVlXeHBRR1l6ZEdWamFHNXZiRzluYVdWekxtVjFJaXdpWjJsMlpXNWZibUZ0WlNJNklraGhiVzFoWkNJc0ltWmhiV2xzZVY5dVlXMWxJam9pUVd4cElpd2libUZ0WlNJNklraGhiVzFoWkNCQmJHa2lMQ0poYlhJaU9sc2ljSGRrSWwxOS5aOUExY0pEOGtVZUVBX19RanB1WDEwZlI4MEhRVHN2Y3Q2RGZQVlI5aEM1NW5EWjJzNnl5cFFCRzNLZXFpRlJ3ZW1fNHB3NGI2WGlLT1hGOW5aeHNTRXg3NnZhMW5iOFhaOGxId18yYUw3YUZiU2FMUVNFV1lfdW5HenF0dGwxNldPNUstbExCeHI2ZVJDeW51OVFhWkZmb3Mya2E0MkMwaGFMeG53b3VET2xLNkVIUVVQcmhycTdQQ2RpZXF1ZkwyZ3VhSUtUQXRyQ2ZTcUJkMjNTZzhLLU5jWldOTzBSaVpyLXJfZHp5UVMwYnlaNjJHOFBxUDFPWFQ2bkNwWXNaUFgzV2lKR19STE9pa3dXSnZseEtJeXZycXlxamI4cjc3RE9pb3JDdDZvTkd0aHhDVDUtNGZkNThKMWE1NWdSdmtfeWZRMjVRUWIxaHBwZERNaWFsakEiO3M6MTA6InRva2VuX3R5cGUiO3M6NjoiQmVhcmVyIjtzOjU6InNjb3BlIjtzOjU5OiJvcGVuaWQgcHJvZmlsZSBlbWFpbCBhY2NvdW50aW5nLnRyYW5zYWN0aW9ucyBvZmZsaW5lX2FjY2VzcyI7fX19',1751259582),('XV4CHWvZyF4CaQeTzaypNGpVIntv7BW3uDdvncJn',NULL,'127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36','YTo0OntzOjY6Il90b2tlbiI7czo0MDoiNEI4WkhWc0U4ZG1KenNoTWpPOVhneHpUUndSUHlHZ0Q1ZkZmRHFHYiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzQ6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC94ZXJvL2Nvbm5lY3QiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjExOiJvYXV0aDJzdGF0ZSI7czozMjoiODhlMmIyMjNmMTdhYTA5NDk0NjI3MzE1OGMyODRiZWEiO30=',1751257861);
+/*!40000 ALTER TABLE `sessions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `users` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email_verified_at` timestamp NULL DEFAULT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `users_email_unique` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `xero_invoices`
+--
+
+DROP TABLE IF EXISTS `xero_invoices`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `xero_invoices` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `invoice_id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `invoice_number` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `reference` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `currency_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `sub_total` double DEFAULT NULL,
+  `total_tax` double DEFAULT NULL,
+  `total` double DEFAULT NULL,
+  `amount_due` double DEFAULT NULL,
+  `amount_paid` double DEFAULT NULL,
+  `amount_credited` double DEFAULT NULL,
+  `is_discounted` tinyint(1) NOT NULL DEFAULT '0',
+  `has_attachments` tinyint(1) NOT NULL DEFAULT '0',
+  `date` datetime DEFAULT NULL,
+  `due_date` datetime DEFAULT NULL,
+  `updated_date_utc` datetime DEFAULT NULL,
+  `fbr_invoice_number` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `posted_to_fbr` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `xero_invoices_invoice_id_unique` (`invoice_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `xero_invoices`
+--
+
+LOCK TABLES `xero_invoices` WRITE;
+/*!40000 ALTER TABLE `xero_invoices` DISABLE KEYS */;
+INSERT INTO `xero_invoices` VALUES (1,'fee88eea-f2aa-4a71-a372-33d6d83d3c45','ACCREC','INV-0027','Ref MK815','AUTHORISED','USD',365.82,30.18,396,396,0,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(2,'9f5bca33-8590-4b6f-acfb-e85712b10217','ACCPAY','AP','','AUTHORISED','USD',55,4.54,59.54,59.54,0,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(3,'8a3fdcc9-83eb-4fdd-83e0-52ec1b40b072','ACCPAY','AP','','AUTHORISED','USD',29,2.39,31.39,31.39,0,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(4,'4c4db294-3633-45cd-8706-f0b3b0079609','ACCREC','INV-0010','Training','PAID','USD',500,41.25,541.25,0,0,541.25,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(5,'b7e0c5f4-9f52-4126-b102-45fd12eaa3ca','ACCREC','INV-0005','Monthly Support','PAID','USD',500,41.25,541.25,0,0,541.25,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(6,'07e71ce4-9801-4cce-914b-dc07e9c0ca5e','ACCREC','INV-0017','Book','AUTHORISED','USD',19.95,1.75,21.7,21.7,0,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(7,'3a669bd8-b601-4b9a-81d4-cb03f1af3059','ACCPAY','AP','','PAID','USD',29,2.39,31.39,0,31.39,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(8,'6a77611c-f9af-483b-aa6e-d0fd23137394','ACCPAY','RENT','','PAID','USD',1091.22,90.03,1181.25,0,1181.25,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(9,'28a34ad7-6c41-4d92-8312-cd07f8328e90','ACCPAY','Rpt','','PAID','USD',110,9.08,119.08,0,119.08,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(10,'824c6c13-b7a5-49a2-99bd-4a6d77f7866e','ACCPAY','','','PAID','USD',1804.5,148.87,1953.37,0,1682.74,270.63,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(11,'236985ea-21a5-4b17-afb9-c16ff9ff3e27','ACCPAY','Rpt','','PAID','USD',41.5,3.42,44.92,0,44.92,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(12,'cb5119d0-9759-49d3-800b-7d0a90818178','ACCREC','INV-0001','Monthly Support','PAID','USD',500,41.25,541.25,0,541.25,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(13,'ac4883f6-fb22-4f55-9ed1-34929fc53c78','ACCREC','INV-0002','Monthly Support','PAID','USD',500,41.25,541.25,0,541.25,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(14,'1938eac0-c2dc-48f1-b4e1-b3ae59362f9b','ACCPAY','AP','','PAID','USD',29,2.39,31.39,0,31.39,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(15,'f61d2da2-3957-42f7-b268-6117b957794e','ACCREC','INV-0003','Monthly Support','PAID','USD',500,41.25,541.25,0,541.25,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(16,'043ce7df-fc3d-4e6b-b505-34579d0490f3','ACCREC','INV-0004','Monthly Support','PAID','USD',500,41.25,541.25,0,541.25,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(17,'64f222d5-e59a-43e0-8f6b-69f87e42a527','ACCREC','INV-0008','Training','PAID','USD',1200,99,1299,0,1299,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(18,'14aa8bd8-7473-42c7-b8bc-ca83d7a75236','ACCPAY','945-OCon','','AUTHORISED','USD',982.5,81.06,1063.56,163.56,900,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(19,'9a4a5e48-56fb-4ec6-9c3b-07c947239372','ACCPAY','5679','','PAID','USD',110,9.08,119.08,0,119.08,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(20,'ffbb9f34-f7d7-4f55-91cb-af89552ecdd7','ACCPAY','AP','','PAID','USD',55,4.54,59.54,0,34.1,25.44,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(21,'5fe76602-3f0d-48e6-88b6-aadfab4829a8','ACCPAY','9781','','PAID','USD',1350,113.88,1463.88,0,1463.88,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(22,'0bd7b530-d244-4716-a93e-710de7c61b76','ACCPAY','OG laptop','','PAID','USD',250,20.63,270.63,0,270.63,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(23,'a909dda4-555b-414b-a395-ba7a4077de72','ACCREC','INV-0024','P/O 9711','AUTHORISED','USD',650,53.63,703.63,703.63,0,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(24,'3f887d04-cbd9-4853-b594-bc1ab207558c','ACCREC','INV-0025','P/O CRM08-12','AUTHORISED','USD',5715.94,471.56,6187.5,6187.5,0,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(25,'50e1cbd2-86c6-42df-9538-5691dd54bbee','ACCREC','INV-0012','P/O 9711','AUTHORISED','USD',200,16.5,216.5,216.5,0,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(26,'6b99fc0b-e148-458d-aa8b-da550803c93e','ACCPAY','','','AUTHORISED','USD',115.5,9.53,125.03,125.03,0,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(27,'7a69814e-dc6f-4c8b-80ad-cfe9c78c2763','ACCPAY','Rpt','','AUTHORISED','USD',100.32,8.28,108.6,108.6,0,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(28,'08e6466f-29f3-4af7-aeac-102944c10033','ACCPAY','Rpt','','AUTHORISED','USD',50,4.13,54.13,54.13,0,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(29,'50a8143e-f9a5-4b84-8560-0daeba260020','ACCREC','INV-0007','Workshop','PAID','USD',547.8,45.43,593.23,0,593.23,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(30,'7f750739-c67a-4acc-9cd7-c133ddbcb7b1','ACCPAY','','','AUTHORISED','USD',1969.99,162.52,2132.51,2132.51,0,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(31,'61127f1e-d938-4176-a72e-fd500d5b064f','ACCPAY','Rpt','','DELETED','USD',39,3.22,42.22,0,0,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(32,'323103d0-050b-4538-9abd-b05894f176f5','ACCPAY','Rpt','','DELETED','USD',105,8.66,113.66,0,0,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(33,'1ee8729f-0a1f-4e36-8a10-de4c087b92ab','ACCPAY','Rpt','','DELETED','USD',39,3.22,42.22,0,0,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(34,'927cc424-d1b9-48c8-a6aa-c134b3bc74a4','ACCPAY','Rpt','','DELETED','USD',105,8.66,113.66,0,0,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(35,'f8c11fab-d8b2-4fdc-a803-34501181df3b','ACCPAY','AP','','VOIDED','USD',55,4.54,59.54,0,0,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(36,'a8beb072-5464-46ab-b437-cce25e6f2a0a','ACCPAY','AP','','VOIDED','USD',29,2.39,31.39,0,0,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(37,'543f7cd8-323d-4baf-96b2-cb76831bccfb','ACCPAY','RENT','','VOIDED','USD',1091.22,90.03,1181.25,0,0,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(38,'df852239-2d19-4313-8285-e94957a45020','ACCPAY','AP','','VOIDED','USD',55,4.54,59.54,0,0,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(39,'57f74b0c-137d-4627-8c08-388f49a62510','ACCPAY','AP','','VOIDED','USD',29,2.39,31.39,0,0,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(40,'2a35b64d-8564-43c8-a43f-e56b3f8dddcd','ACCPAY','RENT','','VOIDED','USD',1091.22,90.03,1181.25,0,0,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(41,'1a29fe51-c155-4c8e-b91b-baa176655d23','ACCPAY','AP','','VOIDED','USD',55,4.54,59.54,0,0,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(42,'f2b3f909-1472-4ee8-98ac-5045bacb5656','ACCPAY','GB1-White','','AUTHORISED','USD',775.98,64.02,840,840,0,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(43,'93796a50-2fb6-4982-9ccd-01898b419ea0','ACCPAY','CS815','','AUTHORISED','USD',223.56,18.44,242,242,0,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(44,'84f7c2d0-8383-46ed-bf45-17e00665ceab','ACCPAY','SM0195','','AUTHORISED','USD',1847.58,152.42,2000,2000,0,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(45,'628fc0b0-e65c-47ef-a3e2-99632a1136e7','ACCPAY','SM0210','','AUTHORISED','USD',2309.47,190.53,2500,2500,0,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(46,'bd63b5f1-5503-4c62-9c4a-e4b9e4257dc9','ACCREC','INV-0006','P/O 9711','AUTHORISED','USD',230.95,19.05,250,250,0,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(47,'bbf21465-7a03-417d-b41d-48d3000e858e','ACCPAY','RENT','','PAID','USD',1091.22,90.03,1181.25,0,1181.25,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(48,'361a4980-7f53-4b68-820c-f6487f613284','ACCPAY','','','PAID','USD',380,31.35,411.35,0,411.35,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(49,'016a64c7-be0b-45a2-acae-13057fdf1566','ACCREC','INV-0026','','AUTHORISED','USD',844.85,69.7,914.55,914.55,0,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(50,'88617351-56ed-4c14-a30d-34a006d0a75a','ACCREC','INV-0028','GB1-White','AUTHORISED','USD',216.93,17.07,234,234,0,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(51,'f175784c-3ae0-4850-8504-46ad807181f7','ACCPAY','','','AUTHORISED','USD',120.09,9.91,130,130,0,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(52,'463042ef-4343-4a5a-abb8-9a1a3e2e1057','ACCREC','INV-0011','Portal Proj','PAID','USD',1300,107.25,1407.25,0,1407.25,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(53,'11e353a8-73f8-4f50-82e0-ff1a2ff8ffba','ACCREC','INV-0013','Training','PAID','USD',1000,82.5,1082.5,0,1082.5,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(54,'cb43aadd-8836-4e95-aa2c-c4ba66c2ca9e','ACCREC','INV-0009','P/O CRM08-12','PAID','USD',5715.94,471.56,6187.5,0,6187.5,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(55,'2c916a34-14fe-4b38-af86-6b0fcc371a89','ACCREC','INV-0022','Yr Ref W08-143','PAID','USD',219.95,18.25,238.2,0,216.5,21.7,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(56,'1371f05a-4cd3-4760-99a9-e4cf8d98e7bb','ACCREC','INV-0018','Monthly Support','PAID','USD',500,41.25,541.25,0,541.25,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(57,'f0065405-e5ad-4c34-ad5b-645e72813c03','ACCREC','INV-0019','Monthly Support','PAID','USD',500,41.25,541.25,0,541.25,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(58,'72860d4a-207b-4f24-895d-167ffd44ae00','ACCREC','INV-0020','Monthly Support','PAID','USD',500,41.25,541.25,0,541.25,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(59,'1ee8363f-097f-4fb3-a452-8068b947e75e','ACCREC','INV-0021','Monthly Support','PAID','USD',500,41.25,541.25,0,541.25,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(60,'2a578929-58bf-4eca-90db-1356383aeecb','ACCPAY','Dep','','PAID','USD',1500,0,1500,0,1500,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(61,'12d3bc5a-efe2-4093-b0e3-f6474ef7596d','ACCPAY','08-4123','','PAID','USD',5500,453.75,5953.75,0,5953.75,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(62,'6e74d1a5-e95b-406d-8d96-7d8752fa388e','ACCPAY','710','','PAID','USD',923.79,76.21,1000,0,1000,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(63,'4286e4ee-cc4a-4d74-9568-10935b3600bb','ACCREC','INV-0016','Yr Ref W08-143','AUTHORISED','USD',775,63.94,838.94,270.63,568.31,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(64,'bc532b0e-dfa7-44fd-99d9-1d24acd55b1c','ACCPAY','RENT','','PAID','USD',1091.22,90.03,1181.25,0,1181.25,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(65,'9d9cd0fc-661b-49fb-9062-6e50c139b78b','ACCPAY','Rpt','','PAID','USD',43.25,3.57,46.82,0,46.82,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(66,'47b97878-df82-4330-b731-80610cce65d1','ACCPAY','Rpt','','PAID','USD',125.5,10.35,135.85,0,135.85,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(67,'1bba28a1-2807-4d2e-86a0-c418a91ac12f','ACCREC','INV-0030','Monthly support','DRAFT','USD',508.08,41.92,550,550,0,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(68,'3f4a783e-6e80-4062-9300-4df2524e8bf7','ACCREC','INV-0029','Monthly support','DRAFT','USD',508.08,41.92,550,550,0,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37'),(69,'57bf3de4-016b-4813-a81a-5379940a06b9','ACCPAY','Expense Claims','','AUTHORISED','USD',18.9,0,18.9,18.9,0,0,0,0,NULL,NULL,NULL,NULL,0,'2025-06-29 23:45:37','2025-06-29 23:45:37');
+/*!40000 ALTER TABLE `xero_invoices` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2025-06-30 10:38:59
