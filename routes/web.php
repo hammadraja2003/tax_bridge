@@ -6,6 +6,8 @@ use App\Http\Controllers\XeroController;
 
 
 Route::get('/xero/connect', [XeroController::class, 'connect'])->name('xero.connect');
+//hammad.ali@f3technologies.eu
+//Feb@2024
 Route::get('/xero/callback', [XeroController::class, 'callback'])->name('xero.callback');
 Route::get('/xero/invoices', [XeroController::class, 'invoices'])->name('xero.invoices');
 // Route::get('/xero/get-xero-items', [XeroController::class, 'getXeroItems'])->name('xero.xero-items');
