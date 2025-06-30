@@ -31,7 +31,8 @@
             "Database\\Seeders\\": "database/seeders/"
         },
         "files": [
-            "app/Facades/Xero.php"
+            "app/Facades/Xero.php",
+            "app/Helpers/TaxBridgeHelper.php"
         ]
     },
     "autoload-dev": {
