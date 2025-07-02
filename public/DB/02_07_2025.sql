@@ -16,6 +16,254 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `cache`
+--
+
+DROP TABLE IF EXISTS `cache`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `cache` (
+  `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `expiration` int NOT NULL,
+  PRIMARY KEY (`key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `cache`
+--
+
+LOCK TABLES `cache` WRITE;
+/*!40000 ALTER TABLE `cache` DISABLE KEYS */;
+INSERT INTO `cache` VALUES ('laravel_cache_hammad.naseer@f3technologies.eu|127.0.0.1','i:1;',1751437556),('laravel_cache_hammad.naseer@f3technologies.eu|127.0.0.1:timer','i:1751437556;',1751437556);
+/*!40000 ALTER TABLE `cache` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `cache_locks`
+--
+
+DROP TABLE IF EXISTS `cache_locks`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `cache_locks` (
+  `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `owner` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `expiration` int NOT NULL,
+  PRIMARY KEY (`key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `cache_locks`
+--
+
+LOCK TABLES `cache_locks` WRITE;
+/*!40000 ALTER TABLE `cache_locks` DISABLE KEYS */;
+/*!40000 ALTER TABLE `cache_locks` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `failed_jobs`
+--
+
+DROP TABLE IF EXISTS `failed_jobs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `failed_jobs` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `failed_jobs`
+--
+
+LOCK TABLES `failed_jobs` WRITE;
+/*!40000 ALTER TABLE `failed_jobs` DISABLE KEYS */;
+/*!40000 ALTER TABLE `failed_jobs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `job_batches`
+--
+
+DROP TABLE IF EXISTS `job_batches`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `job_batches` (
+  `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `total_jobs` int NOT NULL,
+  `pending_jobs` int NOT NULL,
+  `failed_jobs` int NOT NULL,
+  `failed_job_ids` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `options` mediumtext COLLATE utf8mb4_unicode_ci,
+  `cancelled_at` int DEFAULT NULL,
+  `created_at` int NOT NULL,
+  `finished_at` int DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `job_batches`
+--
+
+LOCK TABLES `job_batches` WRITE;
+/*!40000 ALTER TABLE `job_batches` DISABLE KEYS */;
+/*!40000 ALTER TABLE `job_batches` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `jobs`
+--
+
+DROP TABLE IF EXISTS `jobs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `jobs` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `queue` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `attempts` tinyint unsigned NOT NULL,
+  `reserved_at` int unsigned DEFAULT NULL,
+  `available_at` int unsigned NOT NULL,
+  `created_at` int unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `jobs_queue_index` (`queue`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `jobs`
+--
+
+LOCK TABLES `jobs` WRITE;
+/*!40000 ALTER TABLE `jobs` DISABLE KEYS */;
+/*!40000 ALTER TABLE `jobs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `migrations`
+--
+
+DROP TABLE IF EXISTS `migrations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `migrations` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `migrations`
+--
+
+LOCK TABLES `migrations` WRITE;
+/*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
+INSERT INTO `migrations` VALUES (7,'0001_01_01_000000_create_users_table',1),(8,'0001_01_01_000001_create_cache_table',1),(9,'0001_01_01_000002_create_jobs_table',1),(10,'2025_06_30_043756_create_xero_invoices_table',1),(11,'2025_06_30_064829_add_tenant_columns_to_xero_invoices_table',1),(12,'2025_06_30_111717_create_xero_invoice_items_table',1);
+/*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `password_reset_tokens`
+--
+
+DROP TABLE IF EXISTS `password_reset_tokens`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `password_reset_tokens` (
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `password_reset_tokens`
+--
+
+LOCK TABLES `password_reset_tokens` WRITE;
+/*!40000 ALTER TABLE `password_reset_tokens` DISABLE KEYS */;
+/*!40000 ALTER TABLE `password_reset_tokens` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sessions`
+--
+
+DROP TABLE IF EXISTS `sessions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sessions` (
+  `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` bigint unsigned DEFAULT NULL,
+  `ip_address` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `user_agent` text COLLATE utf8mb4_unicode_ci,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_activity` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `sessions_user_id_index` (`user_id`),
+  KEY `sessions_last_activity_index` (`last_activity`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sessions`
+--
+
+LOCK TABLES `sessions` WRITE;
+/*!40000 ALTER TABLE `sessions` DISABLE KEYS */;
+INSERT INTO `sessions` VALUES ('MzvXnZYfu5b450VlsTWew8OQjxRLdyeHQCEo1Vfb',NULL,'127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36','YTo1OntzOjY6Il90b2tlbiI7czo0MDoiWHVwVFJUZG1RTDBQalF1TEx4cFFBWmEwaEhBNGV2WmVLMGs2TG1MNCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJuZXciO2E6MDp7fXM6Mzoib2xkIjthOjA6e319czoxMToib2F1dGgyc3RhdGUiO3M6MzI6ImUxMDZlY2EwZDZjYTQzY2Y3NzcyMjQ5NjlmZWVmYTJhIjtzOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czozODoiaHR0cDovL2xvY2FsaG9zdDo4MDAwL3hlcm8vZGItaW52b2ljZXMiO31zOjEwOiJ4ZXJvX3Rva2VuIjtPOjM4OiJMZWFndWVcT0F1dGgyXENsaWVudFxUb2tlblxBY2Nlc3NUb2tlbiI6NTp7czoxNDoiACoAYWNjZXNzVG9rZW4iO3M6MTI4ODoiZXlKaGJHY2lPaUpTVXpJMU5pSXNJbXRwWkNJNklqRkRRVVk0UlRZMk56Y3lSRFpFUXpBeU9FUTJOekkyUmtRd01qWXhOVGd4TlRjd1JVWkRNVGtpTENKMGVYQWlPaUpLVjFRaUxDSjROWFFpT2lKSVN5MVBXbTVqZEdKalFXOHhia3AyTUVOWlZtZFdZMDlmUW1zaWZRLmV5SnVZbVlpT2pFM05URTBNekV4TVRBc0ltVjRjQ0k2TVRjMU1UUXpNamt4TUN3aWFYTnpJam9pYUhSMGNITTZMeTlwWkdWdWRHbDBlUzU0WlhKdkxtTnZiU0lzSW1GMVpDSTZJbWgwZEhCek9pOHZhV1JsYm5ScGRIa3VlR1Z5Ynk1amIyMHZjbVZ6YjNWeVkyVnpJaXdpWTJ4cFpXNTBYMmxrSWpvaU1VVkZNa0UzUlRZeE5ERkZORVZDUmtGRU1EUTFOVUkzTTBNNFF6TXlPVVlpTENKemRXSWlPaUkxWkRJeE0yVTVNRGRsT0RjMU1tUXpPVEF4TlRobE56RXpNakkwWkRGbE15SXNJbUYxZEdoZmRHbHRaU0k2TVRjMU1UUXpNVEE1TlN3aWVHVnliMTkxYzJWeWFXUWlPaUkwWVRjelpXRm1ZaTB4T1RabUxUUTNZVFl0T1RJME5TMHhZemd5WXpZNU5tRTJOR1lpTENKbmJHOWlZV3hmYzJWemMybHZibDlwWkNJNklqazJOV1F4T1dJeVpXRTJaRFJtTm1FNU1XWTNNRFZoTXpJeE5UVXhOamMxSWl3aWMybGtJam9pT1RZMVpERTVZakpsWVRaa05HWTJZVGt4Wmpjd05XRXpNakUxTlRFMk56VWlMQ0pxZEdraU9pSkZRMFl4TTBRMFFVUXhRelV6TXpNeVFqWTVSakl3UmtFMU9UUXlSVEJHTnlJc0ltRjFkR2hsYm5ScFkyRjBhVzl1WDJWMlpXNTBYMmxrSWpvaVpUazNNVGcwTWprdE9EQXpOUzAwWldRMExUa3pOVGt0T1dReVl6RTBaV014WW1Ga0lpd2ljMk52Y0dVaU9sc2laVzFoYVd3aUxDSndjbTltYVd4bElpd2liM0JsYm1sa0lpd2lZV05qYjNWdWRHbHVaeTV6WlhSMGFXNW5jeUlzSW1GalkyOTFiblJwYm1jdWRISmhibk5oWTNScGIyNXpJaXdpYjJabWJHbHVaVjloWTJObGMzTWlYU3dpWVcxeUlqcGJJbkIzWkNKZGZRLks4M0sxSEp1RHZxWW9aTDJHa05LVDRBcVRsMVp2czEtT0ZRcmtKQkNnRlZlbzZKdUczQkpFM0RnRVZCMVhBUVZmd01RcTlWT3NFeDJqaU1ocTM4RkNMeFhCNTcxQVJMVm5QSGtYNjlmVTQ0cENMTXZnR3BTdjZINm1rRVRLaV80MzR6RVpycl8zN2hab1U0TXh4WWRaVVdPMThOZVNDRVBUV19kZjdZalBTSWJLSVNFX0FhS2NoV3R0b0VaS0xPSzNKcVlmODVGcjk5eGcwQVg4d0Frd016LVlsWndOaC1ZeUlGc1VDMWtPRGEzM1oxbmlpcmZ3YXIwdnlXOWtrZzZuZjBrdlJPNkpZX2pObHllWFZBZDdCN19OTWxtR3BvUUw0Ry1YNmkxMVJ0b01WbXdwckdjVzh3SkpCY29xT0x1MEc1ZExvNGxnXzhQZHZsQnF6ZjR0USI7czoxMDoiACoAZXhwaXJlcyI7aToxNzUxNDMyOTI0O3M6MTU6IgAqAHJlZnJlc2hUb2tlbiI7czo0MzoiR2diNkNuaW1PeGpNLTdrUWpud1RLeWNPRjVFQU5xRWtINmpTOFRuRHQtTSI7czoxODoiACoAcmVzb3VyY2VPd25lcklkIjtOO3M6OToiACoAdmFsdWVzIjthOjM6e3M6ODoiaWRfdG9rZW4iO3M6MTI2MjoiZXlKaGJHY2lPaUpTVXpJMU5pSXNJbXRwWkNJNklqRkRRVVk0UlRZMk56Y3lSRFpFUXpBeU9FUTJOekkyUmtRd01qWXhOVGd4TlRjd1JVWkRNVGtpTENKMGVYQWlPaUpLVjFRaUxDSjROWFFpT2lKSVN5MVBXbTVqZEdKalFXOHhia3AyTUVOWlZtZFdZMDlmUW1zaWZRLmV5SnVZbVlpT2pFM05URTBNekV4TVRBc0ltVjRjQ0k2TVRjMU1UUXpNVFF4TUN3aWFYTnpJam9pYUhSMGNITTZMeTlwWkdWdWRHbDBlUzU0WlhKdkxtTnZiU0lzSW1GMVpDSTZJakZGUlRKQk4wVTJNVFF4UlRSRlFrWkJSREEwTlRWQ056TkRPRU16TWpsR0lpd2lhV0YwSWpveE56VXhORE14TVRFd0xDSmhkRjlvWVhOb0lqb2ljSEJQV1RRNFpFRTJXRVIzT1dvelFVUTBWVEY0UVNJc0luTmZhR0Z6YUNJNklqVmhSMlZ4WkU5NU5YbHpSVUpOTkU5aGNsRTRjMUVpTENKemFXUWlPaUk1TmpWa01UbGlNbVZoTm1RMFpqWmhPVEZtTnpBMVlUTXlNVFUxTVRZM05TSXNJbk4xWWlJNklqVmtNakV6WlRrd04yVTROelV5WkRNNU1ERTFPR1UzTVRNeU1qUmtNV1V6SWl3aVlYVjBhRjkwYVcxbElqb3hOelV4TkRNeE1EazFMQ0o0WlhKdlgzVnpaWEpwWkNJNklqUmhOek5sWVdaaUxURTVObVl0TkRkaE5pMDVNalExTFRGak9ESmpOamsyWVRZMFppSXNJbWRzYjJKaGJGOXpaWE56YVc5dVgybGtJam9pT1RZMVpERTVZakpsWVRaa05HWTJZVGt4Wmpjd05XRXpNakUxTlRFMk56VWlMQ0p3Y21WbVpYSnlaV1JmZFhObGNtNWhiV1VpT2lKb1lXMXRZV1F1WVd4cFFHWXpkR1ZqYUc1dmJHOW5hV1Z6TG1WMUlpd2laVzFoYVd3aU9pSm9ZVzF0WVdRdVlXeHBRR1l6ZEdWamFHNXZiRzluYVdWekxtVjFJaXdpWjJsMlpXNWZibUZ0WlNJNklraGhiVzFoWkNJc0ltWmhiV2xzZVY5dVlXMWxJam9pUVd4cElpd2libUZ0WlNJNklraGhiVzFoWkNCQmJHa2lMQ0poYlhJaU9sc2ljSGRrSWwxOS5jZFpPT3FjMVZrbFpvYlk4YmlnN05fQ3VWaHp3LWFzUmZOcjhFOWFwVjVvSDdJM3ROQ2l3UVp3VFdOenNKcGFCWDJpZFh1OFhkUjRpUmFxUmc0TUIxbC1HZU04OHVnMW1zVDA3QmM5dnR3c0t4NUxJYTJGZHhpV1otVy1NNUEyYmhoeTlPS3hoVmsySHIwMjdtVGlWRlFBRHJSc25VaVVBQUhoMWs2WXRsQnVfRmpHdDFRdUFzbjdqZE52TWRQaENDRVZLUTRZRndqZmNaZHVkZTdNWGNiTnJhOTMyM1c1cmlfX202SnZTNnBSeFh4SnJBTXJRV192Skp5Y3BoNnMyd0NkUWhydmhfVWFFY2F6MkNuV1VFcmk2VWJJTGtnVzlHWUFmNHpYMl8wRTh3b21GeFhyRTR2SHU0bVhuTW1Ra1VQbEVXQXBrc2xXT0VnUVh0dzVYSlEiO3M6MTA6InRva2VuX3R5cGUiO3M6NjoiQmVhcmVyIjtzOjU6InNjb3BlIjtzOjc5OiJvcGVuaWQgcHJvZmlsZSBlbWFpbCBhY2NvdW50aW5nLnRyYW5zYWN0aW9ucyBhY2NvdW50aW5nLnNldHRpbmdzIG9mZmxpbmVfYWNjZXNzIjt9fX0=',1751431127),('Q0O3TNZZY32qFaRQiV9ni4zBTFnH3bhXMbC1eBg8',NULL,'127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36','YTo1OntzOjY6Il90b2tlbiI7czo0MDoiem5NUURGYVV6Q2VqZm1vYzBBOXgwcFFuVElCVjR3MGtMQ2d1NGh5SSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJuZXciO2E6MDp7fXM6Mzoib2xkIjthOjA6e319czoxMToib2F1dGgyc3RhdGUiO3M6MzI6IjIzOGUxNjJkNjhhZTI4MmI4MjE5OTg0NTU3ZDAyNDEzIjtzOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czozODoiaHR0cDovL2xvY2FsaG9zdDo4MDAwL3hlcm8vZGItaW52b2ljZXMiO31zOjEwOiJ4ZXJvX3Rva2VuIjtPOjM4OiJMZWFndWVcT0F1dGgyXENsaWVudFxUb2tlblxBY2Nlc3NUb2tlbiI6NTp7czoxNDoiACoAYWNjZXNzVG9rZW4iO3M6MTI5MjoiZXlKaGJHY2lPaUpTVXpJMU5pSXNJbXRwWkNJNklqRkRRVVk0UlRZMk56Y3lSRFpFUXpBeU9FUTJOekkyUmtRd01qWXhOVGd4TlRjd1JVWkRNVGtpTENKMGVYQWlPaUpLVjFRaUxDSjROWFFpT2lKSVN5MVBXbTVqZEdKalFXOHhia3AyTUVOWlZtZFdZMDlmUW1zaWZRLmV5SnVZbVlpT2pFM05URXlPRGMzTlRVc0ltVjRjQ0k2TVRjMU1USTRPVFUxTlN3aWFYTnpJam9pYUhSMGNITTZMeTlwWkdWdWRHbDBlUzU0WlhKdkxtTnZiU0lzSW1GMVpDSTZJbWgwZEhCek9pOHZhV1JsYm5ScGRIa3VlR1Z5Ynk1amIyMHZjbVZ6YjNWeVkyVnpJaXdpWTJ4cFpXNTBYMmxrSWpvaU1VVkZNa0UzUlRZeE5ERkZORVZDUmtGRU1EUTFOVUkzTTBNNFF6TXlPVVlpTENKemRXSWlPaUkxWkRJeE0yVTVNRGRsT0RjMU1tUXpPVEF4TlRobE56RXpNakkwWkRGbE15SXNJbUYxZEdoZmRHbHRaU0k2TVRjMU1USTROemN5TlN3aWVHVnliMTkxYzJWeWFXUWlPaUkwWVRjelpXRm1ZaTB4T1RabUxUUTNZVFl0T1RJME5TMHhZemd5WXpZNU5tRTJOR1lpTENKbmJHOWlZV3hmYzJWemMybHZibDlwWkNJNkltTXhNR1F5WXprNU9HWXpaRFJoWkdVNVl6bGhPRGczTm1KbFlXTmlOakl5SWl3aWMybGtJam9pWXpFd1pESmpPVGs0WmpOa05HRmtaVGxqT1dFNE9EYzJZbVZoWTJJMk1qSWlMQ0pxZEdraU9pSkZSa000TmprM05FSTJRMEUzTURFMU5qSTROa015UkRFMU0wTXdRa1EwTUNJc0ltRjFkR2hsYm5ScFkyRjBhVzl1WDJWMlpXNTBYMmxrSWpvaVpUazBaVFEzWWpVdE1HTmhOaTAwT0RVMExXSmlNVEV0TWpreVpERTFZemM0WkRRNUlpd2ljMk52Y0dVaU9sc2laVzFoYVd3aUxDSndjbTltYVd4bElpd2liM0JsYm1sa0lpd2lZV05qYjNWdWRHbHVaeTV6WlhSMGFXNW5jeUlzSW1GalkyOTFiblJwYm1jdWRISmhibk5oWTNScGIyNXpJaXdpYjJabWJHbHVaVjloWTJObGMzTWlYU3dpWVcxeUlqcGJJbXhsWjJGamVTSmRmUS5GaTlhc1AwODRUWXNsQnF5UnZFM29ST3pyXzByYzREbkFJOTZkRW9vM2FsUURsODZIOWxIcVlGZkRlamFxTkQ4d0wza2EzWlR3Q0kxbHh6OU9RUVFMY3kxc0NvVGRudURxQ2JyZF91MlRDWnJsMjJTa0hrQk1YenFSRUNjeW5heUExazlSaEU0aVZpZWQ5ZXBuc2tpaDM1RExXbEZsamFKSlNmaXR4cGtnS0doT1ZPTkRQNTVuMVdDT3NaenZQWG9aYmJHWnZaLVpMYUpIMjh3NUpqYlFzbVdFdjN2bjlha01neDlQMWhqUHNoTWx4RDBGVUhoSGROMzF2R2oydml6ejNLZjZzaUN4bHZTNzFvTVoydGlWeXNVa2M3elVhSFdUZUZVU1hNN0oxTVlPNmg1R0h2czA2eXlsMDRVeVY4V3RReU9LY0FRMWV0TFNJWFN6OXNzbUEiO3M6MTA6IgAqAGV4cGlyZXMiO2k6MTc1MTI4OTU2OTtzOjE1OiIAKgByZWZyZXNoVG9rZW4iO3M6NDM6ImNoT2NHcFd0blhaR0NtQVNjUUFDN0NpTFRWYzYwWGdrUmh4dWIwT0w2NVUiO3M6MTg6IgAqAHJlc291cmNlT3duZXJJZCI7TjtzOjk6IgAqAHZhbHVlcyI7YTozOntzOjg6ImlkX3Rva2VuIjtzOjEyNjY6ImV5SmhiR2NpT2lKU1V6STFOaUlzSW10cFpDSTZJakZEUVVZNFJUWTJOemN5UkRaRVF6QXlPRVEyTnpJMlJrUXdNall4TlRneE5UY3dSVVpETVRraUxDSjBlWEFpT2lKS1YxUWlMQ0o0TlhRaU9pSklTeTFQV201amRHSmpRVzh4YmtwMk1FTlpWbWRXWTA5ZlFtc2lmUS5leUp1WW1ZaU9qRTNOVEV5T0RjM05UVXNJbVY0Y0NJNk1UYzFNVEk0T0RBMU5Td2lhWE56SWpvaWFIUjBjSE02THk5cFpHVnVkR2wwZVM1NFpYSnZMbU52YlNJc0ltRjFaQ0k2SWpGRlJUSkJOMFUyTVRReFJUUkZRa1pCUkRBME5UVkNOek5ET0VNek1qbEdJaXdpYVdGMElqb3hOelV4TWpnM056VTFMQ0poZEY5b1lYTm9Jam9pTlU1aU9VZzFia3MxWmpscGRUUjRZa05oYzJOM1FTSXNJbk5mYUdGemFDSTZJbkZCZVV4S2VGcFZOa1F5WmpoT2FVdGFSekpXUkVFaUxDSnphV1FpT2lKak1UQmtNbU01T1RobU0yUTBZV1JsT1dNNVlUZzROelppWldGallqWXlNaUlzSW5OMVlpSTZJalZrTWpFelpUa3dOMlU0TnpVeVpETTVNREUxT0dVM01UTXlNalJrTVdVeklpd2lZWFYwYUY5MGFXMWxJam94TnpVeE1qZzNOekkxTENKNFpYSnZYM1Z6WlhKcFpDSTZJalJoTnpObFlXWmlMVEU1Tm1ZdE5EZGhOaTA1TWpRMUxURmpPREpqTmprMllUWTBaaUlzSW1kc2IySmhiRjl6WlhOemFXOXVYMmxrSWpvaVl6RXdaREpqT1RrNFpqTmtOR0ZrWlRsak9XRTRPRGMyWW1WaFkySTJNaklpTENKd2NtVm1aWEp5WldSZmRYTmxjbTVoYldVaU9pSm9ZVzF0WVdRdVlXeHBRR1l6ZEdWamFHNXZiRzluYVdWekxtVjFJaXdpWlcxaGFXd2lPaUpvWVcxdFlXUXVZV3hwUUdZemRHVmphRzV2Ykc5bmFXVnpMbVYxSWl3aVoybDJaVzVmYm1GdFpTSTZJa2hoYlcxaFpDSXNJbVpoYldsc2VWOXVZVzFsSWpvaVFXeHBJaXdpYm1GdFpTSTZJa2hoYlcxaFpDQkJiR2tpTENKaGJYSWlPbHNpYkdWbllXTjVJbDE5Lnd4anBGNXRRSm1yUGxwT3ExR0xWMFpVSkRfMjFFT1lVd2lmNDZ4UnpkZjgtYkRVQjNsS2ZCeHQ4cnFKY3ZxRDJQc19xelcxUGZEUm5xWDZSNHhZVXZJX1N3SFNmMDJpY1F6QW1jcG1vVmpPRFNYWkVnX3VRNU93OFlnSzdvUDdVZE5tbXZNbjM5U1ZFS1VYandNM3ZHbDBzVjJBdnFGSmxPRm41WVVJMllDcHBXaDFYWnFwek80ZkxXT3NST2RaVUxLUTFZNGFFeFltdVdNdXNoMmdwV2RqT2szWUNYSXB6bHFlaXN5OGhWOGp3MWFQZlJieTBVZm9PZHQ3WTk1dzdIRER3Qkl6MzhRc0t3d29rbHFnMVlZd2NZTUo0dm9zTFJnc3NEbWN4c1ZuNG9GV3lkT0ZvUFlsM1Z5UmhsZ0tVX1h3ZjBGMmhmMmtvMVdnUklXVXl4ZyI7czoxMDoidG9rZW5fdHlwZSI7czo2OiJCZWFyZXIiO3M6NToic2NvcGUiO3M6Nzk6Im9wZW5pZCBwcm9maWxlIGVtYWlsIGFjY291bnRpbmcudHJhbnNhY3Rpb25zIGFjY291bnRpbmcuc2V0dGluZ3Mgb2ZmbGluZV9hY2Nlc3MiO319fQ==',1751287828),('Yg3GTlbpxIejTGK8hIpKrYzh2mblP9WXnkUfz1zG',2,'127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36','YTo0OntzOjY6Il90b2tlbiI7czo0MDoidkh0dlRkWlQyTlp0ZGE4ODN0cXhBRUpRTmJ6bDJyZ3RtTmJjOEJRZSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9kYXNoYm9hcmQiO31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToyO30=',1751438001);
+/*!40000 ALTER TABLE `sessions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `users` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email_verified_at` timestamp NULL DEFAULT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `users_email_unique` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'Hammad Naseer','hammad.naseer@f3technologies.com',NULL,'$2y$10$wkkJ9Bqip7wnqTlj8AYkNexY4eZCZZn7c13QdM8X8iP2cf5mvNjAK',NULL,'2025-06-30 02:21:11','2025-06-30 02:21:11'),(2,'Hammad Ali','hammad.ali@f3technologies.eu',NULL,'$2y$12$L.S4Y73wLI.F5tF6sbUyf.mkrEGCMbU7oh789Ba2caicyUAlK1ApW',NULL,'2025-07-02 01:29:39','2025-07-02 01:29:39');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `xero_invoice_items`
 --
 
@@ -109,4 +357,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-07-02 11:47:36
+-- Dump completed on 2025-07-02 11:52:43
