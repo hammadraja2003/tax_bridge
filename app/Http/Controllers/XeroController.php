@@ -60,6 +60,9 @@ class XeroController extends Controller
             return redirect('/')->with('error', 'Failed to get access token: ' . $e->getMessage());
         }
     }
+    public function print(){
+        return view('xero.print');
+    }
 
 
 
@@ -156,8 +159,9 @@ class XeroController extends Controller
         $invoices = XeroInvoice::latest()->get(); // ✅ Get all records without pagination
         return view('xero.invoices_db', compact('invoices'));
     }
-
-
+    public function all_invoices(){
+        return view('xero.all_invoices');
+    }
 
     public function postToFbr(Request $request)
     {

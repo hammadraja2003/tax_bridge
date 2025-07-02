@@ -1,13 +1,22 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\XeroController;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\XeroController;
+Route::get('/', function () {
+    return view('welcome');
+});
 
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/xero/connect', [XeroController::class, 'connect'])->name('xero.connect');
-Route::get('/xero/callback', [XeroController::class, 'callback'])->name('xero.callback');
-Route::get('/xero/invoices', [XeroController::class, 'invoices'])->name('xero.invoices');
-
-Route::get('/xero/db-invoices', [XeroController::class, 'showInvoicesFromDb'])->name('xero.db_invoices');
-Route::post('/xero/post-to-fbr', [XeroController::class, 'postToFbr'])->name('xero.post_to_fbr');
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+Route::get('/all_invoices', [XeroController::class, 'all_invoices']);
+Route::get('/invoice/print', [XeroController::class, 'print'])->name('invoice.print');
+require __DIR__.'/auth.php';
