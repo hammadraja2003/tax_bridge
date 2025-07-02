@@ -13,6 +13,7 @@ class XeroInvoice extends Model
         'reference',
         'status',
         'currency_code',
+        'currency_rate',
         'sub_total',
         'total_tax',
         'total',
@@ -21,11 +22,22 @@ class XeroInvoice extends Model
         'amount_credited',
         'is_discounted',
         'has_attachments',
+        'line_amount_types',
+        'branding_theme_id',
+        'url',
         'date',
         'due_date',
         'updated_date_utc',
+        'fully_paid_on_date',
         'fbr_invoice_number',
-        'posted_to_fbr'
+        'posted_to_fbr',
+        // 👇 Tenant & org info
+        'tenant_id',
+        'tenant_name',
+        'tenant_type',
+        'organisation_id',
+        'tenant_created_at',
+        'tenant_updated_at',
     ];
 
     protected $casts = [
@@ -35,5 +47,13 @@ class XeroInvoice extends Model
         'date' => 'datetime',
         'due_date' => 'datetime',
         'updated_date_utc' => 'datetime',
+        'fully_paid_on_date' => 'datetime',
+        'tenant_created_at' => 'datetime',
+        'tenant_updated_at' => 'datetime',
+        'currency_rate' => 'float',
     ];
+    public function items()
+    {
+        return $this->hasMany(XeroInvoiceItem::class, 'invoice_id', 'invoice_id');
+    }
 }
