@@ -12,8 +12,10 @@
         }
         .container {
         width: 100%;
-        max-width: 900px;
+        max-width: 700px; /* adjust to fit A4 printable width */
         margin: auto;
+        box-sizing: border-box;
+        padding: 10px;
         }
         .header {
         display: flex;
@@ -31,7 +33,7 @@
         gap: 20px;
         }
         .top-section {
-        width: 32%;
+        /* width: 32%; */
         }
         .top-section h1 {
         font-size: 24px;
@@ -89,6 +91,40 @@
         font-size: 12px;
         }
   </style>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+ <script>
+    window.onload = function () {
+        const element = document.querySelector('.container');
+
+        // Optional: force full width on screen to avoid cut-off
+        element.style.width = '100%';
+
+        const opt = {
+            margin:       [0.3, 0.3, 0.3, 0.3], // top, left, bottom, right (in inches)
+            filename:     'invoice-{{ $invoice->invoice_number }}.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  {
+                scale: 2,        // Increase to get higher-res rendering
+                useCORS: true    // In case you're loading remote images
+            },
+            jsPDF: {
+                unit: 'in',
+                format: 'a4',
+                orientation: 'portrait',
+                putOnlyUsedFonts: true
+            },
+            pagebreak: { mode: ['avoid-all', 'css', 'legacy'] } // Try to avoid breaking sections
+        };
+
+        html2pdf().set(opt).from(element).save().then(() => {
+            setTimeout(() => {
+                window.print();
+            }, 500);
+        });
+    };
+</script>
+
+
 </head>
 <body>
   <div class="container">
@@ -110,7 +146,7 @@
 
       <!-- Middle Section -->
       <div class="top-section">
-        <p><strong>Invoice Date:</strong>{{ \Carbon\Carbon::parse($invoice->date)->format('d M Y') }}<br>
+        <p><strong>Invoice Date:</strong><br>{{ \Carbon\Carbon::parse($invoice->date)->format('d M Y') }}<br>
         <strong>Invoice Number:</strong> {{ $invoice->invoice_number }}<br>
         <strong>Reference:</strong>{{ $invoice->reference }}</p>
       </div>
@@ -177,10 +213,6 @@
             </tr>
         </table>
     </div>
-
-
-    
-
     <div style="clear: both;"></div>
 
     <div class="due-info">
