@@ -6,6 +6,25 @@
   table th {
     white-space: nowrap;
   }
+  .app-scroll::-webkit-scrollbar {
+        height: 10px; /* Controls the thickness of horizontal scrollbar */
+    }
+
+    .app-scroll::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    .app-scroll::-webkit-scrollbar-thumb {
+        background-color: #c1c1c1;
+        border-radius: 10px;
+        border: 2px solid #f1f1f1;
+    }
+
+    /* Firefox support */
+    .app-scroll {
+        scrollbar-width: thin;
+        scrollbar-color: #c1c1c1 #f1f1f1;
+    }
 </style>
 <div class="container-fluid">
             <!-- Breadcrumb start  -->
@@ -92,12 +111,12 @@
                             <div class="position-relative ">
                               <input type="search" class="form-control search" placeholder="Search..."
                                 aria-label="Search">
-                              <i class="ti ti-search text-dark"></i>
+                             
                             </div>
                           </form>
                         </div>
 
-                        <div class="app-scroll overflow-auto" style="max-width: 100%; overflow-x: auto;">
+                        <div class="app-scroll overflow-auto" style="max-width: 100%; overflow-x: auto; overflow-y: hidden;">
                           <table id="projectTableT" class="table table-bottom-border  list-table-data align-middle mb-0">
                             <thead>
                               <tr class="app-sort">
