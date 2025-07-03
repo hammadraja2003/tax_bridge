@@ -235,9 +235,10 @@ class XeroController extends Controller
         $invoices = XeroInvoice::with('items')->latest()->get();
         return view('xero.all_invoices', compact('invoices'));
     }
-    public function print()
+    public function print($id)
     {
-        return view('xero.print');
+        $invoice = XeroInvoice::with('items')->findOrFail($id);
+        return view('xero.print', compact('invoice'));
     }
 
     public function postToFbr(Request $request)

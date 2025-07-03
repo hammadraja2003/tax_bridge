@@ -209,12 +209,24 @@
                                 <td class="date">{{ optional($invoice->tenant_updated_at)->format('Y-m-d H:i') ?? '-' }}</td>
                                 <td class="date">{{ $invoice->organisation_id ?? '-' }}</td>
                                 <td>
-                                <a href="{{ route('invoice.print', ['id' => $invoice->id]) }}" class="btn btn-sm btn-secondary" target="_blank" title="Print Invoice">
+                                  <button type="button"
+                                    class="btn btn-sm btn-outline-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#itemsModal{{ $invoice->id }}"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="View Item">
+                                    <i class="fa-solid fa-eye fa-fw"></i>
+                                  </button>
+
+                                  <a href="{{ route('invoice.print', ['id' => $invoice->id]) }}"
+                                    class="btn btn-sm btn-outline-info"
+                                    target="_blank"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Print Invoice">
                                     <i class="fa-solid fa-print fa-fw"></i>
-                                </a>
-                                  <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#itemsModal{{ $invoice->id }}">
-                                    View
-                                </button>
+                                  </a>
                                 </td>
                               </tr>
                               @endforeach
@@ -280,7 +292,14 @@
             </div>
             <!-- List Js Table end -->
           </div>
-
+          <script>
+            document.addEventListener("DOMContentLoaded", function () {
+              var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+              tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+                new bootstrap.Tooltip(tooltipTriggerEl);
+              });
+            });
+          </script>
           <script>
             document.addEventListener('DOMContentLoaded', function () {
             
@@ -323,8 +342,4 @@
             
             });
             </script>
-            
-  
-  
-
 @endsection

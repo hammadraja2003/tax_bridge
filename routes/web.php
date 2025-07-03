@@ -22,7 +22,9 @@ Route::get('/xero/error', function () {
 
 // Additional routes pulled from update
 Route::get('/all_invoices', [XeroController::class, 'all_invoices'])->name('xero.all_invoices');
-Route::get('/invoice/print', [XeroController::class, 'print'])->name('invoice.print');
+// Route::get('/invoice/print', [XeroController::class, 'print'])->name('invoice.print');
+Route::get('/invoice/print/{id}', [XeroController::class, 'print'])->name('invoice.print');
+
 
 /*
 |--------------------------------------------------------------------------
