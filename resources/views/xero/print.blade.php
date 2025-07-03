@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Sale Tax Invoice</title>
+  <title>{{ config('app.name', 'Tax Bridge') }}</title>
   <style>
     body {
       font-family: Arial, sans-serif;

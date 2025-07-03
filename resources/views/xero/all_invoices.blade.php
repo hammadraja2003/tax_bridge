@@ -21,20 +21,22 @@
                     <h5>Invoice Details</h5>
                   </div>
                   <div class="card-body p-0">
+                    <form action="{{ route('xero.post_to_fbr') }}" method="POST">
+                      @csrf
                     <div id="myTable">
+                     
                       <div class="list-table-header d-flex justify-content-sm-between">
                         <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                           data-bs-target="#exampleModal">Add</button> -->
                           <!-- <a href="{{ route('xero.connect') }}" class="btn btn-outline-primary">🔄 Reconnect Xero</a> -->
-                          <a href="{{ route('xero.disconnect') }}" class="btn btn-danger">🔌 Disconnect Xero</a>
-                          <a href="{{ route('xero.invoices') }}" class="btn btn-outline-success">🔃 Sync Latest Invoices</a>
-                      <form action="{{ route('xero.post_to_fbr') }}" method="POST">
-                        @csrf
-                          <button type="button" class="btn btn-secondary">📤 Post Selected to FBR</button>
+                          {{-- <a href="{{ route('xero.disconnect') }}" class="btn btn-danger">🔌 Disconnect Xero</a> --}}
+                          {{-- <a href="{{ route('xero.invoices') }}" class="btn btn-outline-success">🔃 Sync Latest Invoices</a> --}}
+                      
+                          <button type="submit" class="btn btn-secondary">📤 Post Selected to FBR</button>
 
                           <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                             aria-hidden="true">
-                            <form id="add_employee_form">
+                            {{-- <form id="add_employee_form">
                               <div class="modal-dialog">
                                 <div class="modal-content">
                                   <div class="modal-header">
@@ -84,7 +86,7 @@
                                   </div>
                                 </div>
                               </div>
-                            </form>
+                            </form> --}}
                           </div>
                           <form class="app-form app-icon-form" action="#">
                             <div class="position-relative ">
@@ -100,7 +102,7 @@
                             <thead>
                               <tr class="app-sort">
                                 <th>
-                                <input class="form-check-input checkAll" type="checkbox" id="selectAll">
+                                <input class="form-check-input" type="checkbox" id="checkAll">
                                 </th>
                                 <th></th>
                                 <th>Invoice Number</th>
@@ -140,7 +142,7 @@
                               <tr>
                                 <th scope="row">
                                 @if (!$invoice->posted_to_fbr)
-                                 <input class="form-check-input row-check" type="checkbox" name="selected_invoices[]" value="{{ $invoice->id }}">
+                                 <input  type="checkbox" name="selected_invoices[]" value="{{ $invoice->id }}">
                                  @endif
                                 </th>
                                 <td class="employee"></td>
@@ -189,7 +191,7 @@
                             </tbody>
                           </table>
                         </div>
-                    </form>
+                    
                         <!-- Modal -->
                         @foreach ($invoices as $invoice)
                           <div class="modal fade" id="itemsModal{{ $invoice->id }}" tabindex="-1" aria-labelledby="itemsModalLabel{{ $invoice->id }}" aria-hidden="true">
@@ -239,6 +241,7 @@
                         <ul class="pagination"></ul>
                       </div>
                     </div>
+                  </form>
                   </div>
                 </div>
               </div>
@@ -246,27 +249,51 @@
             </div>
             <!-- List Js Table end -->
           </div>
-<script>
-  // When header checkbox is clicked
-  document.querySelector('.checkAll').addEventListener('change', function () {
-    const isChecked = this.checked;
-    document.querySelectorAll('.row-check').forEach(function (checkbox) {
-      checkbox.checked = isChecked;
-    });
-  });
 
-  // Optional: If you want to uncheck header checkbox if one row is unchecked
-  document.querySelectorAll('.row-check').forEach(function (checkbox) {
-    checkbox.addEventListener('change', function () {
-      const all = document.querySelectorAll('.row-check').length;
-      const checked = document.querySelectorAll('.row-check:checked').length;
-      document.querySelector('.checkAll').checked = all === checked;
-    });
-  });
-
-  $('#checkAll').on('click', function () {
-            $('input[name="selected_invoices[]"]').prop('checked', this.checked);
-        });
-</script>
+          <script>
+            document.addEventListener('DOMContentLoaded', function () {
+            
+                function initInvoiceCheckboxListeners() {
+                    const checkAll = document.getElementById('checkAll');
+                    const checkboxes = document.querySelectorAll('input[name="selected_invoices[]"]');
+            
+                    // Check All behavior
+                    if (checkAll) {
+                        checkAll.addEventListener('change', function () {
+                            checkboxes.forEach(cb => cb.checked = this.checked);
+                            logSelectedInvoiceIds();
+                        });
+                    }
+            
+                    // Individual checkbox change
+                    checkboxes.forEach(function (checkbox) {
+                        checkbox.addEventListener('change', function () {
+                            logSelectedInvoiceIds();
+            
+                            // Optional: update "Check All" state based on individual selections
+                            if (checkAll) {
+                                checkAll.checked = [...checkboxes].every(cb => cb.checked);
+                            }
+                        });
+                    });
+                }
+            
+                function logSelectedInvoiceIds() {
+                    const checked = document.querySelectorAll('input[name="selected_invoices[]"]:checked');
+                    const selectedIds = Array.from(checked).map(cb => cb.value);
+                    console.log("Selected Invoice IDs:", selectedIds);
+                }
+            
+                // Run initial bind
+                initInvoiceCheckboxListeners();
+            
+                // Optional: Re-bind on AJAX/Pagination (e.g. if using Livewire or you load content dynamically)
+                // If using a paginator or Livewire: hook into event/callback to rerun `initInvoiceCheckboxListeners()`
+            
+            });
+            </script>
+            
+  
+  
 
 @endsection

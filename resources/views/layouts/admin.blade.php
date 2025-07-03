@@ -12,7 +12,7 @@
 <meta name="author" content="la-themes">
 <link rel="icon" href="{{asset('assets/images/logo/favicon.png')}}" type="image/x-icon">
 <link rel="shortcut icon" href="{{asset('assets/images/logo/favicon.png')}}" type="image/x-icon">
-<title>Advance Table | Ra-admin - Premium Admin Template</title>
+<title>{{ config('app.name', 'Tax Bridge') }}</title>
 <!-- meta and title end-->
 
     <!-- css start-->
@@ -48,12 +48,15 @@
 <link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/simplebar/simplebar.css')}}">
  <!-- Toatify css-->
  <link rel="stylesheet" href="{{asset('assets/vendor/notifications/toastify.min.css')}}">
+ <!-- latest jquery-->
+<script src="{{asset('assets/js/jquery-3.6.3.min.js')}}"></script>
 
     <!-- Data Table css-->
     <link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/datatable/jquery.dataTables.min.css')}}">
 
 <link rel="preload" as="style" href="{{asset('build/assets/style-BVr_C8ru.css')}}" />
 <link rel="stylesheet" href="{{asset('build/assets/style-BVr_C8ru.css')}}" /><!-- css end-->
+
 </head>
     <body>
     <div class="app-wrapper">
@@ -144,8 +147,7 @@
 <div id="myChart"></div>
      
 <!-- scripts start-->
-<!-- latest jquery-->
-<script src="{{asset('assets/js/jquery-3.6.3.min.js')}}"></script>
+
   
 <!-- Bootstrap js-->
 <script src="{{asset('assets/vendor/bootstrap/bootstrap.bundle.min.js')}}"></script>

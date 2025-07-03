@@ -36,6 +36,9 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        // Clear Xero session token
+        $request->session()->forget('xero_token');
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();

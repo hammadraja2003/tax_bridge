@@ -193,9 +193,7 @@ class XeroController extends Controller
                         'tenant_created_at' => $tenant->getCreatedDateUtc(),
                         'tenant_updated_at' => $tenant->getUpdatedDateUtc(),
                     ]);
-
                     $lineItems = $inv->getLineItems();
-
                     if (empty($lineItems)) {
                         // Fallback to full invoice call
                         $unitdp = 2;
@@ -203,9 +201,7 @@ class XeroController extends Controller
                         $invoice = $invoiceResponse->getInvoices()[0];
                         $lineItems = $invoice->getLineItems();
                     }
-
-                    \Log::info('Line items for invoice ' . $invoiceId, ['count' => count($lineItems)]);
-
+                    // \Log::info('Line items for invoice ' . $invoiceId, ['count' => count($lineItems)]);
                     foreach ($lineItems as $item) {
                         XeroInvoiceItem::create([
                             'invoice_id'  => $invoiceId,
@@ -218,20 +214,6 @@ class XeroController extends Controller
                         ]);
                         sleep(1); // Prevent 429 error
                     }
-
-                    // $lineItems = $inv->getLineItems() ?? []; // ✅ Already available
-                    // \Log::info('Line items for invoice ' . $invoiceId, ['items' => $lineItems]);
-                    // foreach ($lineItems as $item) {
-                    //     XeroInvoiceItem::create([
-                    //         'invoice_id'  => $inv->getInvoiceId(),
-                    //         'description' => $item->getDescription(),
-                    //         'quantity'    => $item->getQuantity(),
-                    //         'unit_amount' => $item->getUnitAmount(),
-                    //         'line_amount' => $item->getLineAmount(),
-                    //         'item_code'   => $item->getItemCode(),
-                    //         'tax_amount'  => $item->getTaxAmount(),
-                    //     ]);
-                    // }
                 }
             }
 
@@ -248,18 +230,22 @@ class XeroController extends Controller
         $invoices = XeroInvoice::with('items')->latest()->get();
         return view('xero.invoices_db', compact('invoices'));
     }
-    public function all_invoices(){
+    public function all_invoices()
+    {
         $invoices = XeroInvoice::with('items')->latest()->get();
         return view('xero.all_invoices', compact('invoices'));
     }
-    public function print(){
+    public function print()
+    {
         return view('xero.print');
     }
 
     public function postToFbr(Request $request)
     {
+
         $ids = $request->input('selected_invoices', []);
 
+        dd($ids);
         if (empty($ids)) {
             return back()->with('error', 'No invoices selected.');
         }
@@ -336,101 +322,4 @@ class XeroController extends Controller
             return back()->with('error', 'An unexpected error occurred while posting to FBR.');
         }
     }
-
-    // Testing By Hammad
-
-    // public function postToFbr(Request $request)
-    // {
-    //     $ids = $request->input('selected_invoices', []);
-
-    //     if (empty($ids)) {
-    //         return back()->with('error', 'No invoices selected.');
-    //     }
-
-    //     DB::beginTransaction();
-
-    //     try {
-    //         $invoices = XeroInvoice::whereIn('id', $ids)
-    //             ->where('posted_to_fbr', false)
-    //             ->lockForUpdate() // optional for safety in concurrent processing
-    //             ->get();
-
-    //         foreach ($invoices as $invoice) {
-    //             try {
-    //                 // 🛠️ Replace this with your actual FBR API call
-    //                 // Example: $response = Http::post('https://fbr.gov/api/invoice', [...]);
-
-    //                 // Simulate FBR API call with dummy FBR invoice number
-    //                 $fbrInvoiceNumber = 'FBR-' . strtoupper(substr(md5($invoice->invoice_number . now()), 0, 8));
-
-    //                 // On success, update invoice
-    //                 $invoice->update([
-    //                     'posted_to_fbr' => true,
-    //                     'fbr_invoice_number' => $fbrInvoiceNumber,
-    //                 ]);
-    //             } catch (\Exception $apiEx) {
-    //                 Log::error('Failed to post to FBR', [
-    //                     'invoice_id' => $invoice->id,
-    //                     'error' => $apiEx->getMessage(),
-    //                 ]);
-    //                 // You can optionally skip, retry, or abort
-    //                 continue;
-    //             }
-    //         }
-
-    //         DB::commit();
-
-    //         return back()->with('success', 'Selected invoices posted to FBR.');
-    //     } catch (\Exception $e) {
-    //         DB::rollBack();
-    //         Log::error('FBR postToFbr failure', ['message' => $e->getMessage()]);
-    //         return back()->with('error', 'An unexpected error occurred while posting to FBR.');
-    //     }
-    // }
-    // public function getXeroItems(Request $request)
-    // {
-    //     $token = session('xero_token');
-    //     if (!$token || $token->hasExpired()) {
-    //         return redirect('/xero/connect')->with('error', 'Xero token expired. Please reconnect.');
-    //     }
-
-    //     try {
-    //         $config = Configuration::getDefaultConfiguration()
-    //             ->setAccessToken($token->getToken());
-
-    //         $client = new Client(['timeout' => 60]);
-    //         $accountingApi = new AccountingApi($client, $config);
-
-    //         // Get Tenant ID
-    //         $identityApi = new \XeroAPI\XeroPHP\Api\IdentityApi($client, $config);
-    //         $tenants = $identityApi->getConnections();
-
-    //         if (empty($tenants)) {
-    //             return redirect()->route('xero.error')->with('error', 'No Xero tenants found.');
-    //         }
-
-    //         $tenant = $tenants[0];
-    //         $tenantId = $tenant->getTenantId();
-
-    //         // Optional Filters
-    //         $where = 'IsSold == true'; // Example filter
-    //         $order = 'Code ASC';
-    //         $unitdp = 4;
-    //         $ifModifiedSince = null; // or: new \DateTime('2024-01-01T00:00:00Z');
-
-    //         // Fetch Items
-    //         $result = $accountingApi->getItems($tenantId, $ifModifiedSince, $where, $order, $unitdp);
-
-    //         // You can dump, store, or display the items
-    //         // Example:
-    //         // return view('xero.items', ['items' => $result->getItems()]);
-    //         dd($result->getItems());
-    //     } catch (ClientException $e) {
-    //         Log::error('Xero item fetch error', ['message' => $e->getMessage()]);
-    //         return redirect()->route('xero.error')->with('error', 'Xero client error: ' . $e->getMessage());
-    //     } catch (\Exception $e) {
-    //         Log::error('Xero item general error', ['message' => $e->getMessage()]);
-    //         //return redirect()->route('xero.error')->with('error', 'Unexpected error: ' . $e->getMessage());
-    //     }
-    // }
 }
