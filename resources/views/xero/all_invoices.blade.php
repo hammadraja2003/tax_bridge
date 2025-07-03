@@ -6,6 +6,25 @@
   table th {
     white-space: nowrap;
   }
+  .app-scroll::-webkit-scrollbar {
+        height: 10px; /* Controls the thickness of horizontal scrollbar */
+    }
+
+    .app-scroll::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    .app-scroll::-webkit-scrollbar-thumb {
+        background-color: #c1c1c1;
+        border-radius: 10px;
+        border: 2px solid #f1f1f1;
+    }
+
+    /* Firefox support */
+    .app-scroll {
+        scrollbar-width: thin;
+        scrollbar-color: #c1c1c1 #f1f1f1;
+    }
 </style>
 @if ($tenant_id)
     <p>Showing invoices for Tenant ID: {{ $tenant_id }}</p>
@@ -98,12 +117,12 @@
                             <div class="position-relative ">
                               <input type="search" class="form-control search" placeholder="Search..."
                                 aria-label="Search">
-                              <i class="ti ti-search text-dark"></i>
+                             
                             </div>
                           </form>
                         </div>
 
-                        <div class="app-scroll overflow-auto" style="max-width: 100%; overflow-x: auto;">
+                        <div class="app-scroll overflow-auto" style="max-width: 100%; overflow-x: auto; overflow-y: hidden;">
                           <table id="projectTableT" class="table table-bottom-border  list-table-data align-middle mb-0">
                             <thead>
                               <tr class="app-sort">
@@ -196,12 +215,24 @@
                                 <td class="date">{{ optional($invoice->tenant_updated_at)->format('Y-m-d H:i') ?? '-' }}</td>
                                 <td class="date">{{ $invoice->organisation_id ?? '-' }}</td>
                                 <td>
-                                <a href="{{ route('invoice.print', ['id' => $invoice->id]) }}" class="btn btn-sm btn-secondary" target="_blank" title="Print Invoice">
+                                  <button type="button"
+                                    class="btn btn-sm btn-outline-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#itemsModal{{ $invoice->id }}"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="View Item">
+                                    <i class="fa-solid fa-eye fa-fw"></i>
+                                  </button>
+
+                                  <a href="{{ route('xero.print', Crypt::encryptString($invoice->id)) }}"
+                                    class="btn btn-sm btn-outline-info"
+                                    target="_blank"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Print Invoice">
                                     <i class="fa-solid fa-print fa-fw"></i>
-                                </a>
-                                  <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#itemsModal{{ $invoice->id }}">
-                                    View
-                                </button>
+                                  </a>
                                 </td>
                               </tr>
                               @endforeach
@@ -267,7 +298,14 @@
             </div>
             <!-- List Js Table end -->
           </div>
-
+          <script>
+            document.addEventListener("DOMContentLoaded", function () {
+              var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+              tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+                new bootstrap.Tooltip(tooltipTriggerEl);
+              });
+            });
+          </script>
           <script>
             document.addEventListener('DOMContentLoaded', function () {
             
@@ -310,8 +348,4 @@
             
             });
             </script>
-            
-  
-  
-
 @endsection

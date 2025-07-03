@@ -415,11 +415,17 @@ class XeroController extends Controller
             'tenant_id' => $decryptedTenantId
         ]);
     }
-
-    public function print()
+    public function print($encryptedId)
     {
-        return view('xero.print');
+        try {
+            $id = Crypt::decryptString($encryptedId);
+            $invoice = XeroInvoice::with('items')->findOrFail($id);
+            return view('xero.print', compact('invoice'));
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+            abort(404);
+        }
     }
+
 
     public function postToFbr(Request $request)
     {
