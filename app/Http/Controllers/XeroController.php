@@ -138,7 +138,7 @@ class XeroController extends Controller
             ini_set('max_execution_time', 300); // 5 minutes
             $this->syncInvoicesFromXero($invoices->getInvoices(), $tenant, $organisationId, $accountingApi);
 
-            return redirect()->route('xero.all_invoices')->with('message', 'Filtered invoices synced successfully.');
+            return redirect()->route('xero.all_invoices')->with('message', 'Invoices synced successfully.');
         } catch (ClientException $e) {
             \Log::error('Xero unexpected error', ['message' => $e->getMessage()]);
             $responseBody = json_decode((string) $e->getResponse()->getBody(), true);

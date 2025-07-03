@@ -147,10 +147,22 @@
                                 </th>
                                 <td class="employee"></td>
                                 <td class="email">{{ $invoice->invoice_number }}</td>
-                                <td class="contact">{{ $invoice->status }}</td>
+                                <td class="contact">{{ $invoice->type }}</td>
                                 <td class="date">{{ $invoice->reference }}</td>
                                 <td class="status">
-                                <span class="badge bg-danger-subtle text-danger text-uppercase"> {{ $invoice->status }}</span>
+                                  @php
+                                    $status = strtoupper($invoice->status); // Normalize status to uppercase
+                                      @endphp
+
+                                      @if ($status === 'PAID')
+                                          <span class="badge bg-success-subtle text-success text-uppercase">Paid</span>
+                                      @elseif ($status === 'AUTHORISED')
+                                          <span class="badge text-light-info text-uppercase">Authorised</span>
+                                      @elseif ($status === 'DRAFT')
+                                          <span class="badge text-light-warning text-uppercase">Draft</span>
+                                      @else
+                                          <span class="badge bg-secondary-subtle text-secondary text-uppercase">{{ $status }}</span>
+                                      @endif
                                 </td>
                                 <td class="date">{{ $invoice->currency_code }}</td>
                                 <td class="date">{{ number_format($invoice->total, 2) }}</td>
