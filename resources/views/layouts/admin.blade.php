@@ -1,75 +1,60 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<head>
+    <!-- All meta and title start-->
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description"
+      content="Multipurpose, super flexible, powerful, clean modern responsive bootstrap 5 admin template">
+<meta name="keywords"
+      content="admin template, ra-admin admin template, dashboard template, flat admin template, responsive admin template, web app">
+<meta name="author" content="la-themes">
+<link rel="icon" href="{{asset('assets/images/logo/favicon.png')}}" type="image/x-icon">
+<link rel="shortcut icon" href="{{asset('assets/images/logo/favicon.png')}}" type="image/x-icon">
+<title>Advance Table | Ra-admin - Premium Admin Template</title>
+<!-- meta and title end-->
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
-        <link rel="icon" href="{{asset('assets/images/logo/favicon.png')}}" type="image/x-icon">
-        <link rel="shortcut icon" href="{{asset('assets/images/logo/secureism_logo.svg')}}" type="image/x-icon">
-        <title>Ecommerce Dashboard | Ra-admin - Premium Admin Template</title>
-        <!-- meta and title end-->
+    <!-- css start-->
+<!-- Animation css -->
+<link rel="stylesheet" href="{{asset('assets/vendor/animation/animate.min.css')}}" >
 
-            <!-- css start-->
-        <!-- Animation css -->
-        <link rel="stylesheet" href="{{asset('assets/vendor/animation/animate.min.css')}}" >
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&amp;display=swap"
+    rel="stylesheet">
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com/">
-        <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&amp;display=swap"
-            rel="stylesheet">
+<!-- Weather icon css-->
+<link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/weather/weather-icons.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/weather/weather-icons-wind.css')}}">
 
-        <!-- Weather icon css-->
-        <link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/weather/weather-icons.css')}}">
-        <link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/weather/weather-icons-wind.css')}}">
+  <!--font-awesome-css-->
+  <link rel="stylesheet" href="{{asset('assets/vendor/fontawesome/css/all.css')}}">
 
-        <!--font-awesome-css-->
-        <link rel="stylesheet" href="{{asset('assets/vendor/fontawesome/css/all.css')}}">
+<!--Flag Icon css-->
+<link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/flag-icons-master/flag-icon.css')}}">
 
-        <!--Flag Icon css-->
-        <link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/flag-icons-master/flag-icon.css')}}">
+<!-- Tabler icons-->
+<link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/tabler-icons/tabler-icons.css')}}">
 
-        <!-- Tabler icons-->
-        <link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/tabler-icons/tabler-icons.css')}}">
+<!-- Prism css-->
+<link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/prism/prism.min.css')}}">
 
-        <!-- Prism css-->
-        <link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/prism/prism.min.css')}}">
+<!-- Bootstrap css-->
+<link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/bootstrap/bootstrap.min.css')}}">
 
-        <!-- Bootstrap css-->
-        <link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/bootstrap/bootstrap.min.css')}}">
-        
+<!-- Simplebar css-->
+<link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/simplebar/simplebar.css')}}">
+ <!-- Toatify css-->
+ <link rel="stylesheet" href="{{asset('assets/vendor/notifications/toastify.min.css')}}">
 
-        <!-- Simplebar css-->
-        <link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/simplebar/simplebar.css')}}">
+    <!-- Data Table css-->
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/datatable/jquery.dataTables.min.css')}}">
 
-
-        <!-- apexcharts css -->
-        <link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/apexcharts/apexcharts.css')}}">
-
-        <!-- slick css -->
-        <link rel="stylesheet" href="{{asset('assets/vendor/slick/slick.css')}}">
-        <link rel="stylesheet" href="{{asset('assets/vendor/slick/slick-theme.css')}}">
-
-        <!-- glight css -->
-        <link rel="stylesheet" href="{{asset('assets/vendor/glightbox/glightbox.min.css')}}">
-
-        <!-- Data Table css -->
-        <link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/datatable/jquery.dataTables.min.css')}}">
-
-        <!-- vector map css -->
-        <link rel="stylesheet" href="{{asset('assets/vendor/vector-map/jquery-jvectormap.css')}}">
-
-         <!-- Toatify css-->
-        <link rel="stylesheet" href="{{asset('assets/vendor/notifications/toastify.min.css')}}">
-
-
-        <link rel="preload" as="style" href="{{asset('build/assets/style-BVr_C8ru.css')}}" />
-        <link rel="stylesheet" href="{{asset('build/assets/style-BVr_C8ru.css')}}" />
-        <!-- css end-->
-
-    </head>
+<link rel="preload" as="style" href="{{asset('build/assets/style-BVr_C8ru.css')}}" />
+<link rel="stylesheet" href="{{asset('build/assets/style-BVr_C8ru.css')}}" /><!-- css end-->
+</head>
     <body>
     <div class="app-wrapper">
         <div class="loader-wrapper">
@@ -90,7 +75,7 @@
                 @include('layouts.partials.errors')
 
             <!-- modal -->
-            <div class="modal" tabindex="-1" id="welcomeCard" data-bs-backdrop="static">
+                <div class="modal" tabindex="-1" id="welcomeCard" data-bs-backdrop="static">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content welcome-image">
 
@@ -155,14 +140,13 @@
     </div>
 
     </body>
-    <!--customizer-->
-<div id="customizer"></div>
+    <!--customizer--> 
 <div id="myChart"></div>
-
+     
 <!-- scripts start-->
 <!-- latest jquery-->
 <script src="{{asset('assets/js/jquery-3.6.3.min.js')}}"></script>
-
+  
 <!-- Bootstrap js-->
 <script src="{{asset('assets/vendor/bootstrap/bootstrap.bundle.min.js')}}"></script>
 
@@ -171,6 +155,8 @@
 <!-- Simple bar js-->
 <script src="{{asset('assets/vendor/simplebar/simplebar.js')}}"></script>
 
+<!-- Customizer js-->
+<script src="{{asset('assets/js/customizer.js')}}"></script>
 
 <!-- prism js-->
 <script src="{{asset('assets/vendor/prism/prism.min.js')}}"></script>
@@ -178,6 +164,8 @@
 <!-- App js-->
 <script src="{{asset('assets/js/script.js')}}"></script>
 
+    <!--customizer-->
+    <div id="customizer"></div>
 
 <!-- slick-file -->
 <script src="{{asset('assets/vendor/slick/slick.min.js')}}"></script>
@@ -194,8 +182,11 @@
 
 <!-- data table-->
 <script src="{{asset('assets/vendor/datatable/jquery.dataTables.min.js')}}"></script>
+
+ 
+ 
 <script src="{{asset('assets/js/advance_table.js')}}"></script>
-  
+ 
 
 <!-- apexcharts js-->
 <script src="{{asset('assets/vendor/apexcharts/apexcharts.min.js')}}"></script>
@@ -222,6 +213,5 @@
 <script src="{{asset('assets/vendor/apexcharts/column/dayjs.min.js')}}"></script>
 <script src="{{asset('assets/vendor/apexcharts/column/quarterOfYear.min.js')}}"></script>
 
-<!-- script js -->
-<script src="{{asset('assets/js/advance_table.js')}}"></script>
+
 </html>
