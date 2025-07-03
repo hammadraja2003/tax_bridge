@@ -305,7 +305,7 @@
                                       class="position-absolute top-0 end-0 p-1 bg-success border border-light rounded-circle animate__animated animate__fadeIn animate__infinite animate__fast"></span>
                                   </span>
                                   <div class="flex-grow-1 ps-2">
-                                    <h6 class="mb-0"> {{ auth()->user()->name }}</h6>
+                                    <h6 class="mb-0"> @if(auth()->check()){{ auth()->user()->name }}@endif</h6>
                                     <p class="f-s-12 mb-0 text-secondary">Online</p>
                                   </div>
                                 </li>

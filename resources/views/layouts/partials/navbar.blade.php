@@ -21,10 +21,20 @@
                   </a>
               </li>
               <li class="no-sub">
-                  <a class="" href="{{URL::to('/all_invoices')}}">
-                  <i class="ti ti-chart-treemap"></i>Invoices
+                  <a class="" href="{{URL::to('/xero/connect')}}">
+                  <i class="ti ti-chart-treemap"></i>Sync Invoices
                   </a>
               </li>
+              <li class="no-sub">
+                  <a class="" href="{{URL::to('/all_invoices')}}">
+                  <i class="ti ti-chart-treemap"></i>DB Invoices
+                  </a>
+              </li>
+              <!-- <li class="no-sub">
+                  <a class="" href="{{URL::to('/xero/db-invoices')}}">
+                  <i class="ti ti-chart-treemap"></i>DB Invoices
+                  </a>
+              </li> -->
               <li>
                     <a class="" href="#maps" data-bs-toggle="collapse" aria-expanded="false">
                     <i class="fa-solid fa-brands fa-connectdevelop fa-fw"></i>Configuration

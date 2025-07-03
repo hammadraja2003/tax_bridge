@@ -61,7 +61,7 @@ class XeroController extends Controller
 
             session(['xero_token' => $accessToken]);
 
-            return redirect('/xero/invoices')->with('success', 'Xero connected!');
+            return redirect('/xero/invoices')->with('message', 'Xero connected!');
         } catch (\Exception $e) {
             \Log::error('Xero unexpected error', ['message' => $e->getMessage()]);
             return redirect()->route('xero.error')->with('error', 'Unexpected error: ' . $e->getMessage());
@@ -138,7 +138,7 @@ class XeroController extends Controller
             ini_set('max_execution_time', 300); // 5 minutes
             $this->syncInvoicesFromXero($invoices->getInvoices(), $tenant, $organisationId, $accountingApi);
 
-            return redirect()->route('xero.db_invoices')->with('success', 'Filtered invoices synced successfully.');
+            return redirect()->route('xero.all_invoices')->with('message', 'Filtered invoices synced successfully.');
         } catch (ClientException $e) {
             \Log::error('Xero unexpected error', ['message' => $e->getMessage()]);
             $responseBody = json_decode((string) $e->getResponse()->getBody(), true);
@@ -249,7 +249,11 @@ class XeroController extends Controller
         return view('xero.invoices_db', compact('invoices'));
     }
     public function all_invoices(){
-        return view('xero.all_invoices');
+        $invoices = XeroInvoice::with('items')->latest()->get();
+        return view('xero.all_invoices', compact('invoices'));
+    }
+    public function print(){
+        return view('xero.print');
     }
 
     public function postToFbr(Request $request)
@@ -325,7 +329,7 @@ class XeroController extends Controller
             }
 
             DB::commit();
-            return back()->with('success', 'Selected invoices posted to FBR.');
+            return back()->with('message', 'Selected invoices posted to FBR.');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('FBR postToFbr failure', ['message' => $e->getMessage()]);

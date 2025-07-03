@@ -18,9 +18,9 @@
 // }
 
 // project table js
-// $(function() {
-//   $('#projectTable').DataTable();
-// });
+$(function() {
+  $('#projectTable').DataTable();
+});
 
 document.addEventListener('DOMContentLoaded', (event) => {
   // Function to handle delete action
