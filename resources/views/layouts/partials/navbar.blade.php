@@ -21,7 +21,7 @@
                   </a>
               </li>
               <li class="no-sub">
-                  <a class="" href="{{URL::to('/xero/connect')}}">
+                  <a class="" href="{{URL::to('/xero/select-tenant')}}">
                   <i class="ti ti-chart-treemap"></i>Sync Invoices
                   </a>
               </li>

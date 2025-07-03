@@ -7,6 +7,12 @@
     white-space: nowrap;
   }
 </style>
+@if ($tenant_id)
+    <p>Showing invoices for Tenant ID: {{ $tenant_id }}</p>
+@else
+    <p>Showing invoices for all tenants</p>
+@endif
+
 <div class="container-fluid">
             <!-- Breadcrumb start  -->
             

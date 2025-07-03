@@ -15,10 +15,46 @@ use Illuminate\Support\Facades\DB;
 use App\Models\XeroInvoice;
 use App\Models\XeroInvoiceItem;
 use Illuminate\Support\Facades\Http;
+use App\Models\XeroToken;
+use League\OAuth2\Client\Provider\GenericProvider;
+use App\Services\Xero\InvoiceSyncService;
+
+use Illuminate\Support\Facades\Crypt;
+
 
 
 class XeroController extends Controller
 {
+
+    // public function callback(Request $request)
+    // {
+    //     $provider = new \League\OAuth2\Client\Provider\GenericProvider([
+    //         'clientId' => env('XERO_CLIENT_ID'),
+    //         'clientSecret' => env('XERO_CLIENT_SECRET'),
+    //         'redirectUri' => env('XERO_REDIRECT_URI'),
+    //         'urlAuthorize' => 'https://login.xero.com/identity/connect/authorize',
+    //         'urlAccessToken' => 'https://identity.xero.com/connect/token',
+    //         'urlResourceOwnerDetails' => ''
+    //     ]);
+
+    //     if ($request->get('state') !== session('oauth2state')) {
+    //         return redirect('/')->with('error', 'Invalid OAuth state');
+    //     }
+
+    //     try {
+    //         $accessToken = $provider->getAccessToken('authorization_code', [
+    //             'code' => $request->get('code')
+    //         ]);
+
+    //         session(['xero_token' => $accessToken]);
+
+    //         return redirect('/xero/invoices')->with('message', 'Xero connected!');
+    //     } catch (\Exception $e) {
+    //         \Log::error('Xero unexpected error', ['message' => $e->getMessage()]);
+    //         return redirect()->route('xero.error')->with('error', 'Unexpected error: ' . $e->getMessage());
+    //     }
+    // }
+
     public function connect()
     {
         $provider = new \League\OAuth2\Client\Provider\GenericProvider([
@@ -38,42 +74,82 @@ class XeroController extends Controller
 
         return redirect()->away($authUrl);
     }
-
     public function callback(Request $request)
     {
-        $provider = new \League\OAuth2\Client\Provider\GenericProvider([
-            'clientId' => env('XERO_CLIENT_ID'),
-            'clientSecret' => env('XERO_CLIENT_SECRET'),
-            'redirectUri' => env('XERO_REDIRECT_URI'),
-            'urlAuthorize' => 'https://login.xero.com/identity/connect/authorize',
-            'urlAccessToken' => 'https://identity.xero.com/connect/token',
+        $provider = new GenericProvider([
+            'clientId'                => env('XERO_CLIENT_ID'),
+            'clientSecret'            => env('XERO_CLIENT_SECRET'),
+            'redirectUri'             => env('XERO_REDIRECT_URI'),
+            'urlAuthorize'            => 'https://login.xero.com/identity/connect/authorize',
+            'urlAccessToken'          => 'https://identity.xero.com/connect/token',
             'urlResourceOwnerDetails' => ''
         ]);
 
+        // 🔐 Validate OAuth state
         if ($request->get('state') !== session('oauth2state')) {
             return redirect('/')->with('error', 'Invalid OAuth state');
         }
 
         try {
+            // 🔑 Get access token using authorization code
             $accessToken = $provider->getAccessToken('authorization_code', [
                 'code' => $request->get('code')
             ]);
 
-            session(['xero_token' => $accessToken]);
+            // 🧠 Get Xero tenants
+            $client = new Client();
+            $config = Configuration::getDefaultConfiguration()->setAccessToken($accessToken->getToken());
+            $identityApi = new IdentityApi($client, $config);
+            $tenants = $identityApi->getConnections();
 
-            return redirect('/xero/invoices')->with('message', 'Xero connected!');
+            if (empty($tenants)) {
+                return redirect()->route('xero.error')->with('error', 'No Xero tenants found.');
+            }
+
+            // 💾 Save token for each tenant
+            foreach ($tenants as $tenant) {
+                XeroToken::updateOrCreate(
+                    ['tenant_id' => $tenant->getTenantId()],
+                    [
+                        'tenant_name'     => $tenant->getTenantName(),
+                        'tenant_type'     => $tenant->getTenantType(),
+                        'organisation_id' => null, // optional; populate later
+                        'access_token'    => $accessToken->getToken(),
+                        'refresh_token'   => $accessToken->getRefreshToken(),
+                        'expires_at'      => now()->addSeconds($accessToken->getExpires()),
+                    ]
+                );
+            }
+
+            return redirect('/xero/invoices')->with('message', 'Xero connected and tokens stored!');
         } catch (\Exception $e) {
-            \Log::error('Xero unexpected error', ['message' => $e->getMessage()]);
+            \Log::error('Xero callback error', ['message' => $e->getMessage()]);
             return redirect()->route('xero.error')->with('error', 'Unexpected error: ' . $e->getMessage());
         }
     }
-
     public function invoices(Request $request)
     {
         $token = session('xero_token');
+
         if (!$token || $token->hasExpired()) {
-            return redirect('/xero/connect')->with('error', 'Xero token expired. Please reconnect.');
+            // Fallback to DB token
+            $dbToken = XeroToken::first(); // Or filter by tenant if needed
+
+            if (!$dbToken || now()->gte($dbToken->expires_at)) {
+                return redirect('/xero/connect')->with('error', 'Token expired or not found. Reconnect to Xero.');
+            }
+
+            $accessToken = new \League\OAuth2\Client\Token\AccessToken([
+                'access_token'  => $dbToken->access_token,
+                'refresh_token' => $dbToken->refresh_token,
+                'expires'       => \Carbon\Carbon::parse($dbToken->expires_at)->timestamp,
+            ]);
+
+
+            session(['xero_token' => $accessToken]);
+            $token = $accessToken;
         }
+
         try {
             $config = Configuration::getDefaultConfiguration()
                 ->setAccessToken($token->getToken());
@@ -113,10 +189,10 @@ class XeroController extends Controller
             // $invoices = $accountingApi->getInvoices($tenantId, null, $where, null);
 
 
-            $conditions = [];
-            $startDate = Carbon::parse('2025-06-25')->format('Y-m-d'); // e.g., 2025-06-25
-            $endDate =  Carbon::now()->format('Y-m-d');     // optional
-            $status = 'AUTHORISED';        // e.g., PAID, AUTHORISED
+            // $conditions = [];
+            // $startDate = Carbon::parse('2025-06-25')->format('Y-m-d'); // e.g., 2025-06-25
+            // $endDate =  Carbon::now()->format('Y-m-d');     // optional
+            // $status = 'AUTHORISED';        // e.g., PAID, AUTHORISED
 
             // if ($startDate) {
             //     $conditions[] = 'Date >= DateTime(' . $startDate . ')';
@@ -130,8 +206,28 @@ class XeroController extends Controller
             //     $conditions[] = 'Status == "' . strtoupper($status) . '"';
             // }
 
+            // $where = implode(' AND ', $conditions);
+
+
+            $conditions = [];
+            $startDate = Carbon::parse('2025-06-25')->format('Y-m-d\TH:i:s');
+            $endDate = Carbon::now()->format('Y-m-d\TH:i:s');
+            $status = 'AUTHORISED';
+
+            // if ($startDate) {
+            //     $conditions[] = 'Date >= DateTime("' . $startDate . '")';
+            // }
+            // if ($endDate) {
+            //     $conditions[] = 'Date <= DateTime("' . $endDate . '")';
+            // }
+            if ($status) {
+                $conditions[] = 'Status == "' . strtoupper($status) . '"';
+            }
+
             $where = implode(' AND ', $conditions);
             $invoices = $accountingApi->getInvoices($tenantId, null, $where);
+
+
 
             // Invoice History
             // $result = $accountingApi->getInvoiceHistory($tenantId, $invoiceID);
@@ -153,7 +249,6 @@ class XeroController extends Controller
             return redirect()->route('xero.error')->with('error', 'Unexpected error: ' . $e->getMessage());
         }
     }
-
     public function syncInvoicesFromXero($invoices, $tenant, $organisationId, AccountingApi $accountingApi)
     {
         \DB::beginTransaction();
@@ -225,16 +320,102 @@ class XeroController extends Controller
         }
     }
 
+
+    public function selectTenant()
+    {
+        $token = session('xero_token');
+
+        if (!$token || (method_exists($token, 'hasExpired') && $token->hasExpired())) {
+            $dbToken = XeroToken::first(); // optionally filter by user or org
+
+            if (!$dbToken || now()->gte($dbToken->expires_at)) {
+                return redirect('/xero/connect')->with('error', 'Token expired or not found. Please reconnect.');
+            }
+
+            // Rebuild the access token from DB
+            $token = new \League\OAuth2\Client\Token\AccessToken([
+                'access_token'  => $dbToken->access_token,
+                'refresh_token' => $dbToken->refresh_token,
+                'expires'       => \Carbon\Carbon::parse($dbToken->expires_at)->timestamp,
+            ]);
+
+            session(['xero_token' => $token]);
+        }
+
+        try {
+            $config = Configuration::getDefaultConfiguration()->setAccessToken($token->getToken());
+            $client = new Client(['timeout' => 60]);
+            $identityApi = new \XeroAPI\XeroPHP\Api\IdentityApi($client, $config);
+            $tenants = $identityApi->getConnections();
+
+            return view('xero.select_tenant', ['tenants' => $tenants]);
+        } catch (\Exception $e) {
+            \Log::error('Failed to fetch tenants', ['message' => $e->getMessage()]);
+            return redirect('/xero/connect')->with('error', 'Failed to load tenants.');
+        }
+    }
+
+    public function syncSelectedTenant(Request $request)
+    {
+        $tenantId = $request->tenant_id;
+        $token = session('xero_token');
+
+        if (!$token || $token->hasExpired()) {
+            return redirect('/xero/connect')->with('error', 'Token expired.');
+        }
+
+        $config = Configuration::getDefaultConfiguration()->setAccessToken($token->getToken());
+        $client = new Client(['timeout' => 60]);
+
+        $identityApi = new \XeroAPI\XeroPHP\Api\IdentityApi($client, $config);
+        $tenants = $identityApi->getConnections();
+
+        $tenant = collect($tenants)->firstWhere(fn($t) => $t->getTenantId() === $tenantId);
+        if (!$tenant) {
+            return redirect()->back()->with('error', 'Selected tenant not found.');
+        }
+
+        // Get organisation info
+        $accountingApi = new AccountingApi($client, $config);
+        $organisation = $accountingApi->getOrganisations($tenantId)->getOrganisations()[0];
+
+        // Now you can call your syncInvoicesFromXero function
+        $invoices = $accountingApi->getInvoices($tenantId, null, null); // optionally apply `where`
+        $this->syncInvoicesFromXero($invoices->getInvoices(), $tenant, $organisation->getOrganisationID(), $accountingApi);
+
+        return redirect()->route('xero.all_invoices', ['tenant_id' => Crypt::encryptString($tenantId)])->with('message', 'Invoices synced for selected tenant.');
+    }
+
+
     public function showInvoicesFromDb()
     {
         $invoices = XeroInvoice::with('items')->latest()->get();
         return view('xero.invoices_db', compact('invoices'));
     }
-    public function all_invoices()
+
+    public function all_invoices($tenant_id = null)
     {
-        $invoices = XeroInvoice::with('items')->latest()->get();
-        return view('xero.all_invoices', compact('invoices'));
+        $query = XeroInvoice::with('items')->latest();
+
+        $decryptedTenantId = null;
+
+        if ($tenant_id) {
+            try {
+                $decryptedTenantId = Crypt::decryptString($tenant_id);
+                $query->where('tenant_id', $decryptedTenantId);
+            } catch (\Exception $e) {
+                return redirect()->route('xero.error')->with('error', 'Invalid or tampered tenant ID.');
+            }
+        }
+
+        $invoices = $query->get();
+
+        return view('xero.all_invoices', [
+            'invoices' => $invoices,
+            'tenant_id' => $decryptedTenantId
+        ]);
     }
+
     public function print()
     {
         return view('xero.print');

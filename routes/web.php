@@ -43,15 +43,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Xero Routes
     Route::get('/xero/connect', [XeroController::class, 'connect'])->name('xero.connect');
     Route::get('/xero/callback', [XeroController::class, 'callback'])->name('xero.callback');
-    Route::get('/xero/invoices', [XeroController::class, 'invoices'])->name('xero.invoices');
+    // Route::get('/xero/invoices', [XeroController::class, 'invoices'])->name('xero.invoices');
+    Route::get('/xero/invoices/{tenant_id?}', [XeroController::class, 'all_invoices'])->name('xero.all_invoices');
+
+
+    // Sync Invoice Manually
+    Route::get('/xero/select-tenant', [XeroController::class, 'selectTenant'])->name('xero.select_tenant');
+    Route::post('/xero/invoices/sync', [XeroController::class, 'syncSelectedTenant'])->name('xero.sync_selected');
+
+
     Route::get('/xero/db-invoices', [XeroController::class, 'showInvoicesFromDb'])->name('xero.db_invoices');
     Route::post('/xero/post_to_fbr', [XeroController::class, 'postToFbr'])->name('xero.post_to_fbr');
-
-    // Xero disconnect
-    // Route::get('/xero/disconnect', function () {
-    //     session()->forget('xero_token');
-    //     return redirect('/xero/connect')->with('success', 'Xero disconnected. Please reconnect.');
-    // })->name('xero.disconnect');
 });
 
 /*
