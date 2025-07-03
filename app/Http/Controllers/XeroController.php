@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\XeroInvoice;
 use App\Models\XeroInvoiceItem;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Crypt;
 
 
 class XeroController extends Controller
@@ -235,11 +236,17 @@ class XeroController extends Controller
         $invoices = XeroInvoice::with('items')->latest()->get();
         return view('xero.all_invoices', compact('invoices'));
     }
-    public function print($id)
+    public function print($encryptedId)
     {
-        $invoice = XeroInvoice::with('items')->findOrFail($id);
-        return view('xero.print', compact('invoice'));
+        try {
+            $id = Crypt::decryptString($encryptedId);
+            $invoice = XeroInvoice::with('items')->findOrFail($id);
+            return view('xero.print', compact('invoice'));
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+            abort(404);
+        }
     }
+   
 
     public function postToFbr(Request $request)
     {

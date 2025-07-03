@@ -219,7 +219,7 @@
                                     <i class="fa-solid fa-eye fa-fw"></i>
                                   </button>
 
-                                  <a href="{{ route('invoice.print', ['id' => $invoice->id]) }}"
+                                  <a href="{{ route('xero.print', Crypt::encryptString($invoice->id)) }}"
                                     class="btn btn-sm btn-outline-info"
                                     target="_blank"
                                     data-bs-toggle="tooltip"
