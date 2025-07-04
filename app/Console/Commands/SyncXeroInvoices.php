@@ -54,17 +54,11 @@ class SyncXeroInvoices extends Command
                 $client = new Client(['timeout' => 60]);
                 $accountingApi = new AccountingApi($client, $config);
 
-                // 🔍 Only fetch updated invoices since last sync
-                // $lastSyncedAt = $token->last_synced_at ?? now()->subMonths(6);
-                // $where = sprintf('UpdatedDateUTC >= DateTime(%s)', $lastSyncedAt->format('Y-m-d\TH:i:s'));
-
                 $lastSyncedAt = $token->last_synced_at ?? now()->subMonths(6);
                 $where = sprintf(
                     'UpdatedDateUTC >= DateTime(%s)',
                     $lastSyncedAt->format('Y,m,d,H,i,s') // ✅ Xero uses comma-separated params, not ISO8601 string
                 );
-
-
 
                 $invoices = $accountingApi->getInvoices($token->tenant_id, null, $where);
                 $count = count($invoices->getInvoices());
@@ -115,19 +109,6 @@ class SyncXeroInvoices extends Command
                     $token->organisation_id,
                     $accountingApi
                 );
-
-                // (new XeroController())->syncInvoicesFromXero(
-                //     $invoices->getInvoices(),
-                //     (object)[
-                //         'getTenantId' => fn() => $token->tenant_id,
-                //         'getTenantName' => fn() => $token->tenant_name,
-                //         'getTenantType' => fn() => $token->tenant_type,
-                //         'getCreatedDateUtc' => fn() => now(),
-                //         'getUpdatedDateUtc' => fn() => now(),
-                //     ],
-                //     $token->organisation_id,
-                //     $accountingApi
-                // );
 
                 // 🕓 Update sync timestamp
                 $token->update(['last_synced_at' => now()]);

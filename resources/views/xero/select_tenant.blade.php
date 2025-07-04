@@ -7,6 +7,20 @@
             <h5>🧾 Select Xero Tenant to Sync Invoices</h5>
         </div>
         <div class="card-body">
+
+            {{-- Show Errors or Success --}}
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
+
+            @if (session('message'))
+                <div class="alert alert-success">
+                    {{ session('message') }}
+                </div>
+            @endif
+
             <form method="POST" action="{{ route('xero.sync_selected') }}">
                 @csrf
                 <div class="mb-3">
@@ -14,8 +28,8 @@
                     <select name="tenant_id" id="tenant_id" class="form-select" required>
                         <option value="">-- Select Tenant --</option>
                         @foreach ($tenants as $tenant)
-                            <option value="{{ $tenant->getTenantId() }}">
-                                {{ $tenant->getTenantName() }}
+                            <option value="{{ $tenant->tenant_id }}">
+                                {{ $tenant->tenant_name }}
                             </option>
                         @endforeach
                     </select>

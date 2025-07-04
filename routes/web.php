@@ -21,7 +21,7 @@ Route::get('/xero/error', function () {
 })->name('xero.error');
 
 // Additional routes pulled from update
-Route::get('/all_invoices', [XeroController::class, 'all_invoices'])->name('xero.all_invoices');
+// Route::get('/all_invoices', [XeroController::class, 'all_invoices'])->name('xero.all_invoices');
 // Route::get('/invoice/print', [XeroController::class, 'print'])->name('invoice.print');
 Route::get('/invoice/print/{encryptedId}', [XeroController::class, 'print'])->name('xero.print');
 

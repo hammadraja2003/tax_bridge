@@ -56,4 +56,8 @@ class XeroInvoice extends Model
     {
         return $this->hasMany(XeroInvoiceItem::class, 'invoice_id', 'invoice_id');
     }
+    public function contact()
+    {
+        return $this->belongsTo(XeroContact::class, 'contact_id', 'contact_id');
+    }
 }
