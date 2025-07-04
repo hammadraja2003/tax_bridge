@@ -76,7 +76,6 @@ class XeroController extends Controller
                 return redirect()->route('xero.error')->with('error', 'No Xero tenants found.');
             }
 
-
             // 💾 Save token for each tenant
             foreach ($tenants as $tenant) {
                 XeroToken::updateOrCreate(
@@ -200,12 +199,6 @@ class XeroController extends Controller
             $where = implode(' AND ', $conditions);
             $invoices = $accountingApi->getInvoices($tenantId, null, $where);
 
-
-
-
-
-            // Invoice History
-            // $result = $accountingApi->getInvoiceHistory($tenantId, $invoiceID);
             ini_set('max_execution_time', 300); // 5 minutes
             $this->syncInvoicesFromXero($invoices->getInvoices(), $tenant, $organisationId, $accountingApi);
 
@@ -343,8 +336,9 @@ class XeroController extends Controller
         $token = new \League\OAuth2\Client\Token\AccessToken([
             'access_token'  => $dbToken->access_token,
             'refresh_token' => $dbToken->refresh_token,
-            'expires'       => \Carbon\Carbon::parse($dbToken->expires_at)->timestamp,
+            'expires'       => strtotime($dbToken->expires_at),
         ]);
+
 
         // Step 3: Refresh token if expired
         if ($token->hasExpired()) {
@@ -420,8 +414,11 @@ class XeroController extends Controller
                 }
             };
 
+
+
             // Step 6: Fetch organisation info
             $organisation = $accountingApi->getOrganisations($tenantId)->getOrganisations()[0];
+            //dd($organisation);
 
             // Step 7: Fetch invoices from Xero
             $invoices = $accountingApi->getInvoices($tenantId);
@@ -446,30 +443,35 @@ class XeroController extends Controller
         return view('xero.invoices_db', compact('invoices'));
     }
     public function all_invoices($tenant_id = null)
-        {
-            $query = XeroInvoice::with(['items', 'contact'])->latest();
+    {
+        $query = XeroInvoice::with(['items', 'contact'])->latest();
 
-            $decryptedTenantId = null;
+        $decryptedTenantId = null;
+        $tenantName        = null;
 
-            if ($tenant_id) {
-                try {
-                    $decryptedTenantId = Crypt::decryptString($tenant_id);
-                    $query->where('xero_invoices.tenant_id', $decryptedTenantId);
-                } catch (\Exception $e) {
-                    return redirect()->route('xero.error')->with('error', 'Invalid or tampered tenant ID.');
-                }
+        if ($tenant_id) {
+            try {
+                $decryptedTenantId = Crypt::decryptString($tenant_id);
+                $query->where('xero_invoices.tenant_id', $decryptedTenantId);
+                // ← Fetch the tenant name from your tokens table
+                $token = XeroToken::where('tenant_id', $decryptedTenantId)->first();
+                $tenantName = $token ? $token->tenant_name : null;
+            } catch (\Exception $e) {
+                return redirect()->route('xero.error')->with('error', 'Invalid or tampered tenant ID.');
             }
-
-            $invoices = $query->get();
-
-            return view('xero.all_invoices', [
-                'invoices' => $invoices,
-                'tenant_id' => $decryptedTenantId
-            ]);
         }
 
+        $invoices = $query->get();
 
-   
+        return view('xero.all_invoices', [
+            'invoices' => $invoices,
+            'tenant_id' => $decryptedTenantId,
+            'tenantName' => $tenantName,
+        ]);
+    }
+
+
+
     public function print($encryptedId)
     {
         try {

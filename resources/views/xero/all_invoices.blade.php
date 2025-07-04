@@ -26,19 +26,18 @@
         scrollbar-color: #c1c1c1 #f1f1f1;
     }
 </style>
-  <div class="text-center">
-      @if ($tenant_id)
+<div class="page-header text-center my-4">
+  <h2 class="fw-bold">
+    @if ($tenantName)
+      Showing Invoices for Tenant: <span class="text-primary">{{ $tenantName }}</span>
+    @else
+      Showing Invoices for <span class="text-primary">All Tenants</span>
+    @endif
+  </h2>
+</div>
 
-          <p>Showing invoices for Tenant ID: {{ $tenant_id }}</p>
-      @else
-          <p>Showing invoices for all tenants</p>
-      @endif
-  </div>
 
 <div class="container-fluid">
-            <!-- Breadcrumb start  -->
-            
-            <!-- Breadcrumb end -->
             
             <!-- List Js Table start -->
             <div class="row">
@@ -55,67 +54,11 @@
                     <div id="myTable">
                      
                       <div class="list-table-header d-flex justify-content-sm-between">
-                        <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                          data-bs-target="#exampleModal">Add</button> -->
-                          <!-- <a href="{{ route('xero.connect') }}" class="btn btn-outline-primary">🔄 Reconnect Xero</a> -->
-                          {{-- <a href="{{ route('xero.disconnect') }}" class="btn btn-danger">🔌 Disconnect Xero</a> --}}
-                          {{-- <a href="{{ route('xero.invoices') }}" class="btn btn-outline-success">🔃 Sync Latest Invoices</a> --}}
                       
                           <button type="submit" class="btn btn-secondary">📤 Post Selected to FBR</button>
 
                           <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                             aria-hidden="true">
-                            {{-- <form id="add_employee_form">
-                              <div class="modal-dialog">
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add Employee
-                                    </h1>
-                                    <button type="button" class="btn-close m-0" data-bs-dismiss="modal"
-                                      aria-label="Close"></button>
-                                  </div>
-                                  <div class="modal-body">
-                                    <div class="employee mb-3">
-                                      <input type="hidden" id="id-field">
-                                      <label class="form-label">Employee :</label>
-                                      <input class="form-control" type="text" id="employee-field" placeholder="employee"
-                                        required>
-                                    </div>
-
-                                    <div class="email mb-3">
-                                      <label class="form-label">Email :</label>
-                                      <input class="form-control" type="email" id="email-field" placeholder="email"
-                                        required>
-                                    </div>
-
-                                    <div class="contact mb-3">
-                                      <label class="form-label">contact :</label>
-                                      <input class="form-control" type="text" id="contact-field" placeholder="contact"
-                                        required>
-                                    </div>
-
-                                    <div class="date mb-3">
-                                      <label class="form-label">date :</label>
-                                      <input class="form-control" type="date" id="date-field" required>
-                                    </div>
-
-                                    <div class="status mb-3">
-                                      <label class="form-label">status :</label>
-                                      <select class="form-select" id="status-field" aria-label="Default select example">
-                                        <option value="success">Status</option>
-                                        <option value="success">Active</option>
-                                        <option value="danger">Block</option>
-                                      </select>
-                                    </div>
-                                  </div>
-                                  <div class="modal-footer add">
-                                    <input type="button" class="btn btn-secondary" data-bs-dismiss="modal" value="Close">
-                                    <input type="submit" class="btn btn-primary" id="add-btn" value="Add">
-                                    <button class="btn btn-success" data-bs-dismiss="modal"  id="edit-btn">Edit</button>
-                                  </div>
-                                </div>
-                              </div>
-                            </form> --}}
                           </div>
                           <form class="app-form app-icon-form" action="#">
                             <div class="position-relative ">
@@ -135,7 +78,7 @@
                                 </th>
                                 <th></th>
                                 <th>Invoice Number</th>
-                                <th>Tenant Name</th>
+                                <th>Contact Name</th>
                                 <th>Type</th>
                                 <th>Reference</th>
                                 <th>Status</th>
@@ -150,12 +93,12 @@
                                 <th>Has Attachments</th>
                                 <th>Date</th>
                                 <th>Due Date</th>
-                                <th>Updated At (UTC)</th>
+                                {{-- <th>Updated At (UTC)</th>
                                 <th>Branding Theme ID</th>
                                 <th>Line Amount Types</th>
                                 <th>Currency Rate</th>
                                 <th>Repeating Invoice ID</th>
-                                <th>Fully Paid On</th>
+                                <th>Fully Paid On</th> --}}
                                 <th>Posted to FBR</th>
                                 <th>FBR Invoice No</th>
                                 <th>Tenant ID</th>
@@ -206,12 +149,12 @@
                                 <td class="date">{{ $invoice->has_attachments ? 'Yes' : 'No' }}</td>
                                 <td class="date">{{ optional($invoice->date)->format('d-m-Y H:i') ?? '-' }}</td>
                                 <td class="date">{{ optional($invoice->due_date)->format('d-m-Y H:i') ?? '-' }}</td>
-                                <td class="date">{{ optional($invoice->updated_date_utc)->format('Y-m-d H:i') ?? '-' }}</td>
+                                {{-- <td class="date">{{ optional($invoice->updated_date_utc)->format('Y-m-d H:i') ?? '-' }}</td>
                                 <td class="date">{{ $invoice->branding_theme_id ?? '-' }}</td>
                                 <td class="date">{{ $invoice->line_amount_types ?? '-' }}</td>
                                 <td class="date">{{ $invoice->currency_rate ?? '-' }}</td>
                                 <td class="date">{{ $invoice->repeating_invoice_id ?? '-' }}</td>
-                                <td class="date">{{ optional($invoice->fully_paid_on_date)->format('Y-m-d H:i') ?? '-' }}</td>
+                                <td class="date">{{ optional($invoice->fully_paid_on_date)->format('Y-m-d H:i') ?? '-' }}</td> --}}
                                 <td class="date">{!! $invoice->posted_to_fbr ? '✅' : '❌' !!}</td>
                                 <td class="date">{{ $invoice->fbr_invoice_number ?? '-' }}</td>
                                 <td class="date">{{ $invoice->tenant_id ?? '-' }}</td>

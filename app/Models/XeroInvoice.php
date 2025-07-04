@@ -38,6 +38,8 @@ class XeroInvoice extends Model
         'organisation_id',
         'tenant_created_at',
         'tenant_updated_at',
+        'contact_id',
+
     ];
 
     protected $casts = [
@@ -56,12 +58,8 @@ class XeroInvoice extends Model
     {
         return $this->hasMany(XeroInvoiceItem::class, 'invoice_id', 'invoice_id');
     }
-    // public function contact()
-    // {
-    //     return $this->belongsTo(XeroContact::class, 'contact_id', 'contact_id');
-    // }
     public function contact()
     {
-        return $this->belongsTo(XeroContact::class, 'tenant_id', 'tenant_id');
+        return $this->belongsTo(XeroContact::class, 'contact_id', 'contact_id');
     }
 }
