@@ -295,12 +295,13 @@
                             <div class="flex-shrink-0 dropdown">
                               <a href="#" class="d-block head-icon pe-0" data-bs-toggle="dropdown"
                                 aria-expanded="false">
-                                <img src="assets/images/avtar/woman.jpg" alt="mdo" class="rounded-circle h-35 w-35">
+                                <img src=" {{ asset('assets/images/avtar/woman.jpg')}}" alt="mdo" class="rounded-circle h-35 w-35">
+                              
                               </a>
                               <ul class="dropdown-menu dropdown-menu-end header-card border-0 px-2">
                                 <li class="dropdown-item d-flex align-items-center p-2">
                                   <span class="h-35 w-35 d-flex-center b-r-50 position-relative">
-                                    <img src="assets/images/avtar/woman.jpg" alt="" class="img-fluid b-r-50">
+                                    <img src="{{ asset('assets/images/avtar/woman.jpg')}}" alt="" class="img-fluid b-r-50">
                                     <span
                                       class="position-absolute top-0 end-0 p-1 bg-success border border-light rounded-circle animate__animated animate__fadeIn animate__infinite animate__fast"></span>
                                   </span>

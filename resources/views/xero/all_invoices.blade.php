@@ -26,11 +26,14 @@
         scrollbar-color: #c1c1c1 #f1f1f1;
     }
 </style>
-@if ($tenant_id)
-    <p>Showing invoices for Tenant ID: {{ $tenant_id }}</p>
-@else
-    <p>Showing invoices for all tenants</p>
-@endif
+  <div class="text-center">
+      @if ($tenant_id)
+
+          <p>Showing invoices for Tenant ID: {{ $tenant_id }}</p>
+      @else
+          <p>Showing invoices for all tenants</p>
+      @endif
+  </div>
 
 <div class="container-fluid">
             <!-- Breadcrumb start  -->
@@ -42,9 +45,10 @@
               <!-- List Js Table start -->
               <div class="col-xxl-12">
                 <div class="card">
-                  <div class="card-header">
-                    <h5>Invoice Details</h5>
-                  </div>
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Invoice Details</h5>
+                    <a href="{{ url()->previous() }}" class="btn btn-outline-dark"><i class="fa-solid fa-step-backward fa-fw me-1"></i>Back</a>
+                </div>
                   <div class="card-body p-0">
                     <form action="{{ route('xero.post_to_fbr') }}" method="POST">
                       @csrf
@@ -131,6 +135,7 @@
                                 </th>
                                 <th></th>
                                 <th>Invoice Number</th>
+                                <th>Tenant Name</th>
                                 <th>Type</th>
                                 <th>Reference</th>
                                 <th>Status</th>
@@ -172,6 +177,7 @@
                                 </th>
                                 <td class="employee"></td>
                                 <td class="email">{{ $invoice->invoice_number }}</td>
+                                <td class="email">{{ $invoice->contact->name ?? 'N/A' }}</td>
                                 <td class="contact">{{ $invoice->type }}</td>
                                 <td class="date">{{ $invoice->reference }}</td>
                                 <td class="status">

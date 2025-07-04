@@ -445,29 +445,31 @@ class XeroController extends Controller
         $invoices = XeroInvoice::with('items')->latest()->get();
         return view('xero.invoices_db', compact('invoices'));
     }
-
     public function all_invoices($tenant_id = null)
-    {
-        $query = XeroInvoice::with('items')->latest();
+        {
+            $query = XeroInvoice::with(['items', 'contact'])->latest();
 
-        $decryptedTenantId = null;
+            $decryptedTenantId = null;
 
-        if ($tenant_id) {
-            try {
-                $decryptedTenantId = Crypt::decryptString($tenant_id);
-                $query->where('tenant_id', $decryptedTenantId);
-            } catch (\Exception $e) {
-                return redirect()->route('xero.error')->with('error', 'Invalid or tampered tenant ID.');
+            if ($tenant_id) {
+                try {
+                    $decryptedTenantId = Crypt::decryptString($tenant_id);
+                    $query->where('xero_invoices.tenant_id', $decryptedTenantId);
+                } catch (\Exception $e) {
+                    return redirect()->route('xero.error')->with('error', 'Invalid or tampered tenant ID.');
+                }
             }
+
+            $invoices = $query->get();
+
+            return view('xero.all_invoices', [
+                'invoices' => $invoices,
+                'tenant_id' => $decryptedTenantId
+            ]);
         }
 
-        $invoices = $query->get();
 
-        return view('xero.all_invoices', [
-            'invoices' => $invoices,
-            'tenant_id' => $decryptedTenantId
-        ]);
-    }
+   
     public function print($encryptedId)
     {
         try {
