@@ -11,7 +11,10 @@
 
 <div class="container">
   <h2 class="mb-4 text-center">Invoice Submission Form</h2>
-  <form id="invoiceForm" action="https://your-api-endpoint.com/invoice" method="POST">
+  @if(session('success')) <div class="alert alert-success">{{ session('success') }}</div> @endif
+  @if(session('error')) <div class="alert alert-danger">{{ session('error') }}</div> @endif
+  <form id="invoiceForm" action="{{ route('create-new-invoice') }}" method="POST">
+    @csrf
     
     <!-- Invoice Info -->
     <div class="card mb-4">

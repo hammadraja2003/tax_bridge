@@ -21,8 +21,8 @@
                   </a>
               </li>
               <li class="no-sub">
-                  <a class="" href="{{ route('invoice.create') }}">
-                  <i class="ti ti-chart-treemap"></i>Create Invoice
+                  <a class="" href="{{ route('invoices.index') }}">
+                  <i class="ti ti-chart-treemap"></i>Invoices
                   </a>
               </li>
               <li>
@@ -30,8 +30,9 @@
                     <i class="fa-solid fa-brands fa-connectdevelop fa-fw"></i>Settings
                     </a>
                     <ul class="collapse" id="maps">
-                        <li><a href="{{ url('/company/configuration') }}">Company Configuration</a></li>
-
+                        <li><a href="{{ route('company.configuration') }}">Company Configuration</a></li>
+                        <li><a href="{{ route('buyers.index') }}">Buyers</a></li>
+                        <li><a href="{{ route('items.index') }}">Items</a></li>
                     </ul>
                 </li>
              
