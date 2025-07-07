@@ -143,6 +143,29 @@
     </div>
 
     </body>
+    <script>
+      function addItem() {
+        const container = document.getElementById('itemsContainer');
+        const template = document.getElementById('itemTemplate');
+        const clone = template.content.cloneNode(true);
+        container.appendChild(clone);
+        updateSubmitVisibility();
+      }
+ 
+      function removeItem(button) {
+        button.closest('.item-group').remove();
+        updateSubmitVisibility();
+      }
+ 
+      function updateSubmitVisibility() {
+        const items = document.querySelectorAll('.item-group');
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.style.display = items.length > 0 ? 'block' : 'none';
+      }
+ 
+      // Initialize with one item
+      window.onload = addItem;
+    </script>
     <!--customizer--> 
 <div id="myChart"></div>
      
