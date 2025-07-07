@@ -1,7 +1,7 @@
 //  example 1
 var options = {
     valueNames: ['id', 'employee', 'email', 'contact', 'date', 'status',],
-    page: 10,
+    page: 6,
     pagination: true
 };
 

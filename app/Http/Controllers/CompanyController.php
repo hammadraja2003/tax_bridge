@@ -12,7 +12,6 @@ class CompanyController extends Controller
         $config = BusinessConfiguration::first(); // Only one config expected
         return view('company.configuration', compact('config'));
     }
-
     public function storeOrUpdate(Request $request)
     {
         $request->validate([
@@ -32,11 +31,12 @@ class CompanyController extends Controller
 
         $data = $request->all();
 
-        // Upload logo if provided
+        // Upload logo if provided (move to /uploads/company/)
         if ($request->hasFile('bus_logo')) {
             $file = $request->file('bus_logo');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->storeAs('public/company', $filename);
+            $extension = $file->getClientOriginalExtension();
+            $filename = time() . '.' . $extension;
+            $file->move(public_path('uploads/company'), $filename);
             $data['bus_logo'] = $filename;
         }
 
@@ -52,4 +52,7 @@ class CompanyController extends Controller
 
         return redirect()->route('company.configuration')->with('success', $msg);
     }
+
+
+   
 }

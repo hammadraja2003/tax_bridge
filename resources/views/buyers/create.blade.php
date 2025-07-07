@@ -9,7 +9,7 @@
     <div class="card mb-4">
       <div class="card-body row g-3">
          <div class="col-md-6">
-            <label class="form-label">Buyer Name</label>
+            <label class="form-label required">Buyer Name</label>
             <input type="text" name="byr_name" placeholder="Enter a Buyer Name" class="form-control" required/>
                 <div class="invalid-feedback">
                     Please Enter Buyer Name.
@@ -37,7 +37,7 @@
         </div>
         
         <div class="col-md-6">
-          <label class="form-label required">NTN/CNIC</label>
+        <label class="form-label required">NTN / CNIC</label>
           <input type="text" name="byr_ntn_cnic" placeholder="Enter a NTN/CNIC"  class="form-control" required />
           <div class="invalid-feedback">
                 Please Enter NTN/CNIC.
@@ -49,7 +49,7 @@
 
        
         <div class="col-md-6">
-          <label class="form-label">Account Number</label>
+          <label class="form-label required">Account Number</label>
           <input type="text" name="byr_account_number" placeholder="Enter a Account Number" class="form-control" required />
             <div class="invalid-feedback">
                 Please Enter Account Number.
@@ -60,7 +60,7 @@
         </div>
 
         <div class="col-md-6">
-          <label class="form-label">Registration Number</label>
+          <label class="form-label required">Registration Number</label>
           <input type="text" name="byr_reg_num" placeholder="Enter a Registration Number" class="form-control" required />
             <div class="invalid-feedback">
                 Please Enter Registration Number.
@@ -71,7 +71,7 @@
         </div>
 
         <div class="col-md-6">
-          <label class="form-label">Contact Number</label>
+          <label class="form-label required">Contact Number</label>
           <input type="text" name="byr_contact_num" placeholder="Enter a Contact Number" class="form-control" required />
             <div class="invalid-feedback">
                 Please Enter Contact Number.
@@ -82,7 +82,7 @@
         </div>
 
         <div class="col-md-6">
-          <label class="form-label">Contact Person</label>
+          <label class="form-label required">Contact Person</label>
           <input type="text" name="byr_contact_person" placeholder="Enter a Contact Person" class="form-control" required />
             <div class="invalid-feedback">
                 Please Enter Contact Person.
@@ -93,7 +93,7 @@
         </div>
 
         <div class="col-md-6">
-          <label class="form-label">IBAN</label>
+          <label class="form-label required">IBAN</label>
           <input type="text" name="byr_IBAN" placeholder="Enter a IBAN" class="form-control" required />
             <div class="invalid-feedback">
                 Please Enter IBAN.
@@ -104,7 +104,7 @@
         </div>
 
         <div class="col-md-6">
-          <label class="form-label">SWIFT Code</label>
+          <label class="form-label required">SWIFT Code</label>
           <input type="text" name="byr_swift_code" placeholder="Enter a SWIFT Code" class="form-control" required />
             <div class="invalid-feedback">
                 Please Enter SWIFT Code.
@@ -124,7 +124,7 @@
             @enderror
         </div>
         <div class="col-md-6">
-          <label class="form-label">Branch Name</label>
+          <label class="form-label required">Branch Name</label>
           <input type="text" name="byr_acc_branch_name" placeholder="Enter a Branch Name" class="form-control" required />
             <div class="invalid-feedback">
                 Please Enter Branch Name.
@@ -135,7 +135,7 @@
         </div>
 
         <div class="col-md-6">
-          <label class="form-label">Buyer Logo (optional)</label>
+          <label class="form-label required">Buyer Logo</label>
           <input type="file" name="byr_logo" class="form-control" required />
                 @if(isset($buyer->byr_logo))
                     <img src="{{ asset('storage/buyers/' . $buyer->byr_logo) }}" alt="Logo" width="100" class="mt-2">
@@ -149,7 +149,7 @@
         </div>
        
         <div class="col-md-12">
-          <label class="form-label">Address</label>
+          <label class="form-label required">Address</label>
           <textarea name="byr_address" class="form-control" placeholder="Enter a Address" required></textarea>
             <div class="invalid-feedback">
                 Please Enter Address.
@@ -171,4 +171,11 @@
       </div>
     </div>
 </div>
+
+<style>
+    .required::after {
+        content: ' *';
+        color: red;
+    }
+</style>
 @endsection
