@@ -9,7 +9,6 @@
   }
 </style>
 
-<div class="container">
   <h2 class="mb-4 text-center">Invoice Submission Form</h2>
   @if(session('success')) <div class="alert alert-success">{{ session('success') }}</div> @endif
   @if(session('error')) <div class="alert alert-danger">{{ session('error') }}</div> @endif
@@ -114,7 +113,7 @@
 
     <button id="submitBtn" type="submit" class="btn btn-success w-100" style="display: none">Submit Invoice</button>
   </form>
-</div>
+
 
 <!-- Item Template (hidden) -->
 <template id="itemTemplate">

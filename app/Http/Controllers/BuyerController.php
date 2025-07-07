@@ -20,6 +20,7 @@ class BuyerController extends Controller
 
     public function store(Request $request)
     {
+      
         $request->validate([
             'byr_name' => 'required|string|max:255',
             'byr_type' => 'required|integer',
@@ -35,14 +36,13 @@ class BuyerController extends Controller
             'byr_acc_branch_code' => 'nullable|string|max:255',
             'byr_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // ← this line added
         ]);
-
-
         $data = $request->all();
 
         if ($request->hasFile('byr_logo')) {
             $file = $request->file('byr_logo');
-            $filename = time() . '_' . preg_replace('/\s+/', '_', $file->getClientOriginalName());
-            $file->storeAs('public/buyers', $filename);
+            $extension = $file->getClientOriginalExtension();
+            $filename = time(). '.'.$extension;
+            $file->move('uploads/buyer_images/',$filename);
             $data['byr_logo'] = $filename;
         }
 
@@ -75,14 +75,22 @@ class BuyerController extends Controller
             'byr_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $buyer = Buyer::findOrFail($id); // ← required line
+        $buyer = Buyer::findOrFail($id);
 
-        $data = $request->all();
+        $data = $request->except('byr_logo');
 
+        // Handle logo update
         if ($request->hasFile('byr_logo')) {
+            // Delete old logo if exists
+            if ($buyer->byr_logo && file_exists(public_path('uploads/buyer_images/' . $buyer->byr_logo))) {
+                unlink(public_path('uploads/buyer_images/' . $buyer->byr_logo));
+            }
+
+            // Save new logo
             $file = $request->file('byr_logo');
-            $filename = time() . '_' . preg_replace('/\s+/', '_', $file->getClientOriginalName());
-            $file->storeAs('public/buyers', $filename);
+            $extension = $file->getClientOriginalExtension();
+            $filename = time().'.'.$extension;
+            $file->move(public_path('uploads/buyer_images/'), $filename);
             $data['byr_logo'] = $filename;
         }
 
@@ -90,6 +98,7 @@ class BuyerController extends Controller
 
         return redirect()->route('buyers.index')->with('success', 'Buyer updated successfully.');
     }
+
 
 
     public function delete($id)

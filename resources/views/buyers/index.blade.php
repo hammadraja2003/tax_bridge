@@ -30,7 +30,7 @@
                 <tr>
                     <td>
                         @if($buyer->byr_logo)
-                            <img src="{{ asset('storage/buyers/' . $buyer->byr_logo) }}" alt="Logo" width="50">
+                            <img src="{{ asset('uploads/buyer_images/' . $buyer->byr_logo) }}" alt="Logo" width="50">
                         @else
                             <span class="text-muted">No Logo</span>
                         @endif

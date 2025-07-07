@@ -42,11 +42,11 @@
                     </div>
                     </div>
                     </div>
-                    <div class="col-12 mt-2">
-                      <div class="mb-3">
-                      <button type="submit"  role="button" class="btn btn-primary w-100">{{ __('Sign In') }}</button>
+                      <div class="col-12 mt-2">
+                        <div class="mb-3">
+                         <button type="submit"  role="button" class="btn btn-primary w-100">{{ __('Sign In') }}</button>
+                        </div>
                       </div>
-                    </div>
                   </div>
                 </form>
               </div>
