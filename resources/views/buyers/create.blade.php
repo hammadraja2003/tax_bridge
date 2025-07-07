@@ -4,9 +4,6 @@
 @include('layouts.partials.errors')
 <div class="container">
   <h2 class="mb-4 text-center">Add New Buyer</h2>
-  @if(session('success')) <div class="alert alert-success">{{ session('success') }}</div> @endif
-  @if(session('error')) <div class="alert alert-danger">{{ session('error') }}</div> @endif
-    
   <form class="app-form needs-validation" novalidate method="POST" action="{{ route('buyers.store') }}" enctype="multipart/form-data">
     @csrf
     <div class="card mb-4">
