@@ -2,19 +2,6 @@
 
 use Carbon\Carbon;
 
-if (!function_exists('convertXeroDate')) {
-    function convertXeroDate($xeroDate)
-    {
-        preg_match('/\/Date\((\d+)\+/', $xeroDate, $matches);
-        $timestampMs = $matches[1] ?? null;
-
-        if ($timestampMs) {
-            return Carbon::createFromTimestampMs($timestampMs)->format('Y-m-d');
-        }
-
-        return null;
-    }
-}
 if (!function_exists('logError')) {
     function logError(array $context = [])
     {

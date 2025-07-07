@@ -21,27 +21,21 @@
                   </a>
               </li>
               <li class="no-sub">
-                  <a class="" href="{{URL::to('/xero/select-tenant')}}">
-                  <i class="ti ti-chart-treemap"></i>Sync Invoices
+                  <a class="" href="">
+                  <i class="ti ti-chart-treemap"></i>Create Invoice
                   </a>
               </li>
               <li class="no-sub">
-                  <a class="" href="{{URL::to('/all_invoices')}}">
-                  <i class="ti ti-chart-treemap"></i>DB Invoices
+                  <a class="" href="">
+                  <i class="ti ti-chart-treemap"></i>
                   </a>
               </li>
-              <!-- <li class="no-sub">
-                  <a class="" href="{{URL::to('/xero/db-invoices')}}">
-                  <i class="ti ti-chart-treemap"></i>DB Invoices
-                  </a>
-              </li> -->
               <li>
                     <a class="" href="#maps" data-bs-toggle="collapse" aria-expanded="false">
-                    <i class="fa-solid fa-brands fa-connectdevelop fa-fw"></i>Configuration
+                    <i class="fa-solid fa-brands fa-connectdevelop fa-fw"></i>Settings
                     </a>
                     <ul class="collapse" id="maps">
-                        <li><a href="google_map.html">Xero</a></li>
-                        <li><a href="leaflet_map.html">FBR</a></li>
+                        <li><a href="{{URL}}">Company Configuration</a></li>
                     </ul>
                 </li>
              
