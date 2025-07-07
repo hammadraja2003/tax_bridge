@@ -18,19 +18,27 @@
       <div class="card-header">Invoice Info</div>
       <div class="card-body row g-3">
         <div class="col-md-6">
-          <label class="form-label required">Invoice Type</label>
-          <input type="text" name="invoiceType" class="form-control" required />
+            <label class="form-label required">Invoice Type</label>
+            <select name="invoiceType" id="invoiceType" class="form-select" required onchange="toggleInvoiceRef()">
+                <option value="">Select Invoice Type</option>
+                <option value="Seller Note">Seller Note</option>
+                <option value="Debit Note">Debit Note</option>
+            </select>
         </div>
+        
+
         <div class="col-md-6">
           <label class="form-label required">Invoice Date</label>
           <input type="date" name="invoiceDate" class="form-control" value="2025-04-21" required />
         </div>
-        <div class="col-md-6">
-          <label class="form-label">Invoice Ref No (if Debit Note)</label>
-          <input type="text" name="invoiceRefNo" class="form-control" />
+
+        <div class="col-md-6" id="invoiceRefWrapper" style="display: none;">
+            <label class="form-label">Invoice Ref No (if Debit Note)</label>
+            <input type="text" name="invoiceRefNo" id="invoiceRefNo" class="form-control" />
         </div>
+      
         <div class="col-md-6">
-          <label class="form-label required">Scenario ID</label>
+          <label class="form-label">Scenario ID</label>
           <input type="text" name="scenarioId" class="form-control" value="SN001" required />
         </div>
       </div>
@@ -63,14 +71,15 @@
     <div class="card mb-4">
       <div class="card-header">Buyer Info</div>
       <div class="card-body row g-3">
+      <div class="col-md-6">
+          <label class="form-label">Business Name</label>
+          <input type="text" name="bus_name" class="form-control" value="Sky Pass Travel & Tours" />
+        </div>
         <div class="col-md-6">
           <label class="form-label">NTN / CNIC</label>
           <input type="text" name="buyerNTNCNIC" class="form-control" />
         </div>
-        <div class="col-md-6">
-          <label class="form-label">Business Name</label>
-          <input type="text" name="buyerBusinessName" class="form-control" value="Sky Pass Travel & Tours" />
-        </div>
+      
         <div class="col-md-6">
           <label class="form-label">Province</label>
           <input type="text" name="buyerProvince" class="form-control" />
@@ -212,6 +221,23 @@
       updateSubmitButton();
     });
   });
+</script>
+
+<script>
+  function toggleInvoiceRef() {
+    const invoiceType = document.getElementById("invoiceType").value;
+    const invoiceRefWrapper = document.getElementById("invoiceRefWrapper");
+    const invoiceRefInput = document.getElementById("invoiceRefNo");
+
+    if (invoiceType === "Debit Note") {
+      invoiceRefWrapper.style.display = "block";
+      invoiceRefInput.setAttribute("required", "required");
+    } else {
+      invoiceRefWrapper.style.display = "none";
+      invoiceRefInput.removeAttribute("required");
+      invoiceRefInput.value = ""; // Optional: Clear the value
+    }
+  }
 </script>
 
 @endsection
