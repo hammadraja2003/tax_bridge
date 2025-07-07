@@ -1,8 +1,6 @@
 @extends('layouts.login')
 @section('content')
-
 @include('layouts.partials.errors')
-
 <div class="container-fluid">
           <div class="row">
             <div class="col-lg-7 col-xl-8 d-none d-lg-block p-0">
@@ -53,5 +51,4 @@
             </div>
           </div>
         </div>
-
         @endsection

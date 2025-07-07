@@ -1,4 +1,3 @@
-
 <div class="container mt-5">
     <div class="alert alert-danger">
         <h4 class="alert-heading">⚠️ Xero Integration Error</h4>

@@ -1,5 +1,4 @@
 @extends('layouts.admin')
-
 @section('content')
 @include('layouts.partials.errors')
 <div class="container">
@@ -18,7 +17,6 @@
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
          </div>
-
          <div class="col-md-6">
             <label class="form-label required">Buyer Type</label>
             <select name="byr_type"
@@ -35,7 +33,6 @@
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
-
         <div class="col-md-6">
           <label class="form-label required">NTN/CNIC</label>
           <input type="text" name="byr_ntn_cnic" placeholder="Enter a NTN/CNIC" value="{{ $buyer->byr_ntn_cnic }}"  class="form-control" required />
@@ -46,8 +43,6 @@
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
-
-       
         <div class="col-md-6">
           <label class="form-label required">Account Number</label>
           <input type="text" name="byr_account_number" placeholder="Enter a Account Number" value="{{ $buyer->byr_account_number }}" class="form-control" required />
@@ -58,7 +53,6 @@
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
-
         <div class="col-md-6">
           <label class="form-label required">Registration Number</label>
           <input type="text" name="byr_reg_num" placeholder="Enter a Registration Number" class="form-control" value="{{ $buyer->byr_reg_num }}" required  />
@@ -69,7 +63,6 @@
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
-
         <div class="col-md-6">
           <label class="form-label required">Contact Number</label>
           <input type="text" name="byr_contact_num" placeholder="Enter a Contact Number" class="form-control" value="{{ $buyer->byr_contact_num }}" required />
@@ -80,7 +73,6 @@
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
-
         <div class="col-md-6">
           <label class="form-label required">Contact Person</label>
           <input type="text" name="byr_contact_person" placeholder="Enter a Contact Person" value="{{ $buyer->byr_contact_person }}" class="form-control" required />
@@ -91,7 +83,6 @@
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
-
         <div class="col-md-6">
           <label class="form-label required">IBAN</label>
           <input type="text" name="byr_IBAN" placeholder="Enter a IBAN" class="form-control" value="{{ $buyer->byr_IBAN }}" required />
@@ -102,7 +93,6 @@
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
-
         <div class="col-md-6">
           <label class="form-label required">SWIFT Code</label>
           <input type="text" name="byr_swift_code" placeholder="Enter a SWIFT Code" value="{{ $buyer->byr_swift_code }}" class="form-control" required />
@@ -133,11 +123,19 @@
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
-
+        <div class="col-md-6">
+          <label class="form-label">Province</label>
+          <input type="text" name="byr_province" class="form-control" placeholder="Enter Province" value="{{ $buyer->byr_province ?? old('byr_province') }}" required>
+          <div class="invalid-feedback">
+              Please enter Province.
+          </div>
+          @error('byr_province')
+          <div class="invalid-feedback">{{ $message }}</div>
+          @enderror
+      </div>
         <div class="col-md-6">
             <label class="form-label required">Buyer Logo</label>
             <input type="file" name="byr_logo" class="form-control" />
-
             @if(isset($buyer->byr_logo))
                 <div class="mt-3">
                 <img src="{{ asset('uploads/buyer_images/' . $buyer->byr_logo) }}"
@@ -145,13 +143,10 @@
                     style="max-width: 200px; height: auto; border: 1px solid #ddd; padding: 5px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
             </div>
             @endif
-
             @error('byr_logo')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
-
-
         <div class="col-md-12">
           <label class="form-label required">Address</label>
           <textarea name="byr_address" class="form-control" placeholder="Enter a Address" required>{{ $buyer->byr_address }}</textarea>
@@ -162,6 +157,7 @@
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
+      
         <div class="col-2 mt-3 ms-auto text-end">
             <div class="mb-3">
                 <button type="submit" role="button" class="btn btn-primary w-100">
@@ -170,8 +166,6 @@
             </div>
         </div>
     </form>
-       
-
       </div>
     </div>
 </div>

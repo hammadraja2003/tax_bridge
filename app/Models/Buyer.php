@@ -9,12 +9,12 @@ class Buyer extends Model
     protected $table = 'buyers';
     protected $primaryKey = 'byr_id';
     public $timestamps = true;
-
     protected $fillable = [
         'byr_name',
         'byr_type',
         'byr_ntn_cnic',
         'byr_address',
+        'byr_province',
         'byr_logo',
         'byr_account_number',
         'byr_reg_num',

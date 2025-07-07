@@ -9,7 +9,6 @@
                         <span class="header-toggle me-3">
                           <i class="ti ti-category"></i>
                         </span>
-
                         <div class="header-searchbar">
                           <form class="me-3 app-form app-icon-form " action="#">
                             <div class="position-relative">
@@ -19,7 +18,6 @@
                           </form>
                         </div>
                       </div>
-
                       <div class="col-6 d-flex align-items-center justify-content-end header-right">
                         <ul class="d-flex align-items-center">
                           <li class="header-search">
@@ -27,7 +25,6 @@
                               data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
                               <i class="ti ti-search"></i>
                             </a>
-
                             <div class="offcanvas offcanvas-top search-canvas" tabindex="-1" id="offcanvasTop">
                               <div class="offcanvas-body">
                                 <div class="d-flex align-items-center">
@@ -46,12 +43,10 @@
                               </div>
                             </div>
                           </li>
-
                           <li class="header-language">
                             <div id="lang_selector" class="flex-shrink-0 dropdown">
                               <a href="#" class="d-block head-icon ps-0" data-bs-toggle="dropdown"
                                 aria-expanded="false">
-                               
                               </a>
                               <ul class="dropdown-menu language-dropdown dropdown-menu-end header-card border-0 p-0">
                                 <li>
@@ -86,16 +81,11 @@
                                 </li>
                               </ul>
                             </div>
-
                           </li>
-
                           <li class="header-apps">
-                           
                           </li>
-
                           <li class="header-cart d-none d-sm-block">
                             <div class="flex-shrink-0 app-dropdown">
-                             
                               <div class="dropdown-menu dropdown-menu-end bg-transparent border-0">
                                 <div class="card">
                                   <div class="card-header bg-primary">
@@ -154,7 +144,6 @@
                                             <i class="ti ti-star-filled f-s-12  star-filled"></i>
                                             <i class="ti ti-star-filled f-s-12 star-filled"></i>
                                           </div>
-
                                         </div>
                                       </div>
                                       <div class="head-box ">
@@ -173,7 +162,6 @@
                                             <i class="ti ti-star-filled text-warning f-s-12  star-filled"></i>
                                             <i class="ti ti-star-filled text-warning  f-s-12 star-filled"></i>
                                           </div>
-
                                         </div>
                                       </div>
                                       <div class="hidden-massage py-4 px-3">
@@ -199,14 +187,10 @@
                               </div>
                             </div>
                           </li>
-
                           <li class="header-dark head-icon">
-                           
                           </li>
-
                           <li class="header-notification">
                             <div class="flex-shrink-0 app-dropdown">
-                             
                               <div class="dropdown-menu dropdown-menu-end bg-transparent border-0">
                                 <div class="card">
                                   <div class="card-header bg-primary">
@@ -290,13 +274,11 @@
                               </div>
                             </div>
                           </li>
-
                           <li class="header-profile">
                             <div class="flex-shrink-0 dropdown">
                               <a href="#" class="d-block head-icon pe-0" data-bs-toggle="dropdown"
                                 aria-expanded="false">
                                 <img src=" {{ asset('assets/images/avtar/woman.jpg')}}" alt="mdo" class="rounded-circle h-35 w-35">
-                              
                               </a>
                               <ul class="dropdown-menu dropdown-menu-end header-card border-0 px-2">
                                 <li class="dropdown-item d-flex align-items-center p-2">
@@ -310,7 +292,6 @@
                                     <p class="f-s-12 mb-0 text-secondary">Online</p>
                                   </div>
                                 </li>
-
                                 <li class="app-divider-v dotted py-1"></li>
                                 <li>
                                   <a class="dropdown-item" href="profile.html">
@@ -325,7 +306,6 @@
                                 </li> -->
                                 <form method="POST" class="btn-light-danger b-r-5" action="{{ route('logout') }}">
                                     @csrf
-
                                     <x-dropdown-link :href="route('logout')"
                                             onclick="event.preventDefault();
                                                         this.closest('form').submit();">
@@ -336,7 +316,6 @@
                                 </form>
                               </ul>
                             </div>
-
                           </li>
                         </ul>
                       </div>

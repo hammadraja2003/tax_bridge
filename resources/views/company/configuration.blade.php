@@ -1,5 +1,4 @@
 @extends('layouts.admin')
-
 @section('content')
 @include('layouts.partials.errors')
 <div class="container">
@@ -49,17 +48,13 @@
             <div class="invalid-feedback">
                 Please Enter Account Number.
             </div>
-            @error('bus_account_number') 
-            <div class="invalid-feedback">
-                {{ $message }}
-            </div> 
-            @enderror
-          </div>
-          <div class="col-md-6">
-            <label class="form-label required">Registration Number</label>
-            <input type="text" name="bus_reg_num" class="form-control"  placeholder="Enter a Registration Number" value="{{ old('bus_reg_num', $config->bus_reg_num ?? '') }}" required>
-            <div class="invalid-feedback">
-                Please Enter Business Register Number.
+            <div class="col-md-6 mb-3">
+                <label>Province *</label>
+                <input type="text" name="bus_province" class="form-control" required value="{{ old('bus_province', $config->bus_province ?? '') }}">
+            </div>            
+            <div class="col-md-6 mb-3">
+                <label>Account Number</label>
+                <input type="text" name="bus_account_number" class="form-control" value="{{ old('bus_account_number', $config->bus_account_number ?? '') }}">
             </div>
             @error('bus_reg_num') 
             <div class="invalid-feedback">

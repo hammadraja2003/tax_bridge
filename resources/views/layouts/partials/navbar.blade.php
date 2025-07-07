@@ -4,7 +4,6 @@
               <img src="{{ asset('assets/images/logo/secureism_logo_admin.png') }}" style="margin-bottom:4px;width:185px;" alt="#" class="dark-logo">
               <img src="assets/images/logo/1.png" alt="#" class="light-logo">
           </a>
-
           <span class="bg-light-light toggle-semi-nav">
             <i class="ti ti-chevrons-right f-s-20"></i>
           </span>
@@ -35,19 +34,16 @@
                         <li><a href="{{ route('items.index') }}">Items</a></li>
                     </ul>
                 </li>
-             
              <!-- Hidden logout form -->
                 <li class="no-sub">
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                         @csrf
                     </form>
-
                     <!-- Styled logout link -->
                     <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <i class="ti ti-logout pe-1 f-s-20"></i> Logout
                     </a>
                 </li>
-
           </ul>
       </div>
       <div class="menu-navs">

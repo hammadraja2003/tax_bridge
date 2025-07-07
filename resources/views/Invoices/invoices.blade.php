@@ -1,5 +1,4 @@
 {{-- @extends('layouts.app')  --}}
-
 {{-- @section('content') --}}
 <div class="container">
     <h2>Xero Invoices</h2>

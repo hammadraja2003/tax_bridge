@@ -8,9 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class InvoiceDetail extends Model
 {
     use HasFactory;
-
     protected $primaryKey = 'invoice_detail_id';
-
     protected $fillable = [
         'invoice_id',
         'item_id',
@@ -28,14 +26,11 @@ class InvoiceDetail extends Model
         'sro_schedule_no',
         'sro_item_serial_no',
     ];
-
     // 🔗 Relationships
-
     public function invoice()
     {
         return $this->belongsTo(Invoice::class, 'invoice_id', 'invoice_id');
     }
-
     public function item()
     {
         return $this->belongsTo(Item::class, 'item_id', 'item_id');

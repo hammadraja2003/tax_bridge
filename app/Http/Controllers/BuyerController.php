@@ -12,20 +12,18 @@ class BuyerController extends Controller
         $buyers = Buyer::latest()->paginate(10);
         return view('buyers.index', compact('buyers'));
     }
-
     public function create()
     {
         return view('buyers.create');
     }
-
     public function store(Request $request)
     {
-      
         $request->validate([
             'byr_name' => 'required|string|max:255',
             'byr_type' => 'required|integer',
             'byr_ntn_cnic' => 'nullable|string|max:255',
             'byr_address' => 'nullable|string',
+            'byr_province' => 'nullable|string',
             'byr_account_number' => 'nullable|string|max:255',
             'byr_reg_num' => 'nullable|string|max:255',
             'byr_contact_num' => 'nullable|string|max:20',
@@ -37,26 +35,21 @@ class BuyerController extends Controller
             'byr_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // ← this line added
         ]);
         $data = $request->all();
-
         if ($request->hasFile('byr_logo')) {
             $file = $request->file('byr_logo');
             $extension = $file->getClientOriginalExtension();
-            $filename = time(). '.'.$extension;
-            $file->move('uploads/buyer_images/',$filename);
+            $filename = time() . '.' . $extension;
+            $file->move('uploads/buyer_images/', $filename);
             $data['byr_logo'] = $filename;
         }
-
         Buyer::create($data);
-
         return redirect()->route('buyers.index')->with('message', 'Buyer created successfully.');
     }
-
     public function edit($id)
     {
         $buyer = Buyer::findOrFail($id);
         return view('buyers.edit', compact('buyer'));
     }
-
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -64,6 +57,7 @@ class BuyerController extends Controller
             'byr_type' => 'required|integer',
             'byr_ntn_cnic' => 'nullable|string|max:255',
             'byr_address' => 'nullable|string',
+            'byr_province' => 'nullable|string',
             'byr_account_number' => 'nullable|string|max:255',
             'byr_reg_num' => 'nullable|string|max:255',
             'byr_contact_num' => 'nullable|string|max:20',
@@ -74,38 +68,28 @@ class BuyerController extends Controller
             'byr_acc_branch_code' => 'nullable|string|max:255',
             'byr_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
         $buyer = Buyer::findOrFail($id);
-
         $data = $request->except('byr_logo');
-
         // Handle logo update
         if ($request->hasFile('byr_logo')) {
             // Delete old logo if exists
             if ($buyer->byr_logo && file_exists(public_path('uploads/buyer_images/' . $buyer->byr_logo))) {
                 unlink(public_path('uploads/buyer_images/' . $buyer->byr_logo));
             }
-
             // Save new logo
             $file = $request->file('byr_logo');
             $extension = $file->getClientOriginalExtension();
-            $filename = time().'.'.$extension;
+            $filename = time() . '.' . $extension;
             $file->move(public_path('uploads/buyer_images/'), $filename);
             $data['byr_logo'] = $filename;
         }
-
         $buyer->update($data);
-
         return redirect()->route('buyers.index')->with('message', 'Buyer updated successfully.');
     }
-
-
-
     public function delete($id)
     {
         $buyer = Buyer::findOrFail($id);
         $buyer->delete();
-
         return redirect()->route('buyers.index')->with('success', 'Buyer deleted successfully.');
     }
 }
