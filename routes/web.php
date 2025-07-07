@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\BuyerController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\ItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,10 @@ use App\Http\Controllers\CompanyController;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/buyers/{id}', function ($id) {
+    return App\Models\Buyer::findOrFail($id);
 });
 
 
@@ -50,8 +55,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/buyers/update/{id}', [BuyerController::class, 'update'])->name('buyers.update');
     Route::post('/buyers/delete/{id}', [BuyerController::class, 'delete'])->name('buyers.delete');
 
+
     //Items
     Route::get('/items', [ItemController::class, 'index'])->name('items.index');
+    Route::get('/items/create', [ItemController::class, 'create'])->name('items.create');
+    Route::post('/items/store', [ItemController::class, 'store'])->name('items.store');
+    Route::get('/items/edit/{id}', [ItemController::class, 'edit'])->name('items.edit');
+    Route::post('/items/update/{id}', [ItemController::class, 'update'])->name('items.update');
+    Route::post('/items/delete/{id}', [ItemController::class, 'delete'])->name('items.delete');
 });
 
 /*

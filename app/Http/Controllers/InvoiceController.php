@@ -10,16 +10,22 @@ use App\Models\Invoice;
 use App\Models\InvoiceDetail;
 use App\Models\Buyer;
 use App\Models\BusinessConfiguration;
+use App\Models\Item;
 
 class InvoiceController extends Controller
 {
 
     public function create()
     {
-        return view('invoices.create', [
-            'buyers' => Buyer::all(),
-            'sellers' => BusinessConfiguration::all()
-        ]);
+        // return view('invoices.create', [
+        //     'buyers' => Buyer::all(),
+        //     'sellers' => BusinessConfiguration::all()
+        // ]);
+        $seller = BusinessConfiguration::first(); // Single config
+        $buyers = Buyer::all();
+        $items = Item::all();
+
+        return view('invoices.create', compact('seller', 'buyers', 'items'));
     }
 
     public function index(Request $request)

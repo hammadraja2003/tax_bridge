@@ -116,6 +116,7 @@
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
+
         <div class="col-md-6">
           <label class="form-label">Branch Code</label>
           <input type="text" name="byr_acc_branch_code" placeholder="Enter a Branch Code" class="form-control" required />
@@ -126,6 +127,7 @@
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
+
         <div class="col-md-6">
           <label class="form-label">Branch Name</label>
           <input type="text" name="byr_acc_branch_name" placeholder="Enter a Branch Name" class="form-control" required />
@@ -138,7 +140,7 @@
         </div>
 
         <div class="col-md-6">
-          <label class="form-label">Buyer Logo (optional)</label>
+          <label class="form-label">Buyer Logo</label>
           <input type="file" name="byr_logo" class="form-control" required />
                 @if(isset($buyer->byr_logo))
                     <img src="{{ asset('storage/buyers/' . $buyer->byr_logo) }}" alt="Logo" width="100" class="mt-2">
@@ -161,6 +163,7 @@
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
+
         <div class="col-2 mt-3 ms-auto text-end">
             <div class="mb-3">
                 <button type="submit" role="button" class="btn btn-primary w-100">
@@ -168,10 +171,8 @@
                 </button>
             </div>
         </div>
-    </form>
-       
-
-      </div>
     </div>
+</div>
+    </form>
 </div>
 @endsection

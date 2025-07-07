@@ -149,7 +149,7 @@
         </div>
 
         <div class="col-md-6">
-            <label class="form-label">Buyer Logo (optional)</label>
+            <label class="form-label">Buyer Logo</label>
             <input type="file" name="byr_logo" class="form-control" />
 
             @if(isset($buyer->byr_logo))

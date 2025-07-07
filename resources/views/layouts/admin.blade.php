@@ -142,6 +142,8 @@
 
     </div>
 
+    @stack('scripts')
+
     </body>
    
     <!--customizer--> 
