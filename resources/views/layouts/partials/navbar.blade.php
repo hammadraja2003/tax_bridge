@@ -25,17 +25,13 @@
                   <i class="ti ti-chart-treemap"></i>Create Invoice
                   </a>
               </li>
-              <li class="no-sub">
-                  <a class="" href="">
-                  <i class="ti ti-chart-treemap"></i>
-                  </a>
-              </li>
               <li>
                     <a class="" href="#maps" data-bs-toggle="collapse" aria-expanded="false">
                     <i class="fa-solid fa-brands fa-connectdevelop fa-fw"></i>Settings
                     </a>
                     <ul class="collapse" id="maps">
-                        <li><a href="{{URL}}">Company Configuration</a></li>
+                        <li><a href="{{ url('/company/configuration') }}">Company Configuration</a></li>
+
                     </ul>
                 </li>
              
