@@ -48,7 +48,7 @@ class BuyerController extends Controller
 
         Buyer::create($data);
 
-        return redirect()->route('buyers.index')->with('success', 'Buyer created successfully.');
+        return redirect()->route('buyers.index')->with('message', 'Buyer created successfully.');
     }
 
     public function edit($id)
@@ -96,7 +96,7 @@ class BuyerController extends Controller
 
         $buyer->update($data);
 
-        return redirect()->route('buyers.index')->with('success', 'Buyer updated successfully.');
+        return redirect()->route('buyers.index')->with('message', 'Buyer updated successfully.');
     }
 
 
