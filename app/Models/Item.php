@@ -8,9 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Item extends Model
 {
     use HasFactory;
-
     protected $primaryKey = 'item_id';
-
     protected $fillable = [
         'item_hs_code',
         'item_description',
@@ -18,7 +16,6 @@ class Item extends Model
         'item_tax_rate',
         'item_uom',
     ];
-
     public function invoiceDetails()
     {
         return $this->hasMany(InvoiceDetail::class, 'item_id', 'item_id');

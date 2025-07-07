@@ -1,6 +1,5 @@
 @extends('layouts.admin')
 @section('content')
-
     <div class="container-fluid">
         <div class="row project_dashboard">
             <!-- Cards -->
@@ -9,10 +8,8 @@
                 <div class="card-body d-flex justify-content-between">
                 <div>
                     <h6>Total Projects<span class="badge text-success">3.1%</span></h6>
-
                     <div class="d-flex align-items-center gap-2 mt-2">
                     <h4 class=" text-success f-w-600 counting" data-count='499'></h4>
-
                     <p class="m-0 text-secondary">All Projects This Month</p>
                     </div>
                 </div>
@@ -27,7 +24,6 @@
                 <div class="card-body d-flex justify-content-between">
                 <div>
                     <h6>Running Project<span class="badge text-warning">0.20%</span></h6>
-
                     <div class="d-flex align-items-center gap-2 mt-2">
                     <h4 class=" text-warning f-w-600 counting" data-count='159'></h4>
                     <p class="m-0 text-secondary">Delayed This Month</p>
@@ -44,7 +40,6 @@
                 <div class="card-body d-flex justify-content-between">
                 <div>
                     <h6>Pending<span class="badge text-danger">2.10%</span></h6>
-
                     <div class="d-flex align-items-center gap-2 mt-2">
                     <h4 class=" text-danger f-w-600 counting" data-count='220'></h4>
                     <p class="m-0 text-secondary">Pending This Month</p>
@@ -61,7 +56,6 @@
                 <div class="card-body d-flex justify-content-between">
                 <div>
                     <h6 class="text-secondary">Finished Projects<span class="badge text-success">1.1%</span></h6>
-
                     <div class="d-flex align-items-center gap-2 mt-2">
                     <h4 class=" text-success f-w-600 counting inline" data-count='199'></h4>
                     <p class="m-0 text-secondary">Finished This Month</p>
@@ -76,7 +70,6 @@
             <!-- Cards end -->
         </div>
     </div>
-
     <div class="container-fluid">
         <div class="row">
             <!-- Basic Column Chart start -->
@@ -128,9 +121,4 @@
             </div>
         </div>
     </div>
-
-
-
-
-
 @endsection

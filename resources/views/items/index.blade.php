@@ -1,15 +1,11 @@
 @extends('layouts.admin')
-
 @section('content')
 <div class="container">
     <h3 class="mb-4">Items</h3>
-
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
-
     <a href="{{ route('items.create') }}" class="btn btn-success mb-3">+ Add New Item</a>
-
     <div class="table-responsive">
         <table id="itemsTable" class="table table-bordered table-striped">
             <thead class="table-dark">

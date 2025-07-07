@@ -19,7 +19,6 @@ class LoginRequest extends FormRequest
     {
         return true;
     }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -32,7 +31,6 @@ class LoginRequest extends FormRequest
             'password' => ['required', 'string'],
         ];
     }
-
     /**
      * Attempt to authenticate the request's credentials.
      *
@@ -41,22 +39,16 @@ class LoginRequest extends FormRequest
     public function authenticate(): void
     {
         $this->ensureIsNotRateLimited();
-
         if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
-
             // Instead of Session::flash, add it directly in the ValidationException bag
             throw ValidationException::withMessages([
                 'email' => trans('auth.failed'),
                 'toast_error' => 'Invalid email or password',
             ]);
         }
-
         RateLimiter::clear($this->throttleKey());
     }
-
-   
-
     /**
      * Ensure the login request is not rate limited.
      *
@@ -67,11 +59,8 @@ class LoginRequest extends FormRequest
         if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
             return;
         }
-
         event(new Lockout($this));
-
         $seconds = RateLimiter::availableIn($this->throttleKey());
-
         throw ValidationException::withMessages([
             'email' => trans('auth.throttle', [
                 'seconds' => $seconds,
@@ -79,12 +68,11 @@ class LoginRequest extends FormRequest
             ]),
         ]);
     }
-
     /**
      * Get the rate limiting throttle key for the request.
      */
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->string('email')).'|'.$this->ip());
+        return Str::transliterate(Str::lower($this->string('email')) . '|' . $this->ip());
     }
 }

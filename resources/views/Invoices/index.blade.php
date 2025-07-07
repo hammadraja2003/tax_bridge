@@ -1,10 +1,8 @@
 @extends('layouts.admin')
-
 @section('content')
 <div class="container">
     <h3>Invoices</h3>
     <a href="{{ route('invoices.create') }}" class="btn btn-primary mb-3">+ New Invoice</a>
-
     <form method="GET" class="row mb-3">
         <div class="col">
             <input type="text" name="invoice_type" class="form-control" placeholder="Invoice Type" value="{{ request('invoice_type') }}">
@@ -19,7 +17,6 @@
             <button type="submit" class="btn btn-secondary">Filter</button>
         </div>
     </form>
-
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -44,7 +41,6 @@
         @endforeach
         </tbody>
     </table>
-
     {{ $invoices->links() }}
 </div>
 @endsection

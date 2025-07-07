@@ -1,5 +1,4 @@
 @extends('layouts.admin')
-
 @section('content')
 <style>
         table {
@@ -47,15 +46,12 @@
                     <h5 class="mb-0">Buyers Details</h5>
                     <a href="{{ url()->previous() }}" class="btn btn-outline-dark"><i class="fa-solid fa-step-backward fa-fw me-1"></i>Back</a>
                 </div>
-
                   <div class="card-body p-0">
                     <form action="" method="POST">
                       @csrf
                     <div id="myTable">
-                     
                       <div class="list-table-header d-flex justify-content-sm-between">
-                          <a href="{{ route('buyers.create') }}" class="btn btn-outline-secondary"><i class="fa-solid fa-plus fa-fw"></i>Add</a>
-
+                          <a href="{{ route('buyer.create') }}" class="btn btn-outline-secondary"><i class="fa-solid fa-plus fa-fw"></i>Add</a>
                           <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                             aria-hidden="true">
                           </div>
@@ -66,7 +62,6 @@
                             </div>
                           </form>
                         </div>
-
                         <div class="app-scroll overflow-auto" style="max-width: 100%; overflow-x: auto; overflow-y: hidden;">
                         <table id="projectTableT" class="app-scroll table-responsive">
                             <thead>
@@ -117,9 +112,7 @@
                                 @endforelse
                             </tbody>
                         </table>
-
                         </div>
-                    
                     </div>
                   </form>
                   </div>
@@ -129,6 +122,5 @@
             </div>
             <!-- List Js Table end -->
     </div>
-         
 </div>
 @endsection

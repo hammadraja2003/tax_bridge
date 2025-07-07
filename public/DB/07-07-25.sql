@@ -27,6 +27,7 @@ CREATE TABLE `business_configurations` (
   `bus_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `bus_ntn_cnic` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `bus_address` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `bus_province` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `bus_logo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `bus_account_number` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `bus_reg_num` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -48,7 +49,7 @@ CREATE TABLE `business_configurations` (
 
 LOCK TABLES `business_configurations` WRITE;
 /*!40000 ALTER TABLE `business_configurations` DISABLE KEYS */;
-INSERT INTO `business_configurations` VALUES (1,'Secureisms Ltd','12345-6789012-3','123 Business Avenue, Lahore, Pakistan','1751869409_secureism.png','9876543210123456','REG-789456','03001234567','John Doe','PK36SCBL0000001123456702','SCBLPKKXXXX','Lahore Main Branch','1234','2025-07-04 12:02:41','2025-07-07 01:23:29');
+INSERT INTO `business_configurations` VALUES (1,'Secureisms Ltd','12345-6789012-3','123 Business Avenue, Lahore, Pakistan','Islamabad','1751869409_secureism.png','9876543210123456','REG-789456','03001234567','John Doe','PK36SCBL0000001123456702','SCBLPKKXXXX','Lahore Main Branch','1234','2025-07-04 12:02:41','2025-07-07 06:16:31');
 /*!40000 ALTER TABLE `business_configurations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -65,6 +66,7 @@ CREATE TABLE `buyers` (
   `byr_type` tinyint unsigned NOT NULL DEFAULT '0',
   `byr_ntn_cnic` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `byr_address` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `byr_province` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `byr_logo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `byr_account_number` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `byr_reg_num` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -86,7 +88,7 @@ CREATE TABLE `buyers` (
 
 LOCK TABLES `buyers` WRITE;
 /*!40000 ALTER TABLE `buyers` DISABLE KEYS */;
-INSERT INTO `buyers` VALUES (1,'ABC Traders',1,'12345-1234567-1','123 Market Street, City','logo.png','12345678901234','REG-987654','03001234567','John Doe','PK12ABCD00000012345678','ABCDPKKA','Main Branch','0012','2025-07-04 12:15:53','2025-07-04 12:15:53'),(2,'SkyPass',1,'478458-6','Address ,Address ,Address ,Address ,Address  Islamabad','1751868785_skypass.png','11224587-dfasfdsad','65f5sd4af-d','0300-5325487','Waheed Ahmed','PAK87458as','fdsaf874-h','ABL','1178','2025-07-07 01:12:30','2025-07-07 01:13:05');
+INSERT INTO `buyers` VALUES (1,'ABC Traders',0,'12345-1234567-1','123 Market Street, City','Isb','logo.png','12345678901234','REG-987654','03001234567','John Doe','PK12ABCD00000012345678','ABCDPKKA','Main Branch','0012','2025-07-04 12:15:53','2025-07-07 06:59:43'),(2,'SkyPass',1,'478458-6','Address ,Address ,Address ,Address ,Address  Islamabad','Rawalpindi','1751868785_skypass.png','11224587-dfasfdsad','65f5sd4af-d','0300-5325487','Waheed Ahmed','PAK87458as','fdsaf874-h','ABL','1178','2025-07-07 01:12:30','2025-07-07 06:44:01');
 /*!40000 ALTER TABLE `buyers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -265,7 +267,7 @@ CREATE TABLE `items` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`item_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -274,6 +276,7 @@ CREATE TABLE `items` (
 
 LOCK TABLES `items` WRITE;
 /*!40000 ALTER TABLE `items` DISABLE KEYS */;
+INSERT INTO `items` VALUES (1,'hs-code','Test Item 1',1000,'19%','PCS','2025-07-07 04:32:43','2025-07-07 04:33:11'),(2,NULL,'Test Item 2',2000,'15%','KG','2025-07-07 05:11:12','2025-07-07 05:11:12');
 /*!40000 ALTER TABLE `items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -349,7 +352,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -358,7 +361,7 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (7,'0001_01_01_000000_create_users_table',1),(8,'0001_01_01_000001_create_cache_table',1),(9,'0001_01_01_000002_create_jobs_table',1),(22,'2025_07_04_120046_create_business_configurations_table',2),(24,'2025_07_04_121405_create_buyers_table',3),(25,'2025_07_07_045332_create_items_table',4),(26,'2025_07_07_050034_create_invoices_table',5),(27,'2025_07_07_050036_create_invoice_details_table',5);
+INSERT INTO `migrations` VALUES (7,'0001_01_01_000000_create_users_table',1),(8,'0001_01_01_000001_create_cache_table',1),(9,'0001_01_01_000002_create_jobs_table',1),(22,'2025_07_04_120046_create_business_configurations_table',2),(24,'2025_07_04_121405_create_buyers_table',3),(25,'2025_07_07_045332_create_items_table',4),(26,'2025_07_07_050034_create_invoices_table',5),(27,'2025_07_07_050036_create_invoice_details_table',5),(28,'2025_07_07_110924_add_bus_province_to_business_configurations_table',6),(29,'2025_07_07_111052_add_byr_province_to_buyers_table',7);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -412,7 +415,7 @@ CREATE TABLE `sessions` (
 
 LOCK TABLES `sessions` WRITE;
 /*!40000 ALTER TABLE `sessions` DISABLE KEYS */;
-INSERT INTO `sessions` VALUES ('E9DUDu3ViElMShlrsAO4VtsaVXXNj66VihzYK89M',2,'127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36','YTo0OntzOjY6Il90b2tlbiI7czo0MDoiYmJYVTdacUFxMnVLSDhpUnNDVG1FMUJiMmdXRWF2WUdUb21oNG5LVSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9kYXNoYm9hcmQiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToyO30=',1751869950);
+INSERT INTO `sessions` VALUES ('KuyvHqTFEbTjhX2Mlm903L4lPMlczkb5ShSWAHs0',2,'127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36','YTo1OntzOjY6Il90b2tlbiI7czo0MDoieWR2bko5MG1MSGRtbGVrYjRYQ2NVQTVma2Zid1ZlZXM0eXJLR0hkdCI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjI3OiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvaXRlbXMiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToyO30=',1751889904),('ZfWWwCBJg2I5hWIMLbozKUHb7pafxrtf6veLDKUp',2,'127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36','YTo1OntzOjY6Il90b2tlbiI7czo0MDoiY3VSQzdEZ2d1RWxidks2UGdXVGxHeW1uZ2t3Y3k1clZSak5xTXhkUSI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjM2OiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYnV5ZXJzL215Um91dGUiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToyO30=',1751888472);
 /*!40000 ALTER TABLE `sessions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -456,4 +459,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-07-07 11:34:14
+-- Dump completed on 2025-07-07 17:09:32

@@ -3,7 +3,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     let toastText = @json(session('message') ?? $errors->first('toast_error'));
     let isError = {{ $errors->has('toast_error') ? 'true' : 'false' }};
-
     Toastify({
         text: (isError ? "❌ " : "✅ ") + toastText,
         duration: 3000,

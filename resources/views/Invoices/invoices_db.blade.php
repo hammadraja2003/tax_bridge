@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <title>{{ config('app.name', 'Tax Bridge') }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
     <!-- Bootstrap & DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
@@ -13,34 +12,28 @@
 <body>
 <div class="container mt-5">
     <h2 class="mb-4">Xero Invoices (Stored in DB)</h2>
-
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     @endif
-
     @if(session('error'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             {{ session('error') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     @endif
-
     <div class="btn-group mb-3">
         {{-- <a href="{{ route('xero.disconnect') }}" class="btn btn-danger">🔌 Disconnect Xero</a> --}}
         <a href="{{ route('xero.connect') }}" class="btn btn-success">🔄 Reconnect Xero</a>
         <a href="{{ route('xero.invoices') }}" class="btn btn-secondary">🔃 Sync Latest Invoices</a>
     </div>
-
     <form action="{{ route('xero.post_to_fbr') }}" method="POST">
         @csrf
-
         <div class="mb-3">
             <button type="submit" class="btn btn-primary">📤 Post Selected to FBR</button>
         </div>
-
         <div class="table-responsive">
             <table id="invoiceTable" class="table table-bordered table-striped">
                 <thead class="table-light">
@@ -126,7 +119,6 @@
             </table>
         </div>
     </form>
-
     <!-- Modals -->
     @foreach ($invoices as $invoice)
         <div class="modal fade" id="itemsModal{{ $invoice->id }}" tabindex="-1" aria-labelledby="itemsModalLabel{{ $invoice->id }}" aria-hidden="true">
@@ -171,25 +163,21 @@
         </div>
     @endforeach
 </div>
-
 <!-- JS CDN -->
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-
 <script>
     $(document).ready(function () {
         $('#invoiceTable').DataTable({
             pageLength: 10,
             responsive: true
         });
-
         $('#checkAll').on('click', function () {
             $('input[name="selected_invoices[]"]').prop('checked', this.checked);
         });
     });
 </script>
-
 </body>
 </html>

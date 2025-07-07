@@ -95,10 +95,8 @@
  <script>
     window.onload = function () {
         const element = document.querySelector('.container');
-
         // Optional: force full width on screen to avoid cut-off
         element.style.width = '100%';
-
         const opt = {
             margin:       [0.3, 0.3, 0.3, 0.3], // top, left, bottom, right (in inches)
             filename:     'invoice-{{ $invoice->invoice_number }}.pdf',
@@ -115,7 +113,6 @@
             },
             pagebreak: { mode: ['avoid-all', 'css', 'legacy'] } // Try to avoid breaking sections
         };
-
         html2pdf().set(opt).from(element).save().then(() => {
             setTimeout(() => {
                 window.print();
@@ -123,18 +120,14 @@
         });
     };
 </script>
-
-
 </head>
 <body>
   <div class="container">
-
     <div class="header">
       <div class="logo">
         <img src="{{ asset('assets/images/logo/secureism_logo.svg') }}" alt="Secureism Logo" style="height: 45px; width: 100%;">
       </div>
     </div>
-
     <div class="top-row">
       <!-- Left Section -->
       <div class="top-section">
@@ -143,14 +136,12 @@
         Office No 3, Mezzanine Floor, Rehman Plaza, Plot No. 75-East,<br>
         Fazal-e-Haq Road, Blue Area, Islamabad.</p>
       </div>
-
       <!-- Middle Section -->
       <div class="top-section">
         <p><strong>Invoice Date:</strong><br>{{ \Carbon\Carbon::parse($invoice->date)->format('d M Y') }}<br>
         <strong>Invoice Number:</strong> {{ $invoice->invoice_number }}<br>
         <strong>Reference:</strong>{{ $invoice->reference }}</p>
       </div>
-
       <!-- Right Section -->
       <div class="top-section" style="text-align: right;">
         <p><strong>SECUREISM (PRIVATE) LIMITED</strong><br>
@@ -189,7 +180,6 @@
             @endforeach
         </tbody>
     </table>
-    
     <div class="totals" style="margin-top: 20px;">
         <table>
             <tr>
@@ -214,7 +204,6 @@
         </table>
     </div>
     <div style="clear: both;"></div>
-
     <div class="due-info">
       <p><strong>Due Date:</strong> {{ \Carbon\Carbon::parse($invoice->due_date)->format('d M Y') }}<br>
       Title: Secureism Private Limited<br>
@@ -224,11 +213,9 @@
       BANK NAME: ABL CHAKLALA SCHEME 3 RAWALPINDI<br>
       BranchCODE7057</p>
     </div>
-
     <div class="payment-advice">
       <h2>PAYMENT ADVICE</h2>
       <div style="display: flex; justify-content: space-between; gap: 40px;">
-        
         <!-- Left: Company Address -->
         <div style="width: 50%;">
           <p><strong>To:</strong> SECUREISM (PRIVATE) LIMITED<br>
@@ -239,7 +226,6 @@
             NTN: 8923980-3
           </p>
         </div>
-
         <!-- Right: Customer & Invoice Details -->
         <div style="width: 50%;">
           <table style="width: 100%; border-collapse: collapse;">
@@ -267,11 +253,9 @@
         </div>
       </div>
     </div>
-
     <div class="footer">
       Company Registration No: 0119999. Registered Office: Attention: SECUREISM (PRIVATE) LIMITED, Innovation & Incubation Floor-3rd F3 Centre of Information & Cyber Security Sector B Zaraj Housing Scheme Islamabad, Islamabad, Islamabad, 46000, Pakistan.
     </div>
-
   </div>
 </body>
 <script>
@@ -284,15 +268,12 @@
       html2canvas:  { scale: 2 },
       jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
     };
-
     // Download as PDF
     html2pdf().set(opt).from(element).save();
-
     // Optional: Print after short delay (wait for download to start)
     setTimeout(() => {
       window.print();
     }, 1000);
   }
 </script>
-
 </html>
