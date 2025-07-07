@@ -21,7 +21,7 @@
                   </a>
               </li>
               <li class="no-sub">
-                  <a class="" href="">
+                  <a class="" href="{{ route('invoice.create') }}">
                   <i class="ti ti-chart-treemap"></i>Create Invoice
                   </a>
               </li>
