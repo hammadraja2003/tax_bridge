@@ -15,7 +15,7 @@
     <div class="card mb-4">
       <div class="card-header">Invoice Info</div>
       <div class="card-body row g-3">
-        <div class="col-md-6">
+        <div class="col-md-3">
             <label class="form-label required">Invoice Type</label>
             <select name="invoiceType" id="invoiceType" class="form-select" required onchange="toggleInvoiceRef()">
                 <option value="">Select Invoice Type</option>
@@ -23,15 +23,15 @@
                 <option value="Debit Note">Debit Note</option>
             </select>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-3">
           <label class="form-label required">Invoice Date</label>
           <input type="date" name="invoiceDate" class="form-control" required />
         </div>
-        <div class="col-md-6" id="invoiceRefWrapper" style="display: none;">
+        <div class="col-md-3" id="invoiceRefWrapper" style="display: none;">
             <label class="form-label">Invoice Ref No (if Debit Note)</label>
             <input type="text" name="invoiceRefNo" id="invoiceRefNo" class="form-control" />
         </div>
-        <div class="col-md-6">
+        <div class="col-md-3">
           <label class="form-label">Scenario ID (Optional)</label>
           <input type="text" name="scenarioId" class="form-control" value="SN001" required />
         </div>
@@ -41,16 +41,16 @@
     <div class="card mb-4">
       <div class="card-header">Seller Info</div>
       <div class="card-body row g-3">
-        <div class="col-md-6">
+        <div class="col-md-4">
           <label class="form-label required">NTN / CNIC</label>
           <input type="hidden" name="seller_id"  value="{{ $seller->bus_config_id }}" />
           <input type="text" name="sellerNTNCNIC" class="form-control"  value="{{ $seller->bus_ntn_cnic }}" required readonly />
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
           <label class="form-label required">Business Name</label>
           <input type="text" name="sellerBusinessName" class="form-control" value="{{ $seller->bus_name }}" required readonly />
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
           <label class="form-label required">Province</label>
           <input type="text" name="sellerProvince" class="form-control" value="{{ $seller->bus_province }}" required readonly />
         </div>
@@ -72,7 +72,7 @@
           </div>
         </div>
     
-        <div class="col-md-6">
+        <div class="col-md-4">
           <label class="form-label required">Select Buyer</label>
           <select id="byr_id" class="form-select" name="byr_id">
             <option value="">-- Choose Buyer --</option>
@@ -82,17 +82,17 @@
           </select>
         </div>
     
-        <div class="col-md-6">
+        <div class="col-md-4">
           <label class="form-label">NTN / CNIC</label>
           <input type="text" name="buyerNTNCNIC" class="form-control optional-field" />
         </div>
     
-        <div class="col-md-6">
+        <div class="col-md-4">
           <label class="form-label">Province</label>
           <input type="text" name="buyerProvince" class="form-control optional-field" />
         </div>
     
-        <div class="col-md-6">
+        <div class="col-md-4">
           <label class="form-label required">Registration Type</label>
           <select name="buyerRegistrationType" id="buyerRegistrationType" class="form-select" required>
             <option value="">-- Select --</option>
@@ -121,17 +121,24 @@
       <div class="card-body row g-3">
         <div class="col-md-4">
           <label>Total Invoice Amount Excluding Tax</label>
-          <input id="totalAmountExcludingTax" class="form-control" readonly value="0" />
+          <input id="totalAmountExcludingTax" name="totalAmountExcludingTax" class="form-control" readonly value="0" />
           
         </div>
         <div class="col-md-4">
           <label>Total Invoice Amount Including Tax</label>
-          <input name="totalAmountIncludingTax" class="form-control" id="totalAmountIncludingTax" value="0">
+          <input id="totalAmountIncludingTax" name="totalAmountIncludingTax" class="form-control" value="0">
         </div>
         <div class="col-md-4">
           <label>Total Sales Tax</label>
-          {{-- <input id="totalTax" class="form-control" readonly value="0" />--}}
-          <input name="totalSalesTax" class="form-control" id="totalSalesTax" value="0"> 
+          <input id="totalSalesTax" name="totalSalesTax" class="form-control"  value="0"> 
+        </div>
+        <div class="col-md-4">
+          <label>Total Further Tax</label>
+          <input id="totalfurtherTax" name="totalfurtherTax" class="form-control"  value="0"> 
+        </div>
+        <div class="col-md-4">
+          <label>Total Extra Tax</label>
+          <input id="totalextraTax" name="totalextraTax" class="form-control"  value="0"> 
         </div>
       </div>
     </div> 
@@ -269,7 +276,6 @@ $(document).ready(function(){
     const id = $(this).val();
     if(!id) return;
     $.get('/buyers/'+id, function(b){
-      // console.log("Buyer loaded", b);
       $('[name=buyerNTNCNIC]').val(b.byr_ntn_cnic);
       $('[name=buyerAddress]').val(b.byr_address);
       $('[name=buyerProvince]').val(b.byr_province);
@@ -305,21 +311,7 @@ $(document).ready(function(){
     $('#submitBtn').toggle($('.item-group').length > 0);
   }
 
-  // function addItem() {
-  //   const $template = $($('#itemTemplate').html());
-  //   // Add Tax Amount field
-  //   const taxField = `
-  //     <div class="col-md-4">
-  //       <label class="form-label">Tax Amount</label>
-  //       <input type="number" name="items[][calculatedTax]" class="form-control" readonly />
-  //     </div>`;
-  //   $template.find('.row.g-3 .col-12.text-end').before(taxField);
-  //   $('#itemsContainer').append($template);
-  //   updateSubmitButton();
-  // }
-
-  let itemIndex = 0; // Place this at the top of your script
-
+let itemIndex = 0;
 function addItem() {
   const $template = $($('#itemTemplate').html());
 
@@ -430,6 +422,37 @@ function addItem() {
     });
   });
 </script>
+
+<script>
+  function parseFloatSafe(val) {
+    return parseFloat(val) || 0;
+  }
+
+  function updateTaxTotalsFromItems() {
+    let totalfurtherTax = 0;
+    let totalextraTax = 0;
+
+    $('.item-group').each(function () {
+      const $row = $(this);
+      const furtherTax = parseFloatSafe($row.find('[name$="[furtherTax]"]').val());
+      const extraTax = parseFloatSafe($row.find('[name$="[extraTax]"]').val());
+
+      totalfurtherTax += furtherTax;
+      totalextraTax += extraTax;
+    });
+
+    $('#totalfurtherTax').val(totalfurtherTax.toFixed(2));
+    $('#totalextraTax').val(totalextraTax.toFixed(2));
+  }
+
+  $(document).ready(function () {
+    $('#itemsContainer').on('input', '[name$="[furtherTax]"], [name$="[extraTax]"]', function () {
+      updateTaxTotalsFromItems();
+    });
+  });
+</script>
+
+
 
 
 

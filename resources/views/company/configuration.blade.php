@@ -28,6 +28,46 @@
           </div>
         </div>
 
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label class="form-label required">Contact Number</label>
+            <input type="text" name="bus_contact_num" placeholder="Enter a Contact Number" class="form-control" value="{{ old('bus_contact_num', $config->bus_contact_num ?? '') }}" required>
+            <div class="invalid-feedback">
+                Please Enter Contact Number.
+            </div>
+            @error('bus_contact_num') 
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div> 
+            @enderror
+          </div>
+          <div class="col-md-4">
+            <label class="form-label required">Contact Person</label>
+            <input type="text" name="bus_contact_person" class="form-control" placeholder="Enter a Contact Person" value="{{ old('bus_contact_person', $config->bus_contact_person ?? '') }}" required>
+            <div class="invalid-feedback">
+                Please Enter Contact Person.
+            </div>
+            @error('bus_contact_person') 
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div> 
+            @enderror
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label required">Province</label>
+            <input type="text" name="bus_province" class="form-control" required value="{{ old('bus_province', $config->bus_province ?? '') }}">
+            <div class="invalid-feedback">
+                Please Enter Province.
+            </div>
+            @error('bus_province') 
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div> 
+            @enderror
+        </div>
+        </div>
+
         <div class="mb-3">
           <label class="form-label required">Address</label>
           <textarea name="bus_address" class="form-control" placeholder="Enter a Addres" required>{{ old('bus_address', $config->bus_address ?? '') }}</textarea>
@@ -40,83 +80,10 @@
             </div> 
           @enderror
         </div>
-
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label class="form-label required">Bank Account Number</label>
-                <input type="text" name="bus_account_number" class="form-control"  placeholder="Enter a Account Number" value="{{ old('bus_account_number', $config->bus_account_number ?? '') }}" required>
-                <div class="invalid-feedback">
-                    Please Enter Account Number.
-                </div>
-                
-                @error('bus_reg_num') 
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div> 
-                @enderror
-            </div>
-            <div class="col-md-6">
-                <label class="form-label required">Province</label>
-                <input type="text" name="bus_province" class="form-control" required value="{{ old('bus_province', $config->bus_province ?? '') }}">
-                <div class="invalid-feedback">
-                    Please Enter Province.
-                </div>
-                @error('bus_province') 
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div> 
-                @enderror
-            </div>
-        </div>
-      
+        
         <div class="row mb-3">
           <div class="col-md-6">
-            <label class="form-label required">Contact Number</label>
-            <input type="text" name="bus_contact_num" placeholder="Enter a Contact Number" class="form-control" value="{{ old('bus_contact_num', $config->bus_contact_num ?? '') }}" required>
-            <div class="invalid-feedback">
-                Please Enter Contact Number.
-            </div>
-            @error('bus_contact_num') 
-            <div class="invalid-feedback">
-                {{ $message }}
-            </div> 
-            @enderror
-          </div>
-          <div class="col-md-6">
-            <label class="form-label required">Contact Person</label>
-            <input type="text" name="bus_contact_person" class="form-control" placeholder="Enter a Contact Person" value="{{ old('bus_contact_person', $config->bus_contact_person ?? '') }}" required>
-            <div class="invalid-feedback">
-                Please Enter Contact Person.
-            </div>
-            @error('bus_contact_person') 
-            <div class="invalid-feedback">
-                {{ $message }}
-            </div> 
-            @enderror
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <div class="col-md-6">
-            <label class="form-label required">IBAN</label>
-            <input type="text" name="bus_IBAN" class="form-control" placeholder="Enter a IBAN" value="{{ old('bus_IBAN', $config->bus_IBAN ?? '') }}" required>
-            <div class="invalid-feedback">
-                Please Enter IBAN.
-            </div>
-            @error('bus_IBAN') 
-            <div class="invalid-feedback">
-                {{ $message }}
-            </div> 
-            @enderror
-          </div>
-          <div class="col-md-6">
-            <label class="form-label">SWIFT Code</label>
-            <input type="text" name="bus_swift_code" placeholder="Enter a SWIFT Code" class="form-control" value="{{ old('bus_swift_code', $config->bus_swift_code ?? '') }}">
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-md-6">
-            <label class="form-label required">Branch Name</label>
+            <label class="form-label required">Bank Branch Name</label>
             <input type="text" name="bus_acc_branch_name" placeholder="Enter a Branch Name" class="form-control" value="{{ old('bus_acc_branch_name', $config->bus_acc_branch_name ?? '') }}" required>
             <div class="invalid-feedback">
                 Please Enter Branch Name.
@@ -128,7 +95,7 @@
             @enderror
           </div>
           <div class="col-md-6">
-            <label class="form-label required">Branch Code</label>
+            <label class="form-label required">Bank Branch Code</label>
             <input type="text" name="bus_acc_branch_code" placeholder="Enter a Branch Code" class="form-control" value="{{ old('bus_acc_branch_code', $config->bus_acc_branch_code ?? '') }}" required>
             <div class="invalid-feedback">
                 Please Enter Branch Code.
@@ -138,6 +105,38 @@
                 {{ $message }}
             </div> 
             @enderror
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label class="form-label required">Bank Account Number</label>
+            <input type="text" name="bus_account_number" class="form-control"  placeholder="Enter a Account Number" value="{{ old('bus_account_number', $config->bus_account_number ?? '') }}" required>
+            <div class="invalid-feedback">
+                Please Enter Account Number.
+            </div>
+            
+            @error('bus_reg_num') 
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div> 
+            @enderror
+        </div>
+          <div class="col-md-4">
+            <label class="form-label required">IBAN</label>
+            <input type="text" name="bus_IBAN" class="form-control" placeholder="Enter a IBAN" value="{{ old('bus_IBAN', $config->bus_IBAN ?? '') }}" required>
+            <div class="invalid-feedback">
+                Please Enter IBAN.
+            </div>
+            @error('bus_IBAN') 
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div> 
+            @enderror
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">SWIFT Code</label>
+            <input type="text" name="bus_swift_code" placeholder="Enter a SWIFT Code" class="form-control" value="{{ old('bus_swift_code', $config->bus_swift_code ?? '') }}">
           </div>
         </div>
 
