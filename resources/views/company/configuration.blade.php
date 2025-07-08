@@ -43,7 +43,7 @@
 
         <div class="row mb-3">
             <div class="col-md-6">
-                <label class="form-label required">Account Number</label>
+                <label class="form-label required">Bank Account Number</label>
                 <input type="text" name="bus_account_number" class="form-control"  placeholder="Enter a Account Number" value="{{ old('bus_account_number', $config->bus_account_number ?? '') }}" required>
                 <div class="invalid-feedback">
                     Please Enter Account Number.
