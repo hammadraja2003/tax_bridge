@@ -100,7 +100,7 @@
                         <table id="projectTableT" class="table table-striped table-bordered">
                             <thead>
                                 <tr class="app-sort">
-                                    <th>Date</th>
+                                    <th>Invoice Date</th>
                                     <th>Type</th>
                                     <th>Buyer</th>
                                     <th>Seller</th>
@@ -155,48 +155,50 @@
                             </div>
                         </div>
 
-                        @foreach ($invoices as $invoice)
-                            <div class="modal fade" id="itemsModal{{ $invoice->invoice_id }}" tabindex="-1" aria-labelledby="itemsModalLabel{{ $invoice->invoice_id }}" aria-hidden="true">
-                                <div class="modal-dialog modal-lg modal-dialog-scrollable">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">Items for Invoice #{{ $invoice->fbr_invoice_number }}</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            @if($invoice->details->count())
+                    @foreach ($invoices as $invoice)
+                        <div class="modal fade" id="itemsModal{{ $invoice->invoice_id }}" tabindex="-1" aria-labelledby="itemsModalLabel{{ $invoice->invoice_id }}" aria-hidden="true">
+                            <div class="modal-dialog modal-xl modal-dialog-scrollable">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Items for Invoice #{{ $invoice->fbr_invoice_number }}</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        @if($invoice->details->count())
+                                            <div class="table-responsive">
                                                 <table class="table table-sm table-bordered">
                                                     <thead class="table-secondary">
-                                                    <tr>
-                                                        <th>Description</th>
-                                                        <th>Quantity</th>
-                                                        <th>Unit Amount</th>
-                                                        <th>Line Amount</th>
-                                                        <th>Item Code</th>
-                                                        <th>Tax Amount</th>
-                                                    </tr>
+                                                        <tr>
+                                                            <th>Quantity</th>
+                                                            <th>Unit Amount</th>
+                                                            <th>Line Amount</th>
+                                                            <th>Item Code</th>
+                                                            <th>Tax Amount</th>
+                                                            <th>totalAmountExcludingTax</th>
+                                                        </tr>
                                                     </thead>
                                                     <tbody>
-                                                    @foreach ($invoice->details as $item)
-                                                        <tr>
-                                                            <td>{{ $item->description }}</td>
-                                                            <td>{{ $item->quantity }}</td>
-                                                            <td>{{ number_format($item->unit_amount, 2) }}</td>
-                                                            <td>{{ number_format($item->line_amount, 2) }}</td>
-                                                            <td>{{ $item->item_code }}</td>
-                                                            <td>{{ number_format($item->tax_amount, 2) }}</td>
-                                                        </tr>
-                                                    @endforeach
+                                                        @foreach ($invoice->details as $item)
+                                                            <tr>
+                                                                <td>{{ $item->quantity }}</td>
+                                                                <td>{{ number_format($item->unit_amount, 2) }}</td>
+                                                                <td>{{ number_format($item->line_amount, 2) }}</td>
+                                                                <td>{{ $item->item_code }}</td>
+                                                                <td>{{ number_format($item->tax_amount, 2) }}</td>
+                                                                <td>{{ number_format($invoice->totalAmountExcludingTax, 2) }}</td>
+                                                            </tr>
+                                                        @endforeach
                                                     </tbody>
                                                 </table>
-                                            @else
-                                                <p>No items found for this invoice.</p>
-                                            @endif
-                                        </div>
+                                            </div>
+                                        @else
+                                            <p>No items found for this invoice.</p>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
-                            @endforeach
+                        </div>
+                    @endforeach
 
                         
                     </div>
