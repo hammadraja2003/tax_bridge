@@ -66,8 +66,8 @@
         <div class="app-content">
             @include('layouts.partials.header')
             <main>
-                @yield('content')
                 @include('layouts.partials.errors')
+                @yield('content')
             <!-- modal -->
                 <div class="modal" tabindex="-1" id="welcomeCard" data-bs-backdrop="static">
                     <div class="modal-dialog modal-dialog-centered">

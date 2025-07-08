@@ -2,7 +2,7 @@
 @section('content')
 @include('layouts.partials.errors')
 <div class="container">
-  <h2 class="mb-4 text-center">Edit Item</h2>
+  <h2 class="mb-4 text-center">Edit Services</h2>
   @if(session('success')) 
     <div class="alert alert-success">{{ session('success') }}</div> 
   @endif
@@ -49,13 +49,18 @@
             <div class="invalid-feedback">{{ $message }}</div>
           @enderror
         </div>
-        <div class="col-2 mt-3 ms-auto text-end">
-          <div class="mb-3">
-            <button type="submit" class="btn btn-primary w-100">Update Item</button>
+          <div class="text-end">
+            <button type="submit" class="btn btn-primary">Update Item</button>
           </div>
-        </div>
+      
       </div>
     </div>
   </form>
 </div>
+<style>
+    .required::after {
+        content: ' *';
+        color: red;
+    }
+</style>
 @endsection

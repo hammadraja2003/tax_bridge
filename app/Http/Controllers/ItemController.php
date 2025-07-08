@@ -26,7 +26,7 @@ class ItemController extends Controller
             'item_hs_code' => 'nullable|string|max:20',
         ]);
         Item::create($request->all());
-        return redirect()->route('items.index')->with('success', 'Item created successfully.');
+        return redirect()->route('items.index')->with('message', 'Item created successfully.');
     }
     public function edit($id)
     {
@@ -44,12 +44,12 @@ class ItemController extends Controller
         ]);
         $item = Item::findOrFail($id);
         $item->update($request->all());
-        return redirect()->route('items.index')->with('success', 'Item updated successfully.');
+        return redirect()->route('items.index')->with('message', 'Item updated successfully.');
     }
     public function delete($id)
     {
         $item = Item::findOrFail($id);
         $item->delete();
-        return redirect()->route('items.index')->with('success', 'Item deleted successfully.');
+        return redirect()->route('items.index')->with('message', 'Item deleted successfully.');
     }
 }

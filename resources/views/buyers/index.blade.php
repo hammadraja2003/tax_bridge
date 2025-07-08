@@ -28,8 +28,8 @@
                 scrollbar-color: #c1c1c1 #f1f1f1;
             }
             .table_setting {
-                margin-right: calc(-6.5 * var(--bs-gutter-x));
-                margin-left: calc(-6.5 * var(--bs-gutter-x));
+                margin-right: calc(-7.5 * var(--bs-gutter-x));
+                margin-left: calc(-7.5 * var(--bs-gutter-x));
             }
             .btn-outline-success:hover .text-success {
                 color: #fff !important;

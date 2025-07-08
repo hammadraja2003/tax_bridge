@@ -2,7 +2,7 @@
 @section('content')
 @include('layouts.partials.errors')
 <div class="container">
-  <h2 class="mb-4 text-center">Company Configuration</h2>
+  <h2 class="mb-4 text-center">Configuration</h2>
   <form class="app-form needs-validation" novalidate method="POST" action="{{ route('company.configuration.save') }}" enctype="multipart/form-data">
     @csrf
     <div class="card mb-4">
@@ -42,28 +42,33 @@
         </div>
 
         <div class="row mb-3">
-          <div class="col-md-6">
-            <label class="form-label required">Account Number</label>
-            <input type="text" name="bus_account_number" class="form-control"  placeholder="Enter a Account Number" value="{{ old('bus_account_number', $config->bus_account_number ?? '') }}" required>
-            <div class="invalid-feedback">
-                Please Enter Account Number.
+            <div class="col-md-6">
+                <label class="form-label required">Account Number</label>
+                <input type="text" name="bus_account_number" class="form-control"  placeholder="Enter a Account Number" value="{{ old('bus_account_number', $config->bus_account_number ?? '') }}" required>
+                <div class="invalid-feedback">
+                    Please Enter Account Number.
+                </div>
+                
+                @error('bus_reg_num') 
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div> 
+                @enderror
             </div>
-            <div class="col-md-6 mb-3">
-                <label>Province *</label>
+            <div class="col-md-6">
+                <label class="form-label required">Province</label>
                 <input type="text" name="bus_province" class="form-control" required value="{{ old('bus_province', $config->bus_province ?? '') }}">
-            </div>            
-            <div class="col-md-6 mb-3">
-                <label>Account Number</label>
-                <input type="text" name="bus_account_number" class="form-control" value="{{ old('bus_account_number', $config->bus_account_number ?? '') }}">
+                <div class="invalid-feedback">
+                    Please Enter Province.
+                </div>
+                @error('bus_province') 
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div> 
+                @enderror
             </div>
-            @error('bus_reg_num') 
-            <div class="invalid-feedback">
-                {{ $message }}
-            </div> 
-            @enderror
-          </div>
         </div>
-
+      
         <div class="row mb-3">
           <div class="col-md-6">
             <label class="form-label required">Contact Number</label>
@@ -105,7 +110,7 @@
             @enderror
           </div>
           <div class="col-md-6">
-            <label class="form-label required">SWIFT Code</label>
+            <label class="form-label">SWIFT Code</label>
             <input type="text" name="bus_swift_code" placeholder="Enter a SWIFT Code" class="form-control" value="{{ old('bus_swift_code', $config->bus_swift_code ?? '') }}">
             <div class="invalid-feedback" required>
                 Please Enter SWIFT Code.
@@ -134,14 +139,6 @@
           <div class="col-md-6">
             <label class="form-label">Branch Code</label>
             <input type="text" name="bus_acc_branch_code" placeholder="Enter a Branch Code" class="form-control" value="{{ old('bus_acc_branch_code', $config->bus_acc_branch_code ?? '') }}" required>
-            <div class="invalid-feedback">
-                Please Enter Branch Code.
-            </div>
-            @error('bus_acc_branch_code') 
-            <div class="invalid-feedback">
-                {{ $message }}
-            </div> 
-            @enderror
           </div>
         </div>
 
