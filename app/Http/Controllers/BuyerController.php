@@ -29,9 +29,7 @@ class BuyerController extends Controller
             'byr_contact_num' => 'nullable|string|max:20',
             'byr_contact_person' => 'nullable|string|max:255',
             'byr_IBAN' => 'nullable|string|max:255',
-            'byr_swift_code' => 'nullable|string|max:255',
             'byr_acc_branch_name' => 'nullable|string|max:255',
-            'byr_acc_branch_code' => 'nullable|string|max:255',
             'byr_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // ← this line added
         ]);
         $data = $request->all();
@@ -63,9 +61,7 @@ class BuyerController extends Controller
             'byr_contact_num' => 'nullable|string|max:20',
             'byr_contact_person' => 'nullable|string|max:255',
             'byr_IBAN' => 'nullable|string|max:255',
-            'byr_swift_code' => 'nullable|string|max:255',
             'byr_acc_branch_name' => 'nullable|string|max:255',
-            'byr_acc_branch_code' => 'nullable|string|max:255',
             'byr_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
         $buyer = Buyer::findOrFail($id);

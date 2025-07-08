@@ -23,9 +23,7 @@ class CompanyController extends Controller
             'bus_contact_num' => 'nullable|string|max:20',
             'bus_contact_person' => 'nullable|string|max:255',
             'bus_IBAN' => 'nullable|string|max:255',
-            'bus_swift_code' => 'nullable|string|max:255',
             'bus_acc_branch_name' => 'nullable|string|max:255',
-            'bus_acc_branch_code' => 'nullable|string|max:255',
             'bus_logo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
         $data = $request->all();

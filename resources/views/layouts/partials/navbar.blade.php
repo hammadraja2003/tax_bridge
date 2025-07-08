@@ -29,9 +29,9 @@
                     <i class="fa-solid fa-brands fa-connectdevelop fa-fw"></i>Settings
                     </a>
                     <ul class="collapse" id="maps">
-                        <li><a href="{{ route('company.configuration') }}">Company Configuration</a></li>
+                        <li><a href="{{ route('company.configuration') }}">Configuration</a></li>
                         <li><a href="{{ route('buyers.index') }}">Buyers</a></li>
-                        <li><a href="{{ route('items.index') }}">Items</a></li>
+                        <li><a href="{{ route('items.index') }}">Services</a></li>
                     </ul>
                 </li>
              <!-- Hidden logout form -->
