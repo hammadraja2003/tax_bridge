@@ -43,7 +43,7 @@
               <div class="col-xxl-12">
                 <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Buyers Details</h5>
+                    <h5 class="mb-0">Client Details</h5>
                     <a href="{{ url()->previous() }}" class="btn btn-outline-dark"><i class="fa-solid fa-step-backward fa-fw me-1"></i>Back</a>
                 </div>
                   <div class="card-body p-0">
@@ -99,7 +99,7 @@
                                         <td style="white-space: normal; max-width: 200px;">{{ $buyer->byr_address }}</td>
                                         <td>
                                             <a href="{{ route('buyers.edit', Crypt::encryptString($buyer->byr_id)) }}" class="btn btn-xs btn-outline-success"><i class="ti ti-edit f-s-20 text-success"></i></a>
-                                            <form action="{{ route('buyers.destroy', $buyer->byr_id) }}" method="POST" style="display:inline;">
+                                            <form action="{{ route('buyers.delete', $buyer->byr_id) }}" method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="button" class="btn btn-outline-danger btn-xs delete-button">

@@ -154,7 +154,7 @@
 
 <script src="{{asset('assets/js/advance_table.js')}}"></script>
 <!-- apexcharts js-->
-{{-- <script src="{{asset('assets/vendor/apexcharts/apexcharts.min.js')}}"></script> --}}
+<script src="{{asset('assets/vendor/apexcharts/apexcharts.min.js')}}"></script>
 <!-- List js -->
 <script src="{{asset('assets/vendor/listJs/list-jquery.min.js')}}"></script>
 <script src="{{asset('assets/vendor/listJs/list.min.js')}}"></script>
@@ -167,7 +167,7 @@
 <!-- js -->
 <script src="{{asset('assets/js/sweet_alert.js')}}"></script>
 <!-- scripts end-->
-{{-- <script src="{{asset('assets/js/column.js')}}"></script> --}}
+<script src="{{asset('assets/js/column.js')}}"></script>
 <script src="{{asset('assets/vendor/apexcharts/column/dayjs.min.js')}}"></script>
 <script src="{{asset('assets/vendor/apexcharts/column/quarterOfYear.min.js')}}"></script>
 </html>

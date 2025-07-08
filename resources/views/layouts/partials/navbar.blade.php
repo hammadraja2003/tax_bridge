@@ -30,7 +30,7 @@
                     </a>
                     <ul class="collapse" id="maps">
                         <li><a href="{{ route('company.configuration') }}">Configuration</a></li>
-                        <li><a href="{{ route('buyers.index') }}">Buyers</a></li>
+                        <li><a href="{{ route('buyers.index') }}">Clients</a></li>
                         <li><a href="{{ route('items.index') }}">Items / Services</a></li>
                     </ul>
                 </li>
