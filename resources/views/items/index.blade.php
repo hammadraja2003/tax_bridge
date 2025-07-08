@@ -104,9 +104,12 @@
                                                 <td class="date">{{ $item->item_uom }}</td>
                                                 <td>
                                                     <a href="{{ route('items.edit', $item->item_id) }}" class="btn btn-xs btn-outline-success"><i class="ti ti-edit f-s-20 text-success"></i></a>
-                                                    <form action="{{ route('items.delete', $item->item_id) }}" method="POST" style="display:inline;">
+                                                    <form action="{{ route('items.delete', $item->item_id) }}" method="POST" class="d-inline delete-form">
                                                         @csrf
-                                                        <button onclick="return confirm('Delete this item?')" class="btn btn-outline-danger btn-xs"><i class="ti ti-trash f-s-20"></i></button>
+                                                        @method('DELETE')
+                                                        <button type="button" class="btn btn-outline-danger btn-xs delete-button">
+                                                            <i class="ti ti-trash f-s-20"></i>
+                                                        </button>
                                                     </form>
                                                 </td>
                                             </tr>
@@ -124,5 +127,27 @@
         </div>
     </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.delete-button').forEach(button => {
+        button.addEventListener('click', function (e) {
+            const form = this.closest('form');
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This action cannot be undone!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#e3342f',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, delete it!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+});
+</script>
 @endsection
-

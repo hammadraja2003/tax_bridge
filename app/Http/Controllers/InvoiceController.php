@@ -15,10 +15,6 @@ class InvoiceController extends Controller
 {
     public function create()
     {
-        // return view('invoices.create', [
-        //     'buyers' => Buyer::all(),
-        //     'sellers' => BusinessConfiguration::all()
-        // ]);
         $seller = BusinessConfiguration::first(); // Single config
         $buyers = Buyer::all();
         $items = Item::all();
@@ -39,6 +35,33 @@ class InvoiceController extends Controller
     public function createNewInvoice(Request $request)
     {
         $data = $request->all();
+        // Remove empty/incomplete item rows
+        $filteredItems = array_filter($data['items'], function ($item) {
+            return isset($item['item_id'], $item['quantity'], $item['totalValues']) &&
+                $item['item_id'] !== null &&
+                $item['quantity'] !== null &&
+                $item['totalValues'] !== null;
+        });
+
+        $data['items'] = array_values($filteredItems); // Reindex for Laravel validation
+
+        // Now validate
+        $request->merge(['items' => $data['items']]); // Update request before validation
+        $request->validate([
+            'invoiceType' => 'required|string',
+            'invoiceDate' => 'required|date',
+            'seller_id' => 'required|integer|exists:business_configurations,bus_config_id',
+            'byr_id' => 'required|integer|exists:buyers,byr_id',
+            'buyerRegistrationType' => 'required|string',
+            // 'items' => 'required|array|min:1',
+            'items.*.item_id' => 'required|integer',
+            'items.*.quantity' => 'required|numeric|min:0.01',
+            'items.*.totalValues' => 'required|numeric',
+            'items.*.valueSalesExcludingST' => 'required|numeric',
+            'items.*.SalesTaxApplicable' => 'required|numeric',
+            'items.*.SalesTaxWithheldAtSource' => 'required|numeric',
+            'items.*.saleType' => 'required|string',
+        ]);
         DB::beginTransaction();
         try {
             // Step 1: Create the Invoice
@@ -47,12 +70,15 @@ class InvoiceController extends Controller
                 'invoice_date' => $data['invoiceDate'],
                 'scenario_id' => $data['scenarioId'] ?? null,
                 'invoice_ref_no' => $data['invoiceRefNo'] ?? null,
-                'seller_id' => $data['seller_id'], // From hidden input or session
-                'buyer_id' => $data['buyer_id'],   // From hidden input or dropdown
+                'seller_id' => $data['seller_id'],
+                'buyer_id' => $data['byr_id'],
                 'is_posted_to_fbr' => 0,
             ]);
             // Step 2: Create Invoice Details
             foreach ($data['items'] as $item) {
+                // if (!isset($item['quantity'], $item['item_id'], $item['totalValues'])) {
+                //     continue; // skip invalid or incomplete item
+                // }
                 InvoiceDetail::create([
                     'invoice_id' => $invoice->invoice_id,
                     'item_id' => $item['item_id'] ?? null,

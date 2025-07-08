@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('quantity');
             $table->decimal('total_value', 12, 2);
             $table->decimal('value_excl_tax', 12, 2);
-            $table->decimal('retail_price', 12, 2)->default(0);
+            $table->decimal('retail_price', 10, 2)->nullable();
             $table->decimal('sales_tax_applicable', 12, 2);
             $table->decimal('sales_tax_withheld', 12, 2)->default(0);
             $table->decimal('extra_tax', 12, 2)->default(0);

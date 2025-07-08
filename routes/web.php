@@ -43,14 +43,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/buyers/store', [BuyerController::class, 'store'])->name('buyers.store');
     Route::get('/buyers/edit/{id}', [BuyerController::class, 'edit'])->name('buyers.edit');
     Route::post('/buyers/update/{id}', [BuyerController::class, 'update'])->name('buyers.update');
-    Route::post('/buyers/delete/{id}', [BuyerController::class, 'delete'])->name('buyers.delete');
+    Route::delete('/buyers/delete/{id}', [BuyerController::class, 'delete'])->name('buyers.delete');
     //Items
     Route::get('/items', [ItemController::class, 'index'])->name('items.index');
     Route::get('/items/create', [ItemController::class, 'create'])->name('items.create');
     Route::post('/items/store', [ItemController::class, 'store'])->name('items.store');
     Route::get('/items/edit/{id}', [ItemController::class, 'edit'])->name('items.edit');
     Route::post('/items/update/{id}', [ItemController::class, 'update'])->name('items.update');
-    Route::post('/items/delete/{id}', [ItemController::class, 'delete'])->name('items.delete');
+    Route::delete('/items/delete/{id}', [ItemController::class, 'delete'])->name('items.delete');
 });
 /*
 |--------------------------------------------------------------------------

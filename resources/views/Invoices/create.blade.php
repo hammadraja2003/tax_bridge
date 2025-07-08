@@ -43,6 +43,7 @@
       <div class="card-body row g-3">
         <div class="col-md-6">
           <label class="form-label required">NTN / CNIC</label>
+          <input type="hidden" name="seller_id"  value="{{ $seller->bus_config_id }}" />
           <input type="text" name="sellerNTNCNIC" class="form-control"  value="{{ $seller->bus_ntn_cnic }}" required readonly />
         </div>
         <div class="col-md-6">
@@ -60,40 +61,6 @@
       </div>
     </div>
     <!-- Buyer Info -->
-    {{-- <div class="card mb-4">
-      <div class="card-header">Buyer Info</div>
-      <div class="card-body row g-3">
-        <div class="col-md-6">
-          <label class="form-label required">Select Buyer</label>
-          <select id="buyerSelect" class="form-select">
-            <option value="">-- Choose Buyer --</option>
-            @foreach($buyers as $b)
-              <option value="{{ $b->byr_id }}">{{ $b->byr_name }}</option>
-            @endforeach
-          </select>
-        </div>
-        <div class="col-md-6">
-          <label class="form-label">NTN / CNIC</label>
-          <input type="text" name="buyerNTNCNIC" class="form-control" />
-        </div>
-        <div class="col-md-6">
-          <label class="form-label">Province</label>
-          <input type="text" name="buyerProvince" class="form-control" />
-        </div>
-        <div class="col-md-6">
-          <label class="form-label required">Registration Type</label>
-          <select name="buyerRegistrationType" class="form-select" required>
-            <option value="">-- Select --</option>
-            <option value="Registered">Registered</option>
-            <option value="Unregistered">Unregistered</option>
-          </select>
-        </div>
-        <div class="col-md-12">
-          <label class="form-label">Address</label>
-          <textarea name="buyerAddress" class="form-control"></textarea>
-        </div>
-      </div>
-    </div> --}}
     <div class="card mb-4">
       <div class="card-header">
         Buyer Info
@@ -107,7 +74,7 @@
     
         <div class="col-md-6">
           <label class="form-label required">Select Buyer</label>
-          <select id="buyerSelect" class="form-select" name="buyerSelect">
+          <select id="byr_id" class="form-select" name="byr_id">
             <option value="">-- Choose Buyer --</option>
             @foreach($buyers as $b)
               <option value="{{ $b->byr_id }}">{{ $b->byr_name }}</option>
@@ -227,7 +194,7 @@
       
       <div class="col-md-4">
         <label class="form-label">Retail Price <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="If the item is price-controlled (e.g., FMCG), the notified retail price goes here. For services or custom billing, leave as 0."></i></label>
-        <input type="number" name="items[][fixedNotifiedValueOrRetailPrice]" class="form-control" required />
+        <input type="number" name="items[][fixedNotifiedValueOrRetailPrice]" class="form-control"  />
       </div>
       <div class="col-md-4">
         <label class="form-label required">Sales Tax Applicable <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Numeric value of applicable sales tax %."></i></label>
@@ -298,7 +265,7 @@
 </script>
 <script>
 $(document).ready(function(){
-  $('#buyerSelect').change(function(){
+  $('#byr_id').change(function(){
     const id = $(this).val();
     if(!id) return;
     $.get('/buyers/'+id, function(b){
@@ -338,18 +305,46 @@ $(document).ready(function(){
     $('#submitBtn').toggle($('.item-group').length > 0);
   }
 
-  function addItem() {
-    const $template = $($('#itemTemplate').html());
-    // Add Tax Amount field
-    const taxField = `
-      <div class="col-md-4">
-        <label class="form-label">Tax Amount</label>
-        <input type="number" name="items[][calculatedTax]" class="form-control" readonly />
-      </div>`;
-    $template.find('.row.g-3 .col-12.text-end').before(taxField);
-    $('#itemsContainer').append($template);
-    updateSubmitButton();
-  }
+  // function addItem() {
+  //   const $template = $($('#itemTemplate').html());
+  //   // Add Tax Amount field
+  //   const taxField = `
+  //     <div class="col-md-4">
+  //       <label class="form-label">Tax Amount</label>
+  //       <input type="number" name="items[][calculatedTax]" class="form-control" readonly />
+  //     </div>`;
+  //   $template.find('.row.g-3 .col-12.text-end').before(taxField);
+  //   $('#itemsContainer').append($template);
+  //   updateSubmitButton();
+  // }
+
+  let itemIndex = 0; // Place this at the top of your script
+
+function addItem() {
+  const $template = $($('#itemTemplate').html());
+
+  // Inject Tax Amount field before the last column
+  const taxField = `
+    <div class="col-md-4">
+      <label class="form-label">Tax Amount</label>
+      <input type="number" name="items[${itemIndex}][calculatedTax]" class="form-control" readonly />
+    </div>`;
+  $template.find('.row.g-3 .col-12.text-end').before(taxField);
+
+  // Fix name attributes to include the current itemIndex
+  $template.find('input, select, textarea').each(function () {
+    const name = $(this).attr('name');
+    if (name) {
+      const newName = name.replace('items[][', `items[${itemIndex}][`);
+      $(this).attr('name', newName);
+    }
+  });
+
+  $('#itemsContainer').append($template);
+  itemIndex++; // Increment index after use
+  updateSubmitButton();
+}
+
 
   function calculateRow($row) {
     const qtyField = $row.find('[name$="[quantity]"]');

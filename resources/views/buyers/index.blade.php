@@ -83,7 +83,6 @@
                                     <tr>
                                         <td>
                                             @if($buyer->byr_logo)
-                                            
                                                 <img src="{{ asset('uploads/buyer_images/' . $buyer->byr_logo) }}" alt="Logo" width="50" style="max-width: 200px;">
                                                 
                                             @else
@@ -99,13 +98,18 @@
                                         <td>{{ $buyer->byr_account_number }}</td>
                                         <td style="white-space: normal; max-width: 200px;">{{ $buyer->byr_address }}</td>
                                         <td>
-                                            <a href="{{ route('buyers.edit', $buyer->byr_id) }}" class="btn btn-xs btn-outline-success"><i class="ti ti-edit f-s-20 text-success"></i></a>
-                                            <form action="" method="POST" style="display:inline;">
+                                            <a href="{{ route('buyers.edit', $buyer->byr_id) }}" class="btn btn-xs btn-outline-success">
+                                                <i class="ti ti-edit f-s-20 text-success"></i>
+                                            </a>
+                                            <form action="{{ route('buyers.delete', $buyer->byr_id) }}" method="POST" class="d-inline delete-form">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button class="btn btn-outline-danger btn-xs" onclick="return confirm('Are you sure?')"><i class="ti ti-trash f-s-20"></i></button>
+                                                <button type="button" class="btn btn-outline-danger btn-xs delete-button">
+                                                    <i class="ti ti-trash f-s-20"></i>
+                                                </button>
                                             </form>
                                         </td>
+                                        
                                     </tr>
                                 @empty
                                     <tr>
@@ -128,4 +132,28 @@
             <!-- List Js Table end -->
     </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.delete-button').forEach(button => {
+        button.addEventListener('click', function (e) {
+            const form = this.closest('form');
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This action cannot be undone!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#e3342f',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, delete it!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+});
+</script>
+    
 @endsection
