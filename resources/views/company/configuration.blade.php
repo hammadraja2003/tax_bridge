@@ -128,8 +128,16 @@
             @enderror
           </div>
           <div class="col-md-6">
-            <label class="form-label">Branch Code</label>
-            <input type="text" name="bus_acc_branch_code" placeholder="Enter a Branch Code" class="form-control" value="{{ old('bus_acc_branch_code', $config->bus_acc_branch_code ?? '') }}">
+            <label class="form-label required">Branch Code</label>
+            <input type="text" name="bus_acc_branch_code" placeholder="Enter a Branch Code" class="form-control" value="{{ old('bus_acc_branch_code', $config->bus_acc_branch_code ?? '') }}" required>
+            <div class="invalid-feedback">
+                Please Enter Branch Code.
+            </div>
+            @error('bus_acc_branch_code') 
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div> 
+            @enderror
           </div>
         </div>
 

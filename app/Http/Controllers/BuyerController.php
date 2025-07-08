@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Buyer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class BuyerController extends Controller
 {
@@ -30,6 +31,7 @@ class BuyerController extends Controller
             'byr_contact_person' => 'nullable|string|max:255',
             'byr_IBAN' => 'nullable|string|max:255',
             'byr_acc_branch_name' => 'nullable|string|max:255',
+            'byr_acc_branch_code' => 'nullable|string|max:255',
             'byr_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // ← this line added
         ]);
         $data = $request->all();
@@ -45,7 +47,8 @@ class BuyerController extends Controller
     }
     public function edit($id)
     {
-        $buyer = Buyer::findOrFail($id);
+        $decryptedId = Crypt::decryptString($id);
+        $buyer = Buyer::findOrFail($decryptedId);
         return view('buyers.edit', compact('buyer'));
     }
     public function update(Request $request, $id)
@@ -62,6 +65,7 @@ class BuyerController extends Controller
             'byr_contact_person' => 'nullable|string|max:255',
             'byr_IBAN' => 'nullable|string|max:255',
             'byr_acc_branch_name' => 'nullable|string|max:255',
+            'byr_acc_branch_code' => 'nullable|string|max:255',
             'byr_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
         $buyer = Buyer::findOrFail($id);
@@ -86,6 +90,6 @@ class BuyerController extends Controller
     {
         $buyer = Buyer::findOrFail($id);
         $buyer->delete();
-        return redirect()->route('buyers.index')->with('success', 'Buyer deleted successfully.');
+        return redirect()->route('buyers.index')->with('message', 'Buyer deleted successfully.');
     }
 }

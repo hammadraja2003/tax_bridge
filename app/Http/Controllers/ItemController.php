@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use App\Models\Item;
 
 class ItemController extends Controller
@@ -29,7 +30,8 @@ class ItemController extends Controller
     }
     public function edit($id)
     {
-        $item = Item::findOrFail($id);
+        $decryptedId = Crypt::decryptString($id);
+        $item = Item::findOrFail($decryptedId);
         return view('items.edit', compact('item'));
     }
     public function update(Request $request, $id)

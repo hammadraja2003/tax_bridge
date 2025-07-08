@@ -24,6 +24,7 @@ class CompanyController extends Controller
             'bus_contact_person' => 'nullable|string|max:255',
             'bus_IBAN' => 'nullable|string|max:255',
             'bus_acc_branch_name' => 'nullable|string|max:255',
+            'bus_acc_branch_code' => 'nullable|string|max:255',
             'bus_logo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
         $data = $request->all();
@@ -46,7 +47,4 @@ class CompanyController extends Controller
         }
         return redirect()->route('company.configuration')->with('success', $msg);
     }
-
-
-   
 }

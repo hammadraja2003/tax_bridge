@@ -103,7 +103,7 @@
                                                 <td class="contact">{{ $item->item_tax_rate }}</td>
                                                 <td class="date">{{ $item->item_uom }}</td>
                                                 <td>
-                                                    <a href="{{ route('items.edit', $item->item_id) }}" class="btn btn-xs btn-outline-success"><i class="ti ti-edit f-s-20 text-success"></i></a>
+                                                    <a href="{{ route('items.edit', Crypt::encryptString($item->item_id)) }}" class="btn btn-xs btn-outline-success"><i class="ti ti-edit f-s-20 text-success"></i></a>
                                                     <form action="{{ route('items.delete', $item->item_id) }}" method="POST" style="display:inline;">
                                                         @csrf
                                                         <button onclick="return confirm('Delete this item?')" class="btn btn-outline-danger btn-xs"><i class="ti ti-trash f-s-20"></i></button>

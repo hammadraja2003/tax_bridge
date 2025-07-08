@@ -2,7 +2,7 @@
 @section('content')
 @include('layouts.partials.errors')
 <div class="container">
-  <h2 class="mb-4 text-center">Edit Services</h2>
+  <h2 class="mb-4 text-center">Edit Item / Services</h2>
   @if(session('success')) 
     <div class="alert alert-success">{{ session('success') }}</div> 
   @endif

@@ -43,7 +43,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/buyers/store', [BuyerController::class, 'store'])->name('buyers.store');
     Route::get('/buyers/edit/{id}', [BuyerController::class, 'edit'])->name('buyers.edit');
     Route::post('/buyers/update/{id}', [BuyerController::class, 'update'])->name('buyers.update');
-    Route::post('/buyers/delete/{id}', [BuyerController::class, 'delete'])->name('buyers.delete');
+    Route::delete('/buyers/{id}', [BuyerController::class, 'delete'])->name('buyers.destroy');
     //Items
     Route::get('/items', [ItemController::class, 'index'])->name('items.index');
     Route::get('/items/create', [ItemController::class, 'create'])->name('items.create');
