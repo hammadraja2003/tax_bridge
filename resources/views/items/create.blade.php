@@ -22,8 +22,8 @@
           <input type="number" step="0.01" name="item_price" class="form-control" required />
         </div>
         <div class="col-md-6">
-          <label class="form-label required">Tax Rate (e.g. 18%)</label>
-          <input type="text" name="item_tax_rate" class="form-control" required />
+          <label class="form-label required">Tax Rate in % (e.g. 18)</label>
+          <input type="number" name="item_tax_rate" class="form-control" required />
         </div>
         <div class="col-md-6">
           <label class="form-label required">Unit of Measure (UOM)</label>

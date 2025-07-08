@@ -39,12 +39,17 @@
 <link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/simplebar/simplebar.css')}}">
  <!-- Toatify css-->
  <link rel="stylesheet" href="{{asset('assets/vendor/notifications/toastify.min.css')}}">
- <!-- latest jquery-->
-<script src="{{asset('assets/js/jquery-3.6.3.min.js')}}"></script>
     <!-- Data Table css-->
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/datatable/jquery.dataTables.min.css')}}">
+ <link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/datatable/jquery.dataTables.min.css')}}">
+  <!-- latest jquery-->
+<script src="{{asset('assets/js/jquery-3.6.3.min.js')}}"></script>
+<!-- data table-->
+<script src="{{asset('assets/vendor/datatable/jquery.dataTables.min.js')}}"></script>
+
 <link rel="preload" as="style" href="{{asset('build/assets/style-BVr_C8ru.css')}}" />
 <link rel="stylesheet" href="{{asset('build/assets/style-BVr_C8ru.css')}}" /><!-- css end-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
 </head>
     <body>
     <div class="app-wrapper">
@@ -146,11 +151,10 @@
 <script src="{{asset('assets/vendor/cleavejs/cleave.min.js')}}"></script>
 <!-- Glight js -->
 <script src="{{asset('assets/vendor/glightbox/glightbox.min.js')}}"></script>
-<!-- data table-->
-<script src="{{asset('assets/vendor/datatable/jquery.dataTables.min.js')}}"></script>
+
 <script src="{{asset('assets/js/advance_table.js')}}"></script>
 <!-- apexcharts js-->
-<script src="{{asset('assets/vendor/apexcharts/apexcharts.min.js')}}"></script>
+{{-- <script src="{{asset('assets/vendor/apexcharts/apexcharts.min.js')}}"></script> --}}
 <!-- List js -->
 <script src="{{asset('assets/vendor/listJs/list-jquery.min.js')}}"></script>
 <script src="{{asset('assets/vendor/listJs/list.min.js')}}"></script>
@@ -163,7 +167,7 @@
 <!-- js -->
 <script src="{{asset('assets/js/sweet_alert.js')}}"></script>
 <!-- scripts end-->
-<script src="{{asset('assets/js/column.js')}}"></script>
+{{-- <script src="{{asset('assets/js/column.js')}}"></script> --}}
 <script src="{{asset('assets/vendor/apexcharts/column/dayjs.min.js')}}"></script>
 <script src="{{asset('assets/vendor/apexcharts/column/quarterOfYear.min.js')}}"></script>
 </html>

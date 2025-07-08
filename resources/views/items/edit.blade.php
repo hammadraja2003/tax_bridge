@@ -34,8 +34,8 @@
           @enderror
         </div>
         <div class="col-md-6">
-          <label class="form-label required">Tax Rate (e.g. 18%)</label>
-          <input type="text" name="item_tax_rate" value="{{ old('item_tax_rate', $item->item_tax_rate) }}" class="form-control" required />
+          <label class="form-label required">Tax Rate in % (e.g. 18)</label>
+          <input type="number" name="item_tax_rate" value="{{ old('item_tax_rate', $item->item_tax_rate) }}" class="form-control" required />
           <div class="invalid-feedback">Please enter tax rate.</div>
           @error('item_tax_rate')
             <div class="invalid-feedback">{{ $message }}</div>

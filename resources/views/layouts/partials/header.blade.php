@@ -95,7 +95,7 @@
                                   <div class="card-body p-0">
                                     <div class="head-container app-scroll">
                                       <div class="head-box">
-                                        <img src="assets/images/ecommerce/10.png" alt="cart"
+                                        <img src="{{ asset('assets/images/ecommerce/10.png') }}" alt="cart"
                                           class="h-50 me-2 bg-light-secondary p-1 b-r-100">
                                         <div class="flex-grow-1">
                                           <a class="mb-0 text-dark f-w-500" href="product_details.html"> Headphone
@@ -113,7 +113,7 @@
                                         </div>
                                       </div>
                                       <div class="head-box">
-                                        <img src="assets/images/ecommerce/07.png" alt="cart"
+                                        <img src="{{ asset('assets/images/ecommerce/07.png') }}" alt="cart"
                                           class="h-50 object-fit-cover me-2 bg-light-dark p-1 b-r-100">
                                         <div class="flex-grow-1">
                                           <a class="mb-0 text-dark f-w-500" href="product_details.html"> Smart Watch</a>
@@ -130,7 +130,7 @@
                                         </div>
                                       </div>
                                       <div class="head-box">
-                                        <img src="assets/images/ecommerce/02.png" alt="cart"
+                                        <img src="{{ asset('assets/images/ecommerce/02.png') }}" alt="cart"
                                           class="h-50 object-fit-cover me-2 bg-light-dark p-1 b-r-100">
                                         <div class="flex-grow-1">
                                           <a class="mb-0 text-dark f-w-500" href="product_details.html">Shoes Black</a>
@@ -147,7 +147,7 @@
                                         </div>
                                       </div>
                                       <div class="head-box ">
-                                        <img src="assets/images/ecommerce/04.png" alt="cart"
+                                        <img src="{{ asset('assets/images/ecommerce/04.png') }}" alt="cart"
                                           class="h-50 object-fit-cover me-2 bg-light-dark p-1 b-r-100">
                                         <div class="flex-grow-1">
                                           <a class="mb-0 text-dark f-w-500" href="product_details.html"> Sports
@@ -165,10 +165,10 @@
                                         </div>
                                       </div>
                                       <div class="hidden-massage py-4 px-3">
-                                        <img src="assets/images/icons/cart.png" alt="cart" class="w-50 h-50 mb-3">
+                                        <img src="{{ asset('assets/images/icons/cart.png') }}" alt="cart" class="w-50 h-50 mb-3">
                                         <div>
                                           <h6 class="mb-0">Your Cart is Empty</h6>
-                                          <p class="text-secondary mb-0">Add some items :)</p>
+                                          <p class="text-secondary mb-0">Add some items :</p>
                                           <a class="btn btn-light-primary btn-xs mt-2" href="product_details.html">Shop
                                             Now</a>
                                         </div>
@@ -201,7 +201,7 @@
                                     <div class="head-container app-scroll">
                                       <div class="head-box">
                                         <span class="bg-secondary h-35 w-35 d-flex-center b-r-50 position-relative">
-                                          <img src="assets/images/ai_avtar/6.jpg" alt="" class="img-fluid b-r-50">
+                                          <img src="{{ asset('assets/images/ai_avtar/6.jpg') }}" alt="" class="img-fluid b-r-50">
                                           <span
                                             class="position-absolute bottom-0 end-0 p-1 bg-secondary border border-light rounded-circle"></span>
                                         </span>
@@ -229,7 +229,7 @@
                                       </div>
                                       <div class="head-box">
                                         <span class="bg-secondary h-35 w-35 d-flex-center b-r-50 position-relative">
-                                          <img src="assets/images/ai_avtar/4.jpg" alt="" class="img-fluid b-r-50">
+                                          <img src="{{ asset('assets/images/ai_avtar/4.jpg') }}" alt="" class="img-fluid b-r-50">
                                           <span
                                             class="position-absolute bottom-0 end-0 p-1 bg-success border border-light rounded-circle"></span>
                                         </span>
@@ -256,7 +256,7 @@
                                         </div>
                                       </div>
                                       <div class="hidden-massage py-4 px-3">
-                                        <img src="assets/images/icons/bell.png" class="w-50 h-50 mb-3 mt-2" alt="">
+                                        <img src="{{ asset('assets/images/icons/bell.png') }}" class="w-50 h-50 mb-3 mt-2" alt="">
                                         <div>
                                           <h6 class="mb-0">Notification Not Found</h6>
                                           <p class="text-secondary">When you have any notifications added here,will

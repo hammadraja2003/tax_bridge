@@ -2,7 +2,7 @@
       <div class="app-logo" style="background-color:#bc202e;">
           <a class="logo d-inline-block" href="index.html">
               <img src="{{ asset('assets/images/logo/secureism_logo_admin.png') }}" style="margin-bottom:4px;width:185px;" alt="#" class="dark-logo">
-              <img src="assets/images/logo/1.png" alt="#" class="light-logo">
+              <img src="{{ asset('assets/images/logo/1.png') }}" alt="#" class="light-logo">
           </a>
           <span class="bg-light-light toggle-semi-nav">
             <i class="ti ti-chevrons-right f-s-20"></i>
