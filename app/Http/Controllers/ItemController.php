@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use App\Models\Item;
 
 class ItemController extends Controller
@@ -19,18 +20,18 @@ class ItemController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'item_description' => 'required|string|max:255',
+            'item_description' => 'required|string',
             'item_price' => 'required|numeric',
             'item_tax_rate' => 'required|string|max:10',
             'item_uom' => 'required|string|max:50',
-            'item_hs_code' => 'nullable|string|max:20',
         ]);
         Item::create($request->all());
         return redirect()->route('items.index')->with('message', 'Item created successfully.');
     }
     public function edit($id)
     {
-        $item = Item::findOrFail($id);
+        $decryptedId = Crypt::decryptString($id);
+        $item = Item::findOrFail($decryptedId);
         return view('items.edit', compact('item'));
     }
     public function update(Request $request, $id)

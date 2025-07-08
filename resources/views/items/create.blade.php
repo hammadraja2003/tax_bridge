@@ -1,15 +1,15 @@
 @extends('layouts.admin')
 @section('content')
 <div class="container">
-  <h2 class="mb-4 text-center">Add New Item</h2>
+  <h2 class="mb-4 text-center">Add New Item / Services</h2>
 
   <form class="app-form needs-validation" novalidate method="POST" action="{{ route('items.store') }}">
     @csrf
     <div class="card mb-4">
       <div class="card-body row g-3">
           <div class="col-md-6">
-            <label class="form-label required">Item Description</label>
-            <input type="text" name="item_description" class="form-control" placeholder="Enter a Item Description" required />
+            <label class="form-label required">Services Description</label>
+            <textarea name="item_description" class="form-control" placeholder="Enter a Item Description" required></textarea>
             @error('item_description')
               <div class="invalid-feedback">{{ $message }}</div>
             @enderror

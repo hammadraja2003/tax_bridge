@@ -3,59 +3,91 @@
 
 <style>
    table {
-            table-layout: auto;
-            min-width: 1200px; /* Adjust as per column count and content */
-        }
-    table td,
-        table th {
-            white-space: nowrap;
-            padding: 0.5rem 1rem;
-            vertical-align: middle;
-        }
-        .app-scroll::-webkit-scrollbar {
-                height: 10px; /* Controls the thickness of horizontal scrollbar */
-            }
-            .app-scroll::-webkit-scrollbar-track {
-                background: #f1f1f1;
-            }
-            .app-scroll::-webkit-scrollbar-thumb {
-                background-color: #c1c1c1;
-                border-radius: 10px;
-                border: 2px solid #f1f1f1;
-            }
-            /* Firefox support */
-            .app-scroll {
-                scrollbar-width: thin;
-                scrollbar-color: #c1c1c1 #f1f1f1;
-            }
-            .table_setting {
-                margin-right: calc(-0.5 * var(--bs-gutter-x));
-                margin-left: calc(-0.5 * var(--bs-gutter-x));
-            }
-            .btn-outline-success:hover .text-success {
-                color: #fff !important;
-            } 
-            #projectTableT th,
-                #projectTableT td {
-                    padding: 6px 10px !important; /* reduce vertical & horizontal padding */
-                    white-space: nowrap;
-                }
+        table-layout: fixed;
+        width: 100%;
+        min-width: 1000px;
+    }
 
-                #projectTableT td.employee {
-                    white-space: normal !important; /* allow wrapping only for description */
-                    max-width: 250px;
-                }
+    table th, table td {
+        white-space: nowrap;
+        padding: 0.4rem 0.6rem;
+        vertical-align: middle;
+        font-size: 13px;
+        text-align: center;
+    }
 
-                #projectTableT {
-                    border-collapse: collapse;
-                    width: 100%;
-                }
+    .table_setting {
+        margin-right: calc(-0.5 * var(--bs-gutter-x));
+        margin-left: calc(-0.5 * var(--bs-gutter-x));
+    }
 
-                /* Optional: reduce font size slightly */
-                #projectTableT td, 
-                #projectTableT th {
-                    font-size: 14px;
-                }
+    /* Scrollbar Styling */
+    .app-scroll {
+        overflow-x: auto;
+        scrollbar-width: thin;
+        scrollbar-color: #c1c1c1 #f1f1f1;
+    }
+
+    .app-scroll::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    .app-scroll::-webkit-scrollbar-thumb {
+        background-color: #c1c1c1;
+        border-radius: 6px;
+    }
+
+    /* Column Widths */
+    #projectTableT th:nth-child(1),
+    #projectTableT td:nth-child(1) {
+        width: 300px; /* Description */
+        text-align: left;
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    #projectTableT th:nth-child(2),
+    #projectTableT td:nth-child(2) {
+        width: 80px; /* HS Code */
+    }
+
+    #projectTableT th:nth-child(3),
+    #projectTableT td:nth-child(3) {
+        width: 80px; /* Price */
+    }
+
+    #projectTableT th:nth-child(4),
+    #projectTableT td:nth-child(4) {
+        width: 80px; /* Tax Rate */
+    }
+
+    #projectTableT th:nth-child(5),
+    #projectTableT td:nth-child(5) {
+        width: 80px; /* UOM */
+    }
+
+    #projectTableT th:nth-child(6),
+    #projectTableT td:nth-child(6) {
+        width: 100px; /* Actions */
+    }
+
+    .btn-xs {
+        padding: 2px 6px;
+        font-size: 13px;
+    }
+
+    .text-ellipsis {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        display: inline-block;
+        width: 100%;
+    }
+
+    .employee {
+        max-height: 4.5em;
+        overflow: hidden;
+    }
 </style>
 
 <div class="container">
@@ -70,7 +102,6 @@
                         </a>
                     </div>
                     <div class="card-body p-0">
-                      
                         <div id="myTable">
                             <div class="list-table-header d-flex justify-content-between align-items-center px-3 py-2">
                                 <a href="{{ route('items.create') }}" class="btn btn-outline-secondary">
@@ -82,8 +113,8 @@
                                     </div>
                                 </form>
                             </div>
-                            <div class="app-scroll overflow-auto" style="max-width: 100%;">
-                                <table id="projectTableT" class="app-scroll table-responsive">
+                            <div class="app-scroll">
+                                <table id="projectTableT" class="table table-striped table-bordered">
                                     <thead>
                                         <tr>
                                             <th>Description</th>
@@ -97,14 +128,18 @@
                                     <tbody class="list" id="t-data">
                                         @foreach($items as $item)
                                             <tr>
-                                                <td class="employee" style="white-space: normal; max-width: 200px;">{{ $item->item_description }}</td>
-                                                <td class="email">{{ $item->item_hs_code }}</td>
-                                                <td class="email">{{ $item->item_price }}</td>
-                                                <td class="contact">{{ $item->item_tax_rate }}</td>
-                                                <td class="date">{{ $item->item_uom }}</td>
+                                                <td class="employee">{{ $item->item_description }}</td>
+                                                <td>{{ $item->item_hs_code }}</td>
+                                                <td>{{ $item->item_price }}</td>
+                                                <td>{{ $item->item_tax_rate }}</td>
+                                                <td>{{ $item->item_uom }}</td>
                                                 <td>
                                                     <a href="{{ route('items.edit', $item->item_id) }}" class="btn btn-xs btn-outline-success"><i class="ti ti-edit f-s-20 text-success"></i></a>
                                                     <form action="{{ route('items.delete', $item->item_id) }}" method="POST" class="d-inline delete-form">
+                                                    <a href="{{ route('items.edit', Crypt::encryptString($item->item_id)) }}" class="btn btn-outline-success btn-xs me-1">
+                                                        <i class="ti ti-edit"></i>
+                                                    </a>
+                                                    <form action="{{ route('items.delete', $item->item_id) }}" method="POST" style="display:inline;">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="button" class="btn btn-outline-danger btn-xs delete-button">
@@ -117,11 +152,17 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="list-pagination">
-                                <ul class="pagination"></ul>
+                            <div class="d-flex justify-content-between align-items-center px-3 py-2 small text-muted">
+                                <div id="table-count-info">
+                                    Showing 0 to 0 of 0 entries
+                                </div>
+                                <div class="list-pagination">
+                                    <ul class="pagination mb-0"></ul>
+                                </div>
                             </div>
-                        </div> <!-- myTable -->
-                    </div> <!-- card-body -->
+                        </div>
+                    </div>
+                   
                 </div>
             </div>
         </div>

@@ -95,11 +95,17 @@
         </div>
         <div class="col-md-6">
           <label class="form-label">SWIFT Code</label>
-          <input type="text" name="byr_swift_code" placeholder="Enter a SWIFT Code" class="form-control" required />
+          <input type="text" name="byr_swift_code" placeholder="Enter a SWIFT Code" class="form-control" />
         </div>
         <div class="col-md-6">
-          <label class="form-label">Branch Code</label>
-          <input type="text" name="byr_acc_branch_code" placeholder="Enter a Branch Code" class="form-control" required />
+          <label class="form-label required">Branch Code</label>
+          <input type="text" name="byr_acc_branch_code" placeholder="Enter a Branch Code" class="form-control" required/>
+          <div class="invalid-feedback">
+                Please Enter Branch Code.
+            </div>
+            @error('byr_acc_branch_code')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
         </div>
         <div class="col-md-6">
           <label class="form-label required">Branch Name</label>

@@ -98,16 +98,15 @@
                                         <td>{{ $buyer->byr_account_number }}</td>
                                         <td style="white-space: normal; max-width: 200px;">{{ $buyer->byr_address }}</td>
                                         <td>
-                                            <a href="{{ route('buyers.edit', $buyer->byr_id) }}" class="btn btn-xs btn-outline-success">
-                                                <i class="ti ti-edit f-s-20 text-success"></i>
-                                            </a>
-                                            <form action="{{ route('buyers.delete', $buyer->byr_id) }}" method="POST" class="d-inline delete-form">
+                                            <a href="{{ route('buyers.edit', Crypt::encryptString($buyer->byr_id)) }}" class="btn btn-xs btn-outline-success"><i class="ti ti-edit f-s-20 text-success"></i></a>
+                                            <form action="{{ route('buyers.destroy', $buyer->byr_id) }}" method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="button" class="btn btn-outline-danger btn-xs delete-button">
                                                     <i class="ti ti-trash f-s-20"></i>
                                                 </button>
                                             </form>
+
                                         </td>
                                         
                                     </tr>
