@@ -16,7 +16,7 @@
             <div class="invalid-feedback">Please enter item description.</div>
           </div>
           <div class="col-md-6">
-            <label class="form-label">HS Code</label>
+            <label class="form-label">HS Code <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Harmonized System Code — used for customs classification. Required for manufacturer-cum-retailers."></i></label>
             <input type="text" name="item_hs_code" placeholder="Enter a HS Code" class="form-control" />
           </div>
           <div class="col-md-6">
@@ -28,15 +28,15 @@
             <div class="invalid-feedback">Please enter Price.</div>
           </div>
           <div class="col-md-6">
-            <label class="form-label required">Tax Rate (e.g. 18%)</label>
-            <input type="text" name="item_tax_rate" class="form-control"  placeholder="Enter a ax Rate" required />
+            <label class="form-label required">Tax Rate in % (e.g. 18)</label>
+            <input type="number" name="item_tax_rate" class="form-control"  placeholder="Enter a ax Rate" required />
             @error('item_tax_rate')
               <div class="invalid-feedback">{{ $message }}</div>
             @enderror
             <div class="invalid-feedback">Please enter Tax Rate.</div>
           </div>
           <div class="col-md-6">
-            <label class="form-label required">Unit of Measure (UOM)</label>
+            <label class="form-label required">Unit of Measure (UOM) <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Unit of Measure. E.g. Units, Boxes, Kg, or in this case Hours."></i></label>
             <input type="text" name="item_uom" class="form-control" placeholder="Enter a Unit of Measure" required />
             @error('item_uom')
               <div class="invalid-feedback">{{ $message }}</div>

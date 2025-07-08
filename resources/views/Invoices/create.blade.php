@@ -19,7 +19,7 @@
             <label class="form-label required">Invoice Type</label>
             <select name="invoiceType" id="invoiceType" class="form-select" required onchange="toggleInvoiceRef()">
                 <option value="">Select Invoice Type</option>
-                <option value="Sale Invoice">Sale Invoice</option>
+                <option value="Sales Invoice">Sales Invoice</option>
                 <option value="Debit Note">Debit Note</option>
             </select>
         </div>
@@ -311,96 +311,6 @@ $(document).ready(function(){
   });
 });
 </script>
-
-{{-- <script>
-  function parseFloatSafe(value) {
-    const num = parseFloat(value);
-    return isNaN(num) ? 0 : num;
-  }
-
-  function updateSubmitButton() {
-    $('#submitBtn').toggle($('.item-group').length > 0);
-  }
-
-  function addItem() {
-    const $template = $($('#itemTemplate').html());
-    $('#itemsContainer').append($template);
-    updateSubmitButton();
-  }
-
-  function calculateRow($row) {
-    const qty = parseFloatSafe($row.find('[name$="[quantity]"]').val());
-    const itemPrice = parseFloatSafe($row.find('[name$="[item_price]"]').val());
-    const taxRate = parseFloatSafe($row.find('[name$="[SalesTaxApplicable]"]').val());
-
-    const totalExclTax = qty * itemPrice;
-    const taxAmount = totalExclTax * (taxRate / 100);
-    const totalInclTax = totalExclTax + taxAmount;
-
-    $row.find('[name$="[totalValues]"]').val(totalInclTax.toFixed(2));
-    $row.find('[name$="[valueSalesExcludingST]"]').val(totalExclTax.toFixed(2));
-  }
-
-  function updateTotals() {
-    let totalAmountExcludingTax = 0;
-    let totalAmountIncludingTax = 0;
-    let totalTax = 0;
-
-    $('.item-group').each(function () {
-      const $row = $(this);
-      const exclVal = parseFloatSafe($row.find('[name$="[valueSalesExcludingST]"]').val());
-      const totalVal = parseFloatSafe($row.find('[name$="[totalValues]"]').val());
-
-      totalAmountExcludingTax += exclVal;
-      totalAmountIncludingTax += totalVal;
-      totalTax += (totalVal - exclVal);
-    });
-
-    $('#totalAmountExcludingTax').val(totalAmountExcludingTax.toFixed(2));
-    $('#totalAmountIncludingTax').val(totalAmountIncludingTax.toFixed(2));
-    $('#totalSalesTax').val(totalTax.toFixed(2));
-  }
-
-  $(document).ready(function () {
-    // Initial Item
-    addItem();
-
-    // Add item on click
-    $(document).on('click', '.add-item', function () {
-      addItem();
-    });
-
-    // Remove item
-    $(document).on('click', '.remove-item', function () {
-      $(this).closest('.item-group').remove();
-      updateSubmitButton();
-      updateTotals();
-    });
-
-    // On item selection, autofill fields
-    $(document).on('change', '.item-select', function () {
-      const $row = $(this).closest('.item-group');
-      const opt = $(this).find('option:selected');
-
-      $row.find('[name$="[hsCode]"]').val(opt.data('hs') || '');
-      $row.find('[name$="[rate]"]').val(opt.data('tax') || '');
-      $row.find('[name$="[uoM]"]').val(opt.data('uom') || '');
-      $row.find('[name$="[productDescription]"]').val(opt.data('description') || '');
-      $row.find('[name$="[item_price]"]').val(opt.data('price') || '');
-      $row.find('[name$="[SalesTaxApplicable]"]').val(opt.data('tax') || '');
-
-      calculateRow($row);
-      updateTotals();
-    });
-
-    // Trigger on input for recalculation
-    $(document).on('input', '[name$="[quantity]"], [name$="[item_price]"], [name$="[SalesTaxApplicable]"]', function () {
-      const $row = $(this).closest('.item-group');
-      calculateRow($row);
-      updateTotals();
-    });
-  });
-</script> --}}
 
 <script>
   function parseFloatSafe(value) {

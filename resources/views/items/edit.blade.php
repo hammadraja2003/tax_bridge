@@ -19,7 +19,7 @@
           @enderror
         </div>
         <div class="col-md-6">
-          <label class="form-label">HS Code</label>
+          <label class="form-label">HS Code <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Harmonized System Code — used for customs classification. Required for manufacturer-cum-retailers."></i></label>
           <input type="text" name="item_hs_code" value="{{ old('item_hs_code', $item->item_hs_code) }}" class="form-control" />
           @error('item_hs_code')
             <div class="invalid-feedback">{{ $message }}</div>
@@ -42,7 +42,7 @@
           @enderror
         </div>
         <div class="col-md-6">
-          <label class="form-label required">Unit of Measure (UOM)</label>
+          <label class="form-label required">Unit of Measure (UOM) <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Unit of Measure. E.g. Units, Boxes, Kg, or in this case Hours."></i></label>
           <input type="text" name="item_uom" value="{{ old('item_uom', $item->item_uom) }}" class="form-control" required />
           <div class="invalid-feedback">Please enter unit of measure.</div>
           @error('item_uom')
