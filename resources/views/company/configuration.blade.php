@@ -112,17 +112,8 @@
           <div class="col-md-6">
             <label class="form-label">SWIFT Code</label>
             <input type="text" name="bus_swift_code" placeholder="Enter a SWIFT Code" class="form-control" value="{{ old('bus_swift_code', $config->bus_swift_code ?? '') }}">
-            <div class="invalid-feedback" required>
-                Please Enter SWIFT Code.
-            </div>
-            @error('bus_swift_code') 
-            <div class="invalid-feedback">
-                {{ $message }}
-            </div> 
-            @enderror
           </div>
         </div>
-
         <div class="row mb-3">
           <div class="col-md-6">
             <label class="form-label required">Branch Name</label>
@@ -138,7 +129,7 @@
           </div>
           <div class="col-md-6">
             <label class="form-label">Branch Code</label>
-            <input type="text" name="bus_acc_branch_code" placeholder="Enter a Branch Code" class="form-control" value="{{ old('bus_acc_branch_code', $config->bus_acc_branch_code ?? '') }}" required>
+            <input type="text" name="bus_acc_branch_code" placeholder="Enter a Branch Code" class="form-control" value="{{ old('bus_acc_branch_code', $config->bus_acc_branch_code ?? '') }}">
           </div>
         </div>
 

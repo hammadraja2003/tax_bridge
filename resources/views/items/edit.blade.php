@@ -21,9 +21,6 @@
         <div class="col-md-6">
           <label class="form-label">HS Code <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Harmonized System Code — used for customs classification. Required for manufacturer-cum-retailers."></i></label>
           <input type="text" name="item_hs_code" value="{{ old('item_hs_code', $item->item_hs_code) }}" class="form-control" />
-          @error('item_hs_code')
-            <div class="invalid-feedback">{{ $message }}</div>
-          @enderror
         </div>
         <div class="col-md-6">
           <label class="form-label required">Price</label>

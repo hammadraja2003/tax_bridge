@@ -8,7 +8,7 @@
     <div class="card mb-4">
       <div class="card-body row g-3">
           <div class="col-md-6">
-            <label class="form-label required">Item Description</label>
+            <label class="form-label required">Services Description</label>
             <input type="text" name="item_description" class="form-control" placeholder="Enter a Item Description" required />
             @error('item_description')
               <div class="invalid-feedback">{{ $message }}</div>

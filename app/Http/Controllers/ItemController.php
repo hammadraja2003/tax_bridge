@@ -19,11 +19,10 @@ class ItemController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'item_description' => 'required|string|max:255',
+            'item_description' => 'required|string',
             'item_price' => 'required|numeric',
             'item_tax_rate' => 'required|string|max:10',
             'item_uom' => 'required|string|max:50',
-            'item_hs_code' => 'nullable|string|max:20',
         ]);
         Item::create($request->all());
         return redirect()->route('items.index')->with('message', 'Item created successfully.');
