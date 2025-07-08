@@ -135,7 +135,6 @@ class InvoiceController extends Controller
                     'sroItemSerialNo' => $item['sroItemSerialNo'] ?? '',
                 ];
             }
-            dd($payload);
             // Step 4: Send to FBR API
             // $response = Http::withHeaders([
             //     'Authorization' => 'Bearer YOUR_FBR_TOKEN_HERE',
@@ -143,14 +142,14 @@ class InvoiceController extends Controller
             // ])->post('https://gw.fbr.gov.pk/di_data/v1/di/postinvoicedata', $payload);
             // $responseData = $response->json();
             // // Step 5: Update invoice with FBR response
-            // $invoice->update([
-            //     'fbr_invoice_number' => $responseData['invoiceNumber'] ?? null,
-            //     'is_posted_to_fbr' => 1,
-            //     'response_status' => $responseData['validationResponse']['status'] ?? 'Unknown',
-            //     'response_message' => $responseData['validationResponse']['error'] ?? '',
-            // ]);
+            $invoice->update([
+                'fbr_invoice_number' => $responseData['invoiceNumber'] ?? null,
+                'is_posted_to_fbr' => 1,
+                'response_status' => $responseData['validationResponse']['status'] ?? 'Unknown',
+                'response_message' => $responseData['validationResponse']['error'] ?? '',
+            ]);
             DB::commit();
-            return back()->with('success', 'Invoice successfully posted to FBR.');
+            return redirect()->route('invoices.index')->with('message', 'Invoice successfully posted to FBR.');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', 'Error: ' . $e->getMessage());

@@ -20,7 +20,7 @@ SET time_zone = "+00:00";
 --
 -- Database: `tax_bridge`
 --
-
+USE tax_bridge;
 -- --------------------------------------------------------
 
 --
@@ -169,13 +169,13 @@ CREATE TABLE `invoice_details` (
   `quantity` int(11) NOT NULL,
   `total_value` decimal(12,2) NOT NULL,
   `value_excl_tax` decimal(12,2) NOT NULL,
-  `retail_price` decimal(12,2) NOT NULL DEFAULT 0.00,
+  `retail_price` decimal(12,2) NULL,
   `sales_tax_applicable` decimal(12,2) NOT NULL,
   `sales_tax_withheld` decimal(12,2) NOT NULL DEFAULT 0.00,
-  `extra_tax` decimal(12,2) NOT NULL DEFAULT 0.00,
-  `further_tax` decimal(12,2) NOT NULL DEFAULT 0.00,
-  `fed_payable` decimal(12,2) NOT NULL DEFAULT 0.00,
-  `discount` decimal(12,2) NOT NULL DEFAULT 0.00,
+  `extra_tax` decimal(12,2)  NULL DEFAULT 0.00,
+  `further_tax` decimal(12,2)  NULL DEFAULT 0.00,
+  `fed_payable` decimal(12,2)  NULL DEFAULT 0.00,
+  `discount` decimal(12,2)  NULL DEFAULT 0.00,
   `sale_type` varchar(255) NOT NULL,
   `sro_schedule_no` varchar(50) DEFAULT NULL,
   `sro_item_serial_no` varchar(50) DEFAULT NULL,
