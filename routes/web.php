@@ -36,6 +36,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     //Invoices
     Route::get('/invoices', [InvoiceController::class, 'index'])->name('invoices.index');
     Route::get('/invoices/create', [InvoiceController::class, 'create'])->name('invoices.create');
+    Route::get('/invoices/print', [InvoiceController::class, 'print'])->name('xero.print');
     Route::post('/create-new-invoice', [InvoiceController::class, 'createNewInvoice'])->name('create-new-invoice');
     //Buyers
     Route::get('/buyers', [BuyerController::class, 'index'])->name('buyers.index');

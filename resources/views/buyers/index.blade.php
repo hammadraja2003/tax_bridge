@@ -2,31 +2,33 @@
 @section('content')
 <style>
         table {
-            table-layout: auto;
-            min-width: 1200px; /* Adjust as per column count and content */
-        }
-    table td,
-        table th {
-            white-space: nowrap;
-            padding: 0.5rem 1rem;
-            vertical-align: middle;
-        }
-        .app-scroll::-webkit-scrollbar {
-                height: 10px; /* Controls the thickness of horizontal scrollbar */
+                table-layout: fixed;
+                width: 100%;
+                min-width: 1000px;
             }
-            .app-scroll::-webkit-scrollbar-track {
-                background: #f1f1f1;
+
+            table th, table td {
+                white-space: nowrap;
+                padding: 0.4rem 0.6rem;
+                vertical-align: middle;
+                font-size: 13px;
+                text-align: center;
             }
-            .app-scroll::-webkit-scrollbar-thumb {
-                background-color: #c1c1c1;
-                border-radius: 10px;
-                border: 2px solid #f1f1f1;
-            }
-            /* Firefox support */
             .app-scroll {
-                scrollbar-width: thin;
-                scrollbar-color: #c1c1c1 #f1f1f1;
-            }
+                    overflow-x: auto;
+                    scrollbar-width: thin;
+                    scrollbar-color: #c1c1c1 #f1f1f1;
+                }
+
+                .app-scroll::-webkit-scrollbar {
+                    height: 8px;
+                }
+
+                .app-scroll::-webkit-scrollbar-thumb {
+                    background-color: #c1c1c1;
+                    border-radius: 6px;
+                }
+       
             .table_setting {
                 margin-right: calc(-7.5 * var(--bs-gutter-x));
                 margin-left: calc(-7.5 * var(--bs-gutter-x));
@@ -34,6 +36,53 @@
             .btn-outline-success:hover .text-success {
                 color: #fff !important;
             } 
+            #projectTableT th:nth-child(1),
+            #projectTableT td:nth-child(1) {
+                width: 80px; /* HS Code */
+            }
+            #projectTableT th:nth-child(2),
+            #projectTableT td:nth-child(2) {
+                width: 80px; /* HS Code */
+            }
+
+            #projectTableT th:nth-child(3),
+            #projectTableT td:nth-child(3) {
+                width: 70px; /* Price */
+            }
+
+            #projectTableT th:nth-child(4),
+            #projectTableT td:nth-child(4) {
+                width: 90px; /* Tax Rate */
+            }
+
+            #projectTableT th:nth-child(5),
+            #projectTableT td:nth-child(5) {
+                width: 80px; /* UOM */
+            }
+            #projectTableT th:nth-child(6),
+            #projectTableT td:nth-child(6) {
+                width: 70px; /* contact */
+            }
+            #projectTableT th:nth-child(7),
+            #projectTableT td:nth-child(7) {
+                width: 140px; /* IBAN */
+            }
+            #projectTableT th:nth-child(8),
+            #projectTableT td:nth-child(8) {
+                width: 110px; /* UOM */
+            }
+            #projectTableT th:nth-child(9),
+            #projectTableT td:nth-child(9) {
+                width: 300px; /* address */
+                text-align: left;
+                white-space: normal;
+                word-break: break-word;
+            }
+            #projectTableT th:nth-child(10),
+            #projectTableT td:nth-child(10) {
+                width: 100px; /* Actions*/
+            }
+           
 </style>
 <div class="container">
    <div class="container-fluid">
@@ -63,7 +112,7 @@
                           </form>
                         </div>
                         <div class="app-scroll overflow-auto" style="max-width: 100%; overflow-x: auto; overflow-y: hidden;">
-                        <table id="projectTableT" class="app-scroll table-responsive">
+                        <table id="projectTableT" class="table table-striped table-bordered">
                             <thead>
                                 <tr class="app-sort">
                                     <th style="min-width: 80px;">Logo</th>
@@ -90,7 +139,13 @@
                                             @endif
                                         </td>
                                         <td class="employee">{{ $buyer->byr_name }}</td>
-                                        <td class="email">{{ $buyer->byr_type == 1 ? 'Registered' : 'Unregistered' }}</td>
+                                        <td class="email">
+                                            @if($buyer->byr_type == 1)
+                                                <span class="badge text-bg-success">Registered</span>
+                                            @else
+                                                <span class="badge text-bg-secondary">Unregistered</span>
+                                            @endif
+                                        </td>
                                         <td class="email">{{ $buyer->byr_ntn_cnic }}</td>
                                         <td class="contact">{{ $buyer->byr_contact_person }}</td>
                                         <td class="date">{{ $buyer->byr_contact_num }}</td>
@@ -118,9 +173,14 @@
                             </tbody>
                         </table>
                         </div>
-                        <div class="list-pagination">
-                        <ul class="pagination"></ul>
-                      </div>
+                        <div class="d-flex justify-content-between align-items-center px-3 py-2 small text-muted">
+                            <div id="table-count-info">
+                                Showing 0 to 0 of 0 entries
+                            </div>
+                            <div class="list-pagination">
+                                <ul class="pagination mb-2"></ul>
+                            </div>
+                        </div>
                     </div>
                   </form>
                   </div>
@@ -153,6 +213,24 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+function updateTableCount(currentPage, itemsPerPage, totalItems) {
+        let start = (currentPage - 1) * itemsPerPage + 1;
+        let end = Math.min(currentPage * itemsPerPage, totalItems);
+
+        if (totalItems === 0) {
+            document.getElementById('table-count-info').innerText = 'Showing 0 to 0 of 0 entries';
+        } else {
+            document.getElementById('table-count-info').innerText =
+                `Showing ${start} to ${end} of ${totalItems} entries`;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        let currentPage = {{ $buyers->currentPage() }};
+        let itemsPerPage = {{ $buyers->perPage() }};
+        let totalItems = {{ $buyers->total() }};
+
+        updateTableCount(currentPage, itemsPerPage, totalItems);
+    });
 </script>
-    
 @endsection

@@ -10,6 +10,7 @@ use App\Models\InvoiceDetail;
 use App\Models\Buyer;
 use App\Models\BusinessConfiguration;
 use App\Models\Item;
+use Illuminate\Support\Facades\Crypt;
 
 class InvoiceController extends Controller
 {
@@ -276,5 +277,10 @@ class InvoiceController extends Controller
             DB::rollBack();
             return back()->with('error', 'Error: ' . $e->getMessage());
         }
+    }
+    public function print($id){
+        $decryptedId = Crypt::decryptString($id);
+        $invoice = Invoice::with('items')->findOrFail($decryptedId);
+        return view('invoices.print', compact('invoice'));
     }
 }

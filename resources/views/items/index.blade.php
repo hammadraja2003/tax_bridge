@@ -134,8 +134,6 @@
                                                 <td>{{ $item->item_tax_rate }}</td>
                                                 <td>{{ $item->item_uom }}</td>
                                                 <td>
-                                                    <a href="{{ route('items.edit', $item->item_id) }}" class="btn btn-xs btn-outline-success"><i class="ti ti-edit f-s-20 text-success"></i></a>
-                                                    <form action="{{ route('items.delete', $item->item_id) }}" method="POST" class="d-inline delete-form">
                                                     <a href="{{ route('items.edit', Crypt::encryptString($item->item_id)) }}" class="btn btn-outline-success btn-xs me-1">
                                                         <i class="ti ti-edit"></i>
                                                     </a>
@@ -157,7 +155,7 @@
                                     Showing 0 to 0 of 0 entries
                                 </div>
                                 <div class="list-pagination">
-                                    <ul class="pagination mb-0"></ul>
+                                    <ul class="pagination mb-2"></ul>
                                 </div>
                             </div>
                         </div>
@@ -190,5 +188,26 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+function updateTableCount(currentPage, itemsPerPage, totalItems) {
+        let start = (currentPage - 1) * itemsPerPage + 1;
+        let end = Math.min(currentPage * itemsPerPage, totalItems);
+
+        if (totalItems === 0) {
+            document.getElementById('table-count-info').innerText = 'Showing 0 to 0 of 0 entries';
+        } else {
+            document.getElementById('table-count-info').innerText =
+                `Showing ${start} to ${end} of ${totalItems} entries`;
+        }
+    }
+
+    // Call it here with actual backend values
+    document.addEventListener('DOMContentLoaded', function () {
+        let currentPage = 1;
+        let itemsPerPage = 10; // You can change this to your actual value
+        let totalItems = {{ count($items) }}; // Blade injects count of items
+
+        let end = Math.min(currentPage * itemsPerPage, totalItems);
+        updateTableCount(currentPage, itemsPerPage, totalItems);
+    });
 </script>
 @endsection
