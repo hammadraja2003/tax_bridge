@@ -98,7 +98,7 @@
                                         <img src="{{ asset('assets/images/ecommerce/10.png') }}" alt="cart"
                                           class="h-50 me-2 bg-light-secondary p-1 b-r-100">
                                         <div class="flex-grow-1">
-                                          <a class="mb-0 text-dark f-w-500" href="product_details.html"> Headphone
+                                          <a class="mb-0 text-dark f-w-500" href="#"> Headphone
                                           </a>
                                           <p class="text-muted">$95 x 2</p>
                                         </div>
@@ -116,7 +116,7 @@
                                         <img src="{{ asset('assets/images/ecommerce/07.png') }}" alt="cart"
                                           class="h-50 object-fit-cover me-2 bg-light-dark p-1 b-r-100">
                                         <div class="flex-grow-1">
-                                          <a class="mb-0 text-dark f-w-500" href="product_details.html"> Smart Watch</a>
+                                          <a class="mb-0 text-dark f-w-500" href="#"> Smart Watch</a>
                                           <p class="text-muted">$50.00</p>
                                         </div>
                                         <div class="text-end">
@@ -133,7 +133,7 @@
                                         <img src="{{ asset('assets/images/ecommerce/02.png') }}" alt="cart"
                                           class="h-50 object-fit-cover me-2 bg-light-dark p-1 b-r-100">
                                         <div class="flex-grow-1">
-                                          <a class="mb-0 text-dark f-w-500" href="product_details.html">Shoes Black</a>
+                                          <a class="mb-0 text-dark f-w-500" href="#">Shoes Black</a>
                                           <p class="text-muted">$150.00</p>
                                         </div>
                                         <div class="text-end">
@@ -150,7 +150,7 @@
                                         <img src="{{ asset('assets/images/ecommerce/04.png') }}" alt="cart"
                                           class="h-50 object-fit-cover me-2 bg-light-dark p-1 b-r-100">
                                         <div class="flex-grow-1">
-                                          <a class="mb-0 text-dark f-w-500" href="product_details.html"> Sports
+                                          <a class="mb-0 text-dark f-w-500" href="#"> Sports
                                             shoes</a>
                                           <p class="text-muted">$200.00</p>
                                         </div>
@@ -169,7 +169,7 @@
                                         <div>
                                           <h6 class="mb-0">Your Cart is Empty</h6>
                                           <p class="text-secondary mb-0">Add some items :</p>
-                                          <a class="btn btn-light-primary btn-xs mt-2" href="product_details.html">Shop
+                                          <a class="btn btn-light-primary btn-xs mt-2" href="#">Shop
                                             Now</a>
                                         </div>
                                       </div>
@@ -187,8 +187,8 @@
                               </div>
                             </div>
                           </li>
-                          <li class="header-dark head-icon">
-                          </li>
+                          {{-- <li class="header-dark head-icon">
+                          </li> --}}
                           <li class="header-notification">
                             <div class="flex-shrink-0 app-dropdown">
                               <div class="dropdown-menu dropdown-menu-end bg-transparent border-0">
@@ -294,16 +294,11 @@
                                 </li>
                                 <li class="app-divider-v dotted py-1"></li>
                                 <li>
-                                  <a class="dropdown-item" href="profile.html">
+                                  <a class="dropdown-item" href="#">
                                     <i class="ti ti-user-circle pe-1 f-s-18"></i> Profile
                                   </a>
                                 </li>
                                 <li class="app-divider-v dotted py-1"></li>
-                                <!-- <li class="btn-light-danger b-r-5">
-                                  <a class="dropdown-item mb-0 text-danger" href="sign_in.html">
-                                    <i class="ti ti-logout pe-1 f-s-18 text-danger"></i> Log Out
-                                  </a>
-                                </li> -->
                                 <form method="POST" class="btn-light-danger b-r-5" action="{{ route('logout') }}">
                                     @csrf
                                     <x-dropdown-link :href="route('logout')"
@@ -311,7 +306,7 @@
                                                         this.closest('form').submit();">
                                     <span class="text-danger">
                                     <i class="ti ti-logout pe-1 f-s-18"></i>
-                                        {{ __('Log Out') }}</span>
+                                        Log Out</span>
                                     </x-dropdown-link>
                                 </form>
                               </ul>

@@ -125,7 +125,8 @@
         @include('layouts.partials.footer')
     </div>
     @stack('scripts')
-    </body>
+      
+ 
     <!--customizer--> 
 <div id="myChart"></div>
 <!-- scripts start-->
@@ -170,4 +171,33 @@
 <script src="{{asset('assets/js/column.js')}}"></script>
 <script src="{{asset('assets/vendor/apexcharts/column/dayjs.min.js')}}"></script>
 <script src="{{asset('assets/vendor/apexcharts/column/quarterOfYear.min.js')}}"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+       
+      const form = document.querySelector('form');
+      const submitBtn = form?.querySelector('button[type="submit"]');
+  
+      if (form && submitBtn) {
+        // Prevent Enter key from submitting form (except in textarea)
+        form.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
+            e.preventDefault();
+          }
+        });
+  
+        form.addEventListener('submit', function (e) {
+            debugger;
+          // Trim all text inputs and textareas
+          const inputs = form.querySelectorAll('input[type="text"], textarea');
+          inputs.forEach(input => input.value = input.value.trim());
+  
+          // Disable the submit button and show spinner
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Saving...';
+        });
+      }
+    });
+  </script> 
+  </body>
 </html>

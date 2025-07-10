@@ -9,7 +9,7 @@
   <h2 class="mb-4 text-center">Invoice Submission Form</h2>
   @if(session('success')) <div class="alert alert-success">{{ session('success') }}</div> @endif
   @if(session('error')) <div class="alert alert-danger">{{ session('error') }}</div> @endif
-  <form id="invoiceForm" action="{{ route('create-new-invoice') }}" method="POST">
+  <form class="app-form needs-validation" novalidate id="invoiceForm" action="{{ route('create-new-invoice') }}" method="POST">
     @csrf
     <!-- Invoice Info -->
     <div class="card mb-4">
@@ -142,7 +142,16 @@
         </div>
       </div>
     </div> 
-    <button id="submitBtn" type="submit" class="btn btn-success w-100" style="display: none">Submit Invoice</button>
+    <div class="card mb-4">
+      <div class="card-body row g-3">
+        <div class="col-md-12 text-end">
+          <button id="submitBtn" type="submit" class="btn btn-primary">Save Invoice
+          </button>
+        </div>
+      </div>
+    </div>
+     
+    
   </form>
 <!-- Item Template (hidden) -->
 <template id="itemTemplate">
