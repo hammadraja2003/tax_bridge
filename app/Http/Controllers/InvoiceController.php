@@ -23,7 +23,7 @@ class InvoiceController extends Controller
     }
     public function index(Request $request)
     {
-        $query = Invoice::with('buyer', 'seller');
+        $query = Invoice::with(['buyer', 'seller', 'details.item']);
         if ($request->has('invoice_type')) {
             $query->where('invoice_type', $request->invoice_type);
         }
@@ -278,9 +278,17 @@ class InvoiceController extends Controller
             return back()->with('error', 'Error: ' . $e->getMessage());
         }
     }
-    public function print($id){
-        $decryptedId = Crypt::decryptString($id);
-        $invoice = Invoice::with('items')->findOrFail($decryptedId);
+    
+    public function print($id)
+    {
+        $invoiceId = Crypt::decryptString($id);
+        $invoice = Invoice::with([
+            'buyer',
+            'seller',
+            'details.item'
+        ])->findOrFail($invoiceId);
+
         return view('invoices.print', compact('invoice'));
     }
+  
 }
