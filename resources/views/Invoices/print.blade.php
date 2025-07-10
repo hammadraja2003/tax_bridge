@@ -203,7 +203,6 @@
         </tr>
         </thead>
         <tbody>
-
             @foreach ($invoice->details as $detail)
             <tr>
             <td>{{ $detail->item->name ?? $detail->item->item_description }}</td>
