@@ -104,7 +104,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
-<!-- <script>
+ <script>
     window.onload = function () {
         const element = document.querySelector('.container');
         // Optional: force full width on screen to avoid cut-off
@@ -131,7 +131,7 @@
             }, 500);
         });
     };
-</script> -->
+</script>
   <!-- Printable Area -->
   <div class="container" id="invoiceArea">
     <div class="header">
@@ -149,15 +149,18 @@
 
       <div class="top-section">
         <p><strong>Invoice Date:</strong><br>{{ \Carbon\Carbon::parse($invoice->invoice_date)->format('d M Y') }}<br><br>
-        <strong>Invoice Number:</strong> <br>{{ 'INV-NUM-' . $invoice->invoice_id }}<br><br>
-        <strong>Reference:</strong> <br>{{ $invoice->invoice_ref_no ?? 'N/A' }}</p>
+        <strong>Invoice Number:</strong> <br>{{  $invoice->invoice_no }}<br><br>
+        @if (!empty($invoice->invoice_ref_no))
+            <p><strong>Reference:</strong> <br>{{ $invoice->invoice_ref_no }}</p>
+        @endif
+
       </div>
 
       <div class="top-section text-right">
         <p><strong>{{ $invoice->seller->bus_name }}</strong><br>
         Innovation & Incubation<br>
         {{ $invoice->seller->bus_address }}<br>
-        Company Registration No: {{$invoice->seller->bus_reg_num}}<br>
+        Reg No: {{$invoice->seller->bus_reg_num}}<br>
         NTN:{{$invoice->seller->bus_ntn_cnic}}</p>
        
       </div>
@@ -238,12 +241,12 @@
     <!-- Payment Details -->
     <div class="due-info">
       <p><strong>Due Date:</strong> {{ \Carbon\Carbon::parse($invoice->due_date)->format('d M Y') }}<br>
-      <!-- <strong>Bank Details:</strong><br> -->
-      Title: {{ $invoice->seller->bus_acc_branch_name }}<br>
-      Account No: {{ $invoice->seller->bus_account_number }}<br>
-      IBAN: {{ $invoice->seller->bus_IBAN }}<br>
-      SWIFT CODE: {{ $invoice->seller->bus_swift_code }}<br>
-      Branch CODE: {{ $invoice->seller->bus_acc_branch_code }}</p>
+      <strong>Bank Details:</strong><br>
+      <strong>Title:</strong> {{ $invoice->seller->bus_acc_branch_name }}<br>
+      <strong>Account No:</strong> {{ $invoice->seller->bus_account_number }}<br>
+      <strong>IBAN:</strong> {{ $invoice->seller->bus_IBAN }}<br>
+      <strong>SWIFT CODE:</strong> {{ $invoice->seller->bus_swift_code }}<br>
+      <strong>Branch CODE:</strong> {{ $invoice->seller->bus_acc_branch_code }}</p>
     </div>
 
     <!-- Payment Advice -->
@@ -260,7 +263,7 @@
         <div style="width: 48%;">
           <table style="width: 100%;">
             <tr><td><strong>Customer</strong></td><td>{{ $invoice->buyer->byr_name ?? 'N/A' }}</td></tr>
-            <tr><td><strong>Invoice No.</strong></td><td>{{ 'INV-NUM-' . $invoice->invoice_id }}</td></tr>
+            <tr><td><strong>Invoice No.</strong></td><td>{{$invoice->invoice_no }}</td></tr>
             <tr><td><strong>Amount Due</strong></td><td>{{ number_format($invoice->total, 2) }}</td></tr>
             <tr><td><strong>Due Date</strong></td><td>{{ \Carbon\Carbon::parse($invoice->due_date)->format('d M Y') }}</td></tr>
             <tr>

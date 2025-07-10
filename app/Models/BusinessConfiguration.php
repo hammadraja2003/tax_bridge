@@ -15,6 +15,7 @@ class BusinessConfiguration extends Model
         'bus_address',
         'bus_province',
         'bus_logo',
+        'bus_account_title',
         'bus_account_number',
         'bus_reg_num',
         'bus_contact_num',

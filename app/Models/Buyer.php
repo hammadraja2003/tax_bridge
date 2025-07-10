@@ -16,6 +16,7 @@ class Buyer extends Model
         'byr_address',
         'byr_province',
         'byr_logo',
+        'byr_account_title',
         'byr_account_number',
         'byr_reg_num',
         'byr_contact_num',

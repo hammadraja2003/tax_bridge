@@ -47,29 +47,33 @@
 
             #projectTableT th:nth-child(5),
             #projectTableT td:nth-child(5) {
-                width: 80px; /* UOM */
+                width: 95px; /* UOM */
             }
             #projectTableT th:nth-child(6),
             #projectTableT td:nth-child(6) {
-                width: 70px; /* contact */
+                width: 80px; /* contact */
             }
             #projectTableT th:nth-child(7),
             #projectTableT td:nth-child(7) {
-                width: 140px; /* IBAN */
+                width: 155px; /* IBAN */
             }
             #projectTableT th:nth-child(8),
             #projectTableT td:nth-child(8) {
-                width: 110px; /* UOM */
+                width: 120px;
             }
             #projectTableT th:nth-child(9),
             #projectTableT td:nth-child(9) {
+                width: 110px; /* UOM */
+            }
+            #projectTableT th:nth-child(10),
+            #projectTableT td:nth-child(10) {
                 width: 300px; /* address */
                 text-align: left;
                 white-space: normal;
                 word-break: break-word;
             }
-            #projectTableT th:nth-child(10),
-            #projectTableT td:nth-child(10) {
+            #projectTableT th:nth-child(11),
+            #projectTableT td:nth-child(11) {
                 width: 100px; /* Actions*/
             }
             @media (max-width: 991.98px) {
@@ -139,8 +143,6 @@
                     <a href="{{ url()->previous() }}" class="btn btn-outline-dark"><i class="fa-solid fa-step-backward fa-fw me-1"></i>Back</a>
                 </div>
                   <div class="card-body p-0">
-                    <form action="" method="POST">
-                      @csrf
                     <div id="myTable">
                       <div class="list-table-header d-flex justify-content-sm-between">
                           <a href="{{ route('buyer.create') }}" class="btn btn-outline-secondary"><i class="fa-solid fa-plus fa-fw"></i>Add</a>
@@ -165,6 +167,7 @@
                                     <th style="min-width: 150px;">Contact Person</th>
                                     <th style="min-width: 130px;">Contact #</th>
                                     <th style="min-width: 130px;">IBAN</th>
+                                    <th style="min-width: 130px;">Account Title</th>
                                     <th style="min-width: 130px;">Account #</th>
                                     <th style="min-width: 280px;">Address</th>
                                     <th style="min-width: 20px;">Actions</th>
@@ -193,6 +196,7 @@
                                         <td class="contact">{{ $buyer->byr_contact_person }}</td>
                                         <td class="date">{{ $buyer->byr_contact_num }}</td>
                                         <td>{{ $buyer->byr_IBAN }}</td>
+                                        <td>{{ $buyer->byr_account_title }}</td>
                                         <td>{{ $buyer->byr_account_number }}</td>
                                         <td style="white-space: normal; max-width: 200px;">{{ $buyer->byr_address }}</td>
                                         <td>
@@ -225,13 +229,10 @@
                             </div>
                         </div>
                     </div>
-                  </form>
                   </div>
                 </div>
               </div>
-              <!-- Table with Pagination Table end -->
             </div>
-            <!-- List Js Table end -->
     </div>
 </div>
 <script>

@@ -18,6 +18,7 @@ class CompanyController extends Controller
             'bus_name' => 'required|string|max:255',
             'bus_ntn_cnic' => 'required|string|max:255',
             'bus_address' => 'required|string',
+            'bus_account_title' => 'nullable|string|max:255',
             'bus_account_number' => 'nullable|string|max:255',
             'bus_reg_num' => 'nullable|string|max:255',
             'bus_contact_num' => 'nullable|string|max:20',
@@ -25,7 +26,8 @@ class CompanyController extends Controller
             'bus_IBAN' => 'nullable|string|max:255',
             'bus_acc_branch_name' => 'nullable|string|max:255',
             'bus_acc_branch_code' => 'nullable|string|max:255',
-            'bus_logo' => 'nullable|mimes:jpg,jpeg,png,svg,svg+xml|max:2048',
+            'bus_logo' => $config && $config->bus_logo ? 'nullable|mimes:jpg,jpeg,png,svg|max:2048' : 'required|mimes:jpg,jpeg,png,svg|max:2048'
+
         ]);
         $data = $request->all();
 
