@@ -5,8 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>{{ config('app.name', 'Secureism | Invoicing Management System') }}</title>
-        <link rel="icon" href="{{asset('assets/images/logo/secureism_logo.svg')}}" type="image/x-icon">
-        <link rel="shortcut icon" href="{{asset('assets/images/logo/secureism_logo.svg')}}" type="image/x-icon">
+        <link rel="icon" href="{{asset('assets/images/logo/favicon_sec.png')}}" type="image/x-icon">
+        <link rel="shortcut icon" href="{{asset('assets/images/logo/favicon_sec.png.png')}}" type="image/x-icon">
         <!-- meta and title end-->
             <!-- css start-->
         <!-- Animation css -->
@@ -49,7 +49,6 @@
     </head>
     <body>
         @yield('content')
-        @include('layouts.partials.errors')
     </body>
     <!--customizer-->
 <div id="customizer"></div>
