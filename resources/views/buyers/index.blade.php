@@ -1,12 +1,6 @@
 @extends('layouts.admin')
 @section('content')
 <style>
-        table {
-                table-layout: fixed;
-                width: 100%;
-                min-width: 1000px;
-            }
-
             table th, table td {
                 white-space: nowrap;
                 padding: 0.4rem 0.6rem;
@@ -29,10 +23,6 @@
                     border-radius: 6px;
                 }
        
-            .table_setting {
-                margin-right: calc(-7.5 * var(--bs-gutter-x));
-                margin-left: calc(-7.5 * var(--bs-gutter-x));
-            }
             .btn-outline-success:hover .text-success {
                 color: #fff !important;
             } 
@@ -86,9 +76,62 @@
             #projectTableT td:nth-child(11) {
                 width: 100px; /* Actions*/
             }
+            @media (max-width: 991.98px) {
+                .list-table-header {
+                        flex-direction: column;
+                        align-items: flex-start;
+                        gap: 10px;
+                    }
+
+                    .search {
+                        width: 100%;
+                    }
+
+                    #projectTableT th, #projectTableT td {
+                        font-size: 11px;
+                        padding: 0.3rem 0.4rem;
+                    }
+
+                    .card-header h5 {
+                        font-size: 16px;
+                    }
+
+                    .btn {
+                        font-size: 12px;
+                        padding: 6px 10px;
+                    }
+                }
+
+                @media (max-width: 576px) {
+                    .modal-content {
+                        font-size: 13px;
+                    }
+
+                    table {
+                        font-size: 11px;
+                    }
+
+                    #projectTableT th:nth-child(n),
+                    #projectTableT td:nth-child(n) {
+                        width: auto !important;
+                    }
+
+                    .table-responsive {
+                        overflow-x: auto;
+                    }
+
+                    .app-scroll {
+                        -webkit-overflow-scrolling: touch;
+                    }
+                }
+                @media (max-width: 999px) {
+                    table {
+                        min-width: 1700px;
+                    }
+                }  
            
 </style>
-<div class="container">
+<div class="container" style="max-width: 1873px;">
    <div class="container-fluid">
             <!-- List Js Table start -->
             <div class="row table_setting">

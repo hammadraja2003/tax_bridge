@@ -1,11 +1,7 @@
 @extends('layouts.admin')
 @section('content')
 <style>
-        table {
-                table-layout: fixed;
-                width: 100%;
-                min-width: 1000px;
-            }
+      
 
             table th, table td {
                 white-space: nowrap;
@@ -92,13 +88,7 @@
             #projectTableT td:nth-child(13) {
                 width: 100px; /* Actions*/
             }
-            @media (max-width: 999px) {
-                table {
-                    table-layout: fixed;
-                    width: 100%;
-                    min-width: 1602px;
-                }
-            }
+         
            
             @media (max-width: 991.98px) {
                 .list-table-header {
@@ -148,7 +138,11 @@
                     -webkit-overflow-scrolling: touch;
                 }
             }
-           
+            @media (max-width: 999px) {
+                table {
+                    min-width: 1700px;
+                }
+            }  
 </style>
 <div class="container" style="max-width: 1873px;">
    <div class="container-fluid">
@@ -201,9 +195,9 @@
                                     <tr>
                                         <td>{{ \Carbon\Carbon::parse($inv->invoice_date)->format('d M Y') }}</td>
                                         <td class="employee">{{ $inv->invoice_type }}</td>
-                                        <td class="email" style="white-space: normal;word-break: break-word;max-width: 200px;">
+                                        <td class="email" style="white-space: normal;max-width: 100px;">
                                             {{ $inv->buyer->byr_name ?? '-' }}</td>
-                                        <td class="email" style="white-space: normal;word-break: break-word;max-width: 200px;">
+                                        <td class="email" style="white-space: normal;max-width: 100px;">
                                             {{ $inv->seller->bus_name ?? '-' }}</td>
                                         <td class="contact">{{ $inv->fbr_invoice_number ?? 'N/A' }}</td>
                                         <td class="contact">  
@@ -222,7 +216,7 @@
                                         <td>{{ number_format($inv->totalextraTax, 2) }}</td>
                                         <td>
                                         <button type="button"
-                                                class="btn btn-sm btn-outline-primary"
+                                                class="btn btn-xs btn-outline-primary"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#itemsModal{{ $inv->invoice_id }}"
                                                 data-bs-toggle="tooltip"
@@ -231,7 +225,7 @@
                                                 <i class="fa-solid fa-eye fa-fw"></i>
                                             </button>
                                         <a href="{{ route('xero.print', Crypt::encryptString($inv->invoice_id)) }}"
-                                            class="btn btn-sm btn-outline-info"
+                                            class="btn btn-xs btn-outline-info"
                                             target="_blank"
                                             data-bs-toggle="tooltip"
                                             data-bs-placement="top"
