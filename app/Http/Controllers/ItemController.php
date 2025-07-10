@@ -22,7 +22,7 @@ class ItemController extends Controller
         $request->validate([
             'item_description' => 'required|string',
             'item_price' => 'required|numeric',
-            'item_tax_rate' => 'required|numeric|max:10',
+            'item_tax_rate' => 'required|numeric',
             'item_uom' => 'required|string|max:50',
         ]);
         Item::create($request->all());
@@ -39,7 +39,7 @@ class ItemController extends Controller
         $request->validate([
             'item_description' => 'required|string|max:255',
             'item_price' => 'required|numeric',
-            'item_tax_rate' => 'required|numeric|max:10',
+            'item_tax_rate' => 'required|numeric',
             'item_uom' => 'required|string|max:50',
             'item_hs_code' => 'nullable|string|max:20',
         ]);

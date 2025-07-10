@@ -14,6 +14,7 @@ class CompanyController extends Controller
     }
     public function storeOrUpdate(Request $request)
     {
+        $config = BusinessConfiguration::first();
         $request->validate([
             'bus_name' => 'required|string|max:255',
             'bus_ntn_cnic' => 'required|string|max:255',

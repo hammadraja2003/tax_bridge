@@ -287,7 +287,14 @@
 $(document).ready(function(){
   $('#byr_id').change(function(){
     const id = $(this).val();
-    if(!id) return;
+    if (!id) {
+      // Clear all fields if nothing selected
+      $('[name=buyerNTNCNIC]').val('');
+      $('[name=buyerAddress]').val('');
+      $('[name=buyerProvince]').val('');
+      $('[name=buyerRegistrationType]').val('');
+      return;
+    }
     $.get('/buyers/'+id, function(b){
       $('[name=buyerNTNCNIC]').val(b.byr_ntn_cnic);
       $('[name=buyerAddress]').val(b.byr_address);

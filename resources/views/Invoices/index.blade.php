@@ -161,7 +161,7 @@
                       @csrf
                     <div id="myTable">
                       <div class="list-table-header d-flex justify-content-sm-between">
-                          <a href="{{ route('invoices.create') }}" class="btn btn-outline-secondary"><i class="fa-solid fa-plus fa-fw"></i>New Invoice</a>
+                          <a href="{{ route('invoices.create') }}" class="btn btn-primary"><i class="fa-solid fa-plus fa-fw"></i>New Invoice</a>
                           <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                             aria-hidden="true">
                           </div>
@@ -347,5 +347,5 @@
 
         updateTableCount(currentPage, itemsPerPage, totalItems);
     });
-</script>
+</script> 
 @endsection
