@@ -25,7 +25,7 @@ class CompanyController extends Controller
             'bus_IBAN' => 'nullable|string|max:255',
             'bus_acc_branch_name' => 'nullable|string|max:255',
             'bus_acc_branch_code' => 'nullable|string|max:255',
-            'bus_logo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'bus_logo' => 'nullable|mimes:jpg,jpeg,png,svg,svg+xml|max:2048',
         ]);
         $data = $request->all();
 
@@ -45,6 +45,6 @@ class CompanyController extends Controller
             BusinessConfiguration::create($data);
             $msg = 'Company configuration saved.';
         }
-        return redirect()->route('company.configuration')->with('success', $msg);
+        return redirect()->route('company.configuration')->with('message', $msg);
     }
 }

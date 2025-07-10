@@ -1,6 +1,5 @@
 @extends('layouts.admin')
 @section('content')
-@include('layouts.partials.errors')
 <div class="container">
   <h2 class="mb-4 text-center">Configuration</h2>
   <form class="app-form needs-validation" novalidate method="POST" action="{{ route('company.configuration.save') }}" enctype="multipart/form-data">

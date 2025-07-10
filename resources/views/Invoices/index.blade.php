@@ -29,13 +29,14 @@
                     border-radius: 6px;
                 }
        
-            .table_setting {
+            /* .table_setting {
                 margin-right: calc(-7.5 * var(--bs-gutter-x));
                 margin-left: calc(-7.5 * var(--bs-gutter-x));
-            }
+            } */
             .btn-outline-success:hover .text-success {
                 color: #fff !important;
             } 
+           
             #projectTableT th:nth-child(1),
             #projectTableT td:nth-child(1) {
                 width: 80px; /* HS Code */
@@ -61,15 +62,95 @@
             }
             #projectTableT th:nth-child(6),
             #projectTableT td:nth-child(6) {
-                width: 80px; /*  */
+                width: 90px; /*  */
             }
             #projectTableT th:nth-child(7),
             #projectTableT td:nth-child(7) {
+                width: 80px; /*  */
+            }
+            #projectTableT th:nth-child(8),
+            #projectTableT td:nth-child(8) {
+                width: 80px; /*  */
+            }
+            #projectTableT th:nth-child(9),
+            #projectTableT td:nth-child(9) {
+                width: 80px; /*  */
+            }
+            #projectTableT th:nth-child(10),
+            #projectTableT td:nth-child(10) {
+                width: 90px; /*  */
+            }
+            #projectTableT th:nth-child(11),
+            #projectTableT td:nth-child(11) {
+                width: 80px; /*  */
+            }
+            #projectTableT th:nth-child(12),
+            #projectTableT td:nth-child(12) {
+                width: 80px; /*  */
+            }
+            #projectTableT th:nth-child(13),
+            #projectTableT td:nth-child(13) {
                 width: 100px; /* Actions*/
+            }
+            @media (max-width: 999px) {
+                table {
+                    table-layout: fixed;
+                    width: 100%;
+                    min-width: 1602px;
+                }
+            }
+           
+            @media (max-width: 991.98px) {
+                .list-table-header {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 10px;
+                }
+
+                .search {
+                    width: 100%;
+                }
+
+                #projectTableT th, #projectTableT td {
+                    font-size: 11px;
+                    padding: 0.3rem 0.4rem;
+                }
+
+                .card-header h5 {
+                    font-size: 16px;
+                }
+
+                .btn {
+                    font-size: 12px;
+                    padding: 6px 10px;
+                }
+            }
+
+            @media (max-width: 576px) {
+                .modal-content {
+                    font-size: 13px;
+                }
+
+                table {
+                    font-size: 11px;
+                }
+
+                #projectTableT th:nth-child(n),
+                #projectTableT td:nth-child(n) {
+                    width: auto !important;
+                }
+
+                .table-responsive {
+                    overflow-x: auto;
+                }
+
+                .app-scroll {
+                    -webkit-overflow-scrolling: touch;
+                }
             }
            
 </style>
-<div class="container">
+<div class="container" style="max-width: 1873px;">
    <div class="container-fluid">
             <!-- List Js Table start -->
             <div class="row table_setting">
@@ -80,6 +161,7 @@
                     <h5 class="mb-0">Invoice Details</h5>
                     <a href="{{ url()->previous() }}" class="btn btn-outline-dark"><i class="fa-solid fa-step-backward fa-fw me-1"></i>Back</a>
                 </div>
+                 
                   <div class="card-body p-0">
                     <form action="" method="POST">
                       @csrf
@@ -96,8 +178,8 @@
                             </div>
                           </form>
                         </div>
-                        <div class="app-scroll overflow-auto" style="max-width: 100%; overflow-x: auto; overflow-y: hidden;">
-                        <table id="projectTableT" class="table table-striped table-bordered">
+                        <div class="app-scroll table-responsive">
+                        <table id="projectTableT" class="table table-sm table-striped table-bordered text-nowrap">
                             <thead>
                                 <tr class="app-sort">
                                     <th>Invoice Date</th>
@@ -105,6 +187,12 @@
                                     <th>Buyer</th>
                                     <th>Seller</th>
                                     <th>FBR #</th>
+                                    <th>FBR Posted Status</th>
+                                    <th>Excluding Tax</th>
+                                    <th>Including Tax</th>
+                                    <th>Total Sales Tax</th>
+                                    <th>Total Further Tax</th>
+                                    <th>Total Extra Tax</th>
                                     <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
@@ -114,9 +202,25 @@
                                     <tr>
                                         <td>{{ \Carbon\Carbon::parse($inv->invoice_date)->format('d M Y') }}</td>
                                         <td class="employee">{{ $inv->invoice_type }}</td>
-                                        <td class="email">{{ $inv->buyer->byr_name ?? '-' }}</td>
-                                        <td class="email">{{ $inv->seller->bus_name ?? '-' }}</td>
+                                        <td class="email" style="white-space: normal;word-break: break-word;max-width: 200px;">
+                                            {{ $inv->buyer->byr_name ?? '-' }}</td>
+                                        <td class="email" style="white-space: normal;word-break: break-word;max-width: 200px;">
+                                            {{ $inv->seller->bus_name ?? '-' }}</td>
                                         <td class="contact">{{ $inv->fbr_invoice_number ?? 'N/A' }}</td>
+                                        <td class="contact">  
+                                        @if ($inv->is_posted_to_fbr === 1)
+                                                <span class="badge text-bg-success">Yes</span>
+                                            @elseif ($inv->is_posted_to_fbr === 0)
+                                                <span class="badge text-bg-danger">No</span>
+                                            @else
+                                                <span class="badge text-bg-secondary">N/A</span>
+                                            @endif
+                                        </td>
+                                        <td>{{ number_format($inv->totalAmountExcludingTax, 2) }}</td>
+                                        <td>{{ number_format($inv->totalAmountIncludingTax, 2) }}</td>
+                                        <td>{{ number_format($inv->totalSalesTax, 2) }}</td>
+                                        <td>{{ number_format($inv->totalfurtherTax, 2) }}</td>
+                                        <td>{{ number_format($inv->totalextraTax, 2) }}</td>
                                         <td class="date">{{ $inv->response_status ?? 'Pending' }}</td>
                                         <td>
                                         <button type="button"
@@ -155,52 +259,68 @@
                             </div>
                         </div>
 
-                    @foreach ($invoices as $invoice)
-                        <div class="modal fade" id="itemsModal{{ $invoice->invoice_id }}" tabindex="-1" aria-labelledby="itemsModalLabel{{ $invoice->invoice_id }}" aria-hidden="true">
-                            <div class="modal-dialog modal-xl modal-dialog-scrollable">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Items for Invoice #{{ $invoice->fbr_invoice_number }}</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        @if($invoice->details->count())
-                                            <div class="table-responsive">
-                                                <table class="table table-sm table-bordered">
-                                                    <thead class="table-secondary">
+                        @foreach ($invoices as $invoice)
+                            <div class="modal fade" id="itemsModal{{ $invoice->invoice_id }}" tabindex="-1" aria-labelledby="itemsModalLabel{{ $invoice->invoice_id }}" aria-hidden="true">
+                                <div class="modal-dialog modal-xl modal-dialog-scrollable">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Items for Invoice #{{ $invoice->fbr_invoice_number }}</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                        
+                                            @if($invoice->details->count())
+                                                <div class="table-responsive">
+                                                    <table class="table table-sm table-bordered text-nowrap" style="min-width: 1200px;">
+                                                        <thead class="table-secondary">
                                                         <tr>
-                                                            <th>Quantity</th>
-                                                            <th>Unit Amount</th>
-                                                            <th>Line Amount</th>
-                                                            <th>Item Code</th>
-                                                            <th>Tax Amount</th>
-                                                            <th>totalAmountExcludingTax</th>
+                                                            <th style="width: 300px; white-space: normal; word-wrap: break-word;">Description</th>
+                                                            <th style="width: 100px;">Item Price</th>
+                                                            <th style="width: 160px;">Item Tax Rate</th>
+                                                            <th style="width: 80px;">Quantity</th>
+                                                            <th style="width: 110px;">Total Value</th>
+                                                            <th style="width: 120px;">Val Exc Tax</th>
+                                                            <th style="width: 140px;">Sales Tax App</th>
+                                                            <th style="width: 150px;">Sales Tax WithHeld</th>
+                                                            <th style="width: 100px;">Extra Tax</th>
+                                                            <th style="width: 100px;">Further Tax</th>
+                                                            <th style="width: 120px;">Fed Payable</th>
+                                                            <th style="width: 120px;">Sale Type</th>
+                                                            <th style="width: 150px;">SRO Schedule #</th>
+                                                            <th style="width: 160px;">SRO Item Serial #</th> 
                                                         </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach ($invoice->details as $item)
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach ($invoice->details as $item)
                                                             <tr>
-                                                                <td>{{ $item->quantity }}</td>
-                                                                <td>{{ number_format($item->unit_amount, 2) }}</td>
-                                                                <td>{{ number_format($item->line_amount, 2) }}</td>
-                                                                <td>{{ $item->item_code }}</td>
-                                                                <td>{{ number_format($item->tax_amount, 2) }}</td>
-                                                                <td>{{ number_format($invoice->totalAmountExcludingTax, 2) }}</td>
-                                                            </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        @else
-                                            <p>No items found for this invoice.</p>
-                                        @endif
+                                                                    <td style="white-space: normal; word-wrap: break-word; text-align: left; vertical-align: top;">{{ $item->item->item_description ?? 'N/A' }}</td>
+                                                                    <td>{{ number_format($item->item->item_price, 2) }}</td>
+                                                                    <td>{{ number_format($item->item->item_tax_rate, 2) }}</td>
+                                                                    <td>{{ $item->quantity }}</td>
+                                                                    <td>{{ number_format($item->total_value, 2) }}</td>
+                                                                    <td>{{ number_format($item->value_excl_tax, 2) }}</td>
+                                                                    <td>{{ number_format($item->sales_tax_applicable, 2) }}</td>
+                                                                    <td>{{ number_format($item->sales_tax_withheld, 2) }}</td>
+                                                                    <td>{{ number_format($item->extra_tax, 2) }}</td>
+                                                                    <td>{{ number_format($item->further_tax, 2) }}</td>
+                                                                    <td>{{ number_format($item->fed_payable, 2) }}</td>
+                                                                    <td>{{ $item->sale_type }}</td>
+                                                                    <td>{{ number_format($item->sro_schedule_no, 2) }}</td>
+                                                                    <td>{{ number_format($item->sro_item_serial_no, 2) }}</td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            @else
+                                                <p>No items found for this invoice.</p>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
 
-                        
                     </div>
                   </form>
                   </div>
@@ -217,6 +337,27 @@
         tooltipTriggerList.forEach(function (tooltipTriggerEl) {
         new bootstrap.Tooltip(tooltipTriggerEl);
         });
+    });
+</script>
+<script>
+    function updateTableCount(currentPage, itemsPerPage, totalItems) {
+        let start = (currentPage - 1) * itemsPerPage + 1;
+        let end = Math.min(currentPage * itemsPerPage, totalItems);
+
+        if (totalItems === 0) {
+            document.getElementById('table-count-info').innerText = 'Showing 0 to 0 of 0 entries';
+        } else {
+            document.getElementById('table-count-info').innerText =
+                `Showing ${start} to ${end} of ${totalItems} entries`;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        let currentPage = {{ $invoices->currentPage() }};
+        let itemsPerPage = {{ $invoices->perPage() }};
+        let totalItems = {{ $invoices->total() }};
+
+        updateTableCount(currentPage, itemsPerPage, totalItems);
     });
 </script>
 @endsection

@@ -10,9 +10,9 @@
 <meta name="keywords"
       content="admin template, ra-admin admin template, dashboard template, flat admin template, responsive admin template, web app">
 <meta name="author" content="la-themes">
-<link rel="icon" href="{{asset('assets/images/logo/favicon.png')}}" type="image/x-icon">
-<link rel="shortcut icon" href="{{asset('assets/images/logo/favicon.png')}}" type="image/x-icon">
-<title>{{ config('app.name', 'Tax Bridge') }}</title>
+<link rel="icon" href="{{asset('assets/images/logo/secureism_logo.svg')}}" type="image/x-icon">
+<link rel="shortcut icon" href="{{asset('assets/images/logo/secureism_logo.svg')}}" type="image/x-icon">
+<title>{{ config('app.name', 'Secureism | Invoicing Management System') }}</title>
 <!-- meta and title end-->
     <!-- css start-->
 <!-- Animation css -->
