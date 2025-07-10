@@ -1,4 +1,4 @@
-@if ($errors->any())
+{{-- @if ($errors->any())
   <div class="alert alert-danger">
     <ul class="mb-0">
       @foreach ($errors->all() as $error)
@@ -6,7 +6,7 @@
       @endforeach
     </ul>
   </div>
-@endif
+@endif --}}
 @if(session('message') || $errors->has('toast_error'))
 <script>
 document.addEventListener("DOMContentLoaded", function () {
@@ -25,6 +25,3 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 @endif
-
-
-

@@ -49,7 +49,6 @@
     </head>
     <body>
         @yield('content')
-        @include('layouts.partials.errors')
     </body>
     <!--customizer-->
 <div id="customizer"></div>

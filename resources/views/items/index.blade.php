@@ -151,7 +151,7 @@
                     <div class="card-body p-0">
                         <div id="myTable">
                             <div class="list-table-header d-flex justify-content-between align-items-center px-3 py-2">
-                                <a href="{{ route('items.create') }}" class="btn btn-outline-secondary">
+                                <a href="{{ route('items.create') }}" class="btn btn-primary">
                                     <i class="fa-solid fa-plus fa-fw"></i>Add New Item
                                 </a>
                                 <form class="app-form app-icon-form" action="#">

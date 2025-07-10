@@ -6,10 +6,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description"
-      content="Multipurpose, super flexible, powerful, clean modern responsive bootstrap 5 admin template">
+      content="">
 <meta name="keywords"
-      content="admin template, ra-admin admin template, dashboard template, flat admin template, responsive admin template, web app">
-<meta name="author" content="la-themes">
+      content="">
+<meta name="author" content="Hammad Ali">
 <link rel="icon" href="{{asset('assets/images/logo/secureism_logo.svg')}}" type="image/x-icon">
 <link rel="shortcut icon" href="{{asset('assets/images/logo/secureism_logo.svg')}}" type="image/x-icon">
 <title>{{ config('app.name', 'Secureism | Invoicing Management System') }}</title>
@@ -68,53 +68,7 @@
             <main>
                 @include('layouts.partials.errors')
                 @yield('content')
-            <!-- modal -->
-                <div class="modal" tabindex="-1" id="welcomeCard" data-bs-backdrop="static">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content welcome-image">
-                            <div class="modal-body">
-                                <div>
-                                    <div class="text-center">
-                                        <div class="text-end">
-                                            <i class="ti ti-x fs-5 text-secondary" data-bs-dismiss="modal"></i>
-                                        </div>
-                                        <h2 class="text-primary f-w-600">Welcome <i class="ti ti-heart-handshake text-warning"></i></h2>
-                                        <p class="text-light f-w-500 f-s-16 mx-sm-5">
-                                            Start Multipurpose, clean modern responsive bootstrap 5 admin template</p>
-                                        <img src="assets/images/modals/welcome.png" class="img-fluid h-140 mt-3 mb-3" alt="">
-                                        <div class="row">
-                                            <div class="col-12 text-center">
-                                                <div class="">
-                                                    <div class="mb-2">
-                                                        <p class="text-secondary f-w-400"><i
-                                                                class="ti ti-bookmarks f-s-15 text-primary me-2"></i>Build
-                                                            your next project faster with AdminX</p>
-                                                    </div>
-                                                    <div class="mb-2">
-                                                        <p class="text-secondary f-w-400 ms-2 mb-0"><i
-                                                                class="ti ti-presentation-analytics f-s-15 me-2 text-success"></i>Start
-                                                            Your Project With
-                                                            Flexible Admin</p>
-                                                    </div>
-                                                    <div class="mb-2">
-                                                        <p class="text-secondary f-w-400 ms-2 mb-0"> <i
-                                                                class="ti ti-users f-s-15 me-2 text-danger"></i>
-                                                            Enjoy dev-friendly features </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="mb-4 mt-2">
-                                            <button type="button" class="btn btn-primary text-white w-200 btn-lg"
-                                                data-bs-dismiss="modal">Let's
-                                                Started <i class="ti ti-chevrons-right"></i> </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        
             </main>
         </div>
         <div class="go-top">
@@ -187,7 +141,6 @@
         });
   
         form.addEventListener('submit', function (e) {
-            debugger;
           // Trim all text inputs and textareas
           const inputs = form.querySelectorAll('input[type="text"], textarea');
           inputs.forEach(input => input.value = input.value.trim());

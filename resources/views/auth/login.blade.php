@@ -31,7 +31,7 @@
                     <div class="col-12 mt-2">
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
-                        <a href="password_reset.html" class="link-primary float-end">Forgot Password?</a>
+                        <a href="#" class="link-primary float-end">Forgot Password?</a>
                         <input type="password" name="password" required class="form-control" placeholder="Enter Your Password" id="password">
                         <div class="invalid-feedback">
                         Please enter your password.
@@ -41,7 +41,7 @@
                     </div>
                       <div class="col-12 mt-2">
                         <div class="mb-3">
-                         <button type="submit"  role="button" class="btn btn-primary w-100">{{ __('Sign In') }}</button>
+                         <button type="submit"  role="button" class="btn btn-primary w-100">Sign In</button>
                         </div>
                       </div>
                   </div>

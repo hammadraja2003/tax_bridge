@@ -145,7 +145,7 @@
                   <div class="card-body p-0">
                     <div id="myTable">
                       <div class="list-table-header d-flex justify-content-sm-between">
-                          <a href="{{ route('buyer.create') }}" class="btn btn-outline-secondary"><i class="fa-solid fa-plus fa-fw"></i>Add</a>
+                          <a href="{{ route('buyer.create') }}" class="btn btn-primary"><i class="fa-solid fa-plus fa-fw"></i>Add New Client</a>
                           <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                             aria-hidden="true">
                           </div>
