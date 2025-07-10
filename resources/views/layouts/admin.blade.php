@@ -7,13 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description"
       content="">
-<meta name="keywords"
-      content="">
-<meta name="author" content="Hammad Ali">
-<link rel="icon" href="{{asset('assets/images/logo/secureism_logo.svg')}}" type="image/x-icon">
-<link rel="shortcut icon" href="{{asset('assets/images/logo/secureism_logo.svg')}}" type="image/x-icon">
-      content="admin template, ra-admin admin template, dashboard template, flat admin template, responsive admin template, web app">
-<meta name="author" content="la-themes">
+<meta name="keywords" content="">
+
 
 <link rel="icon" href="{{asset('assets/images/logo/favicon_sec.png.png')}}" type="image/x-icon">
 <link rel="shortcut icon" href="{{asset('assets/images/logo/favicon_sec.png.png')}}" type="image/x-icon">
