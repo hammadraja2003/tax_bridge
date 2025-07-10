@@ -27,13 +27,17 @@
           <label class="form-label required">Invoice Date</label>
           <input type="date" name="invoiceDate" class="form-control" required />
         </div>
+        <div class="col-md-3">
+          <label class="form-label">Due Date</label>
+          <input type="date" name="due_date" class="form-control"  />
+        </div>
         <div class="col-md-3" id="invoiceRefWrapper" style="display: none;">
             <label class="form-label">Invoice Ref No (if Debit Note)</label>
             <input type="text" name="invoiceRefNo" id="invoiceRefNo" class="form-control" />
         </div>
         <div class="col-md-3">
           <label class="form-label">Scenario ID (Optional)</label>
-          <input type="text" name="scenarioId" class="form-control" value="SN001" required />
+          <input type="text" name="scenarioId" class="form-control" />
         </div>
       </div>
     </div>
@@ -222,7 +226,7 @@
       </div>
       <div class="col-md-4">
         <label class="form-label required">Sale Type <i class="bi bi-info-circle" data-bs-toggle="tooltip" title=" Important: Describes the nature of sale.Could be: 'Goods at reduced rate', 'Exempt', 'Zero-rated', 'Services', etc."></i></label>
-        <input type="text" name="items[][saleType]" class="form-control" placeholder="e.g. Goods at standard rate" required />
+        <input type="text" name="items[][saleType]" class="form-control" value="Services" placeholder="e.g. Goods at standard rate" required />
       </div>
       <div class="col-md-4">
         <label class="form-label">Further Tax (Optional) <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="If buyer is **unregistered**, FBR may require Further Tax (typically 3% or more). Optional but calculated if applicabl"></i></label>

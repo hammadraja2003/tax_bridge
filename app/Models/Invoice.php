@@ -14,6 +14,8 @@ class Invoice extends Model
     protected $fillable = [
         'invoice_type',
         'invoice_date',
+        'due_date',
+        'invoice_no',
         'scenario_id',
         'invoice_ref_no',
         'seller_id',
@@ -44,5 +46,4 @@ class Invoice extends Model
     {
         return $this->hasMany(InvoiceDetail::class, 'invoice_id', 'invoice_id');
     }
-
 }

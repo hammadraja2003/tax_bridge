@@ -187,13 +187,12 @@
                                     <th>Buyer</th>
                                     <th>Seller</th>
                                     <th>FBR #</th>
-                                    <th>FBR Posted Status</th>
-                                    <th>Excluding Tax</th>
-                                    <th>Including Tax</th>
+                                    <th>Posted to FBR</th>
+                                    <th>Excl. Tax</th>
+                                    <th>Incl. Tax</th>
                                     <th>Total Sales Tax</th>
                                     <th>Total Further Tax</th>
                                     <th>Total Extra Tax</th>
-                                    <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -221,7 +220,6 @@
                                         <td>{{ number_format($inv->totalSalesTax, 2) }}</td>
                                         <td>{{ number_format($inv->totalfurtherTax, 2) }}</td>
                                         <td>{{ number_format($inv->totalextraTax, 2) }}</td>
-                                        <td class="date">{{ $inv->response_status ?? 'Pending' }}</td>
                                         <td>
                                         <button type="button"
                                                 class="btn btn-sm btn-outline-primary"
@@ -264,7 +262,7 @@
                                 <div class="modal-dialog modal-xl modal-dialog-scrollable">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title">Items for Invoice #{{ $invoice->fbr_invoice_number }}</h5>
+                                            <h5 class="modal-title">Invoice Item Details</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                         </div>
                                         <div class="modal-body">
@@ -275,17 +273,15 @@
                                                         <thead class="table-secondary">
                                                         <tr>
                                                             <th style="width: 300px; white-space: normal; word-wrap: break-word;">Description</th>
-                                                            <th style="width: 100px;">Item Price</th>
-                                                            <th style="width: 160px;">Item Tax Rate</th>
+                                                            <th style="width: 100px;">Price</th>
+                                                            <th style="width: 160px;">Tax Rate</th>
                                                             <th style="width: 80px;">Quantity</th>
-                                                            <th style="width: 110px;">Total Value</th>
+                                                            <th style="width: 110px;">Val Inc Tax</th>
                                                             <th style="width: 120px;">Val Exc Tax</th>
-                                                            <th style="width: 140px;">Sales Tax App</th>
                                                             <th style="width: 150px;">Sales Tax WithHeld</th>
                                                             <th style="width: 100px;">Extra Tax</th>
                                                             <th style="width: 100px;">Further Tax</th>
                                                             <th style="width: 120px;">Fed Payable</th>
-                                                            <th style="width: 120px;">Sale Type</th>
                                                             <th style="width: 150px;">SRO Schedule #</th>
                                                             <th style="width: 160px;">SRO Item Serial #</th> 
                                                         </tr>
@@ -299,12 +295,10 @@
                                                                     <td>{{ $item->quantity }}</td>
                                                                     <td>{{ number_format($item->total_value, 2) }}</td>
                                                                     <td>{{ number_format($item->value_excl_tax, 2) }}</td>
-                                                                    <td>{{ number_format($item->sales_tax_applicable, 2) }}</td>
                                                                     <td>{{ number_format($item->sales_tax_withheld, 2) }}</td>
                                                                     <td>{{ number_format($item->extra_tax, 2) }}</td>
                                                                     <td>{{ number_format($item->further_tax, 2) }}</td>
                                                                     <td>{{ number_format($item->fed_payable, 2) }}</td>
-                                                                    <td>{{ $item->sale_type }}</td>
                                                                     <td>{{ number_format($item->sro_schedule_no, 2) }}</td>
                                                                     <td>{{ number_format($item->sro_item_serial_no, 2) }}</td>
                                                                 </tr>

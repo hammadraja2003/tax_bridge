@@ -25,6 +25,7 @@ class BuyerController extends Controller
             'byr_ntn_cnic' => 'nullable|string|max:255',
             'byr_address' => 'nullable|string',
             'byr_province' => 'nullable|string',
+            'byr_account_title' => 'nullable|string|max:255',
             'byr_account_number' => 'nullable|string|max:255',
             'byr_reg_num' => 'nullable|string|max:255',
             'byr_contact_num' => 'nullable|string|max:20',
@@ -32,7 +33,7 @@ class BuyerController extends Controller
             'byr_IBAN' => 'nullable|string|max:255',
             'byr_acc_branch_name' => 'nullable|string|max:255',
             'byr_acc_branch_code' => 'nullable|string|max:255',
-            'byr_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // ← this line added
+            'byr_logo' => 'nullable|mimes:jpg,jpeg,png,svg|max:2048',
         ]);
         $data = $request->all();
         if ($request->hasFile('byr_logo')) {
@@ -43,7 +44,7 @@ class BuyerController extends Controller
             $data['byr_logo'] = $filename;
         }
         Buyer::create($data);
-        return redirect()->route('buyers.index')->with('message', 'Buyer created successfully.');
+        return redirect()->route('buyers.index')->with('message', 'Client created successfully.');
     }
     public function edit($id)
     {
@@ -84,12 +85,12 @@ class BuyerController extends Controller
             $data['byr_logo'] = $filename;
         }
         $buyer->update($data);
-        return redirect()->route('buyers.index')->with('message', 'Buyer updated successfully.');
+        return redirect()->route('buyers.index')->with('message', 'Client updated successfully.');
     }
     public function delete($id)
     {
         $buyer = Buyer::findOrFail($id);
         $buyer->delete();
-        return redirect()->route('buyers.index')->with('message', 'Buyer deleted successfully.');
+        return redirect()->route('buyers.index')->with('message', 'Client deleted successfully.');
     }
 }

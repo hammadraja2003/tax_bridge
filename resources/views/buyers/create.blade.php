@@ -116,7 +116,17 @@
           </div>
           
         <div class="col-md-4">
-          <label class="form-label required">Bank Account Number</label>
+          <label class="form-label required">Account Title</label>
+          <input type="text" name="byr_account_title" placeholder="Enter a Account Title" class="form-control" required />
+            <div class="invalid-feedback">
+                Please Enter Account Title.
+            </div>
+            @error('byr_account_title')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+        <div class="col-md-4">
+          <label class="form-label required">Account Number</label>
           <input type="text" name="byr_account_number" placeholder="Enter a Account Number" class="form-control" required />
             <div class="invalid-feedback">
                 Please Enter Account Number.
@@ -153,17 +163,17 @@
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
-             
-        <div class="col-2 mt-3 ms-auto text-end">
-            <div class="mb-3">
+        <div class="col-md-12 ">
+            <div class="mb-3 col-2 mt-3 ms-auto text-end">
                 <button type="submit" role="button" class="btn btn-primary w-100">
-                    {{ __('Save Client') }}
+                    Save Client
                 </button>
             </div>
         </div>
+        </div>
     </div>
+</form>
 </div>
-    </form>
 </div>
 
 

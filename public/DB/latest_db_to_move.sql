@@ -29,6 +29,7 @@ CREATE TABLE `business_configurations` (
   `bus_address` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `bus_province` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `bus_logo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `bus_account_title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `bus_account_number` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `bus_reg_num` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `bus_contact_num` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -49,7 +50,7 @@ CREATE TABLE `business_configurations` (
 
 LOCK TABLES `business_configurations` WRITE;
 /*!40000 ALTER TABLE `business_configurations` DISABLE KEYS */;
-INSERT INTO `business_configurations` VALUES (1,'Secureisms Ltd','12345-6789012-3','123 Business Avenue, Lahore, Pakistan','Islamabad','1751891434.png','9876543210123456','REG-789456','03001234567','John Doe','PK36SCBL0000001123456702','SCBLPKKTYIT','Lahore Main Branch','1234','2025-07-04 12:02:41','2025-07-07 07:30:34');
+INSERT INTO `business_configurations` VALUES (1,'SECUREISM (PRIVATE) LIMITED','8923980-3','F3 Center of Technology, Zaraj Society, Islamabad Pakistan','Islamabad','1752125231.svg','SECUREISM (PRIVATE) LIMITED','0010109016750017','0119999','03001234567','ZEESHAN QAMAR','PK44ABPA0010109016750017','ABPAPKKA','ABL CHAKLALA SCHEME 3 RAWALPINDI','0757','2025-07-04 12:02:41','2025-07-10 00:31:58');
 /*!40000 ALTER TABLE `business_configurations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -68,6 +69,7 @@ CREATE TABLE `buyers` (
   `byr_address` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `byr_province` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `byr_logo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `byr_account_title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `byr_account_number` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `byr_reg_num` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `byr_contact_num` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -79,7 +81,7 @@ CREATE TABLE `buyers` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`byr_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -88,7 +90,7 @@ CREATE TABLE `buyers` (
 
 LOCK TABLES `buyers` WRITE;
 /*!40000 ALTER TABLE `buyers` DISABLE KEYS */;
-INSERT INTO `buyers` VALUES (1,'ABC Traders',0,'12345-1234567-1','123 Market Street, City','Isb','1751891096.png','12345678901234','REG-987654','03001234567','John Doe','PK12ABCD00000012345678','ABCDPKKA','Main Branch','0012','2025-07-04 12:15:53','2025-07-07 07:24:56'),(2,'SkyPass',1,'478458-6','Address ,Address ,Address ,Address ,Address  Islamabad','Rawalpindi','1751891068.png','11224587-dfasfdsad','65f5sd4af-d','0300-5325487','Waheed Ahmed','PAK87458as','fdsaf874-h','ABL','1178','2025-07-07 01:12:30','2025-07-07 07:24:28'),(3,'Test',1,'3740525394438 1','195 Lambton Quay\r\nPrivate Bag 18 901\r\nWellington 6160, New Zealand','TEST','1751890822.png','4545454551','REG-9876544554','03115276352','03115276352','5454+5','5465','Allied JFKJ','1178','2025-07-07 07:20:22','2025-07-07 07:20:22'),(4,'Hammad Buyer',1,'3740525394438 1','195 Lambton Quay\r\nPrivate Bag 18 901\r\nWellington 6160, New Zealand','TEST','1751947229.jpg','11224587-Hm','REG-8521','03115276352','TEST BUYER','987456321','2541','Askari Bank','728','2025-07-07 23:00:29','2025-07-07 23:00:29'),(5,'Test',0,'12345-1234567-1','195 Lambton Quay\r\nPrivate Bag 18 901\r\nWellington 6160, New Zealand','TEST','1751947301.jpg','12345678901234','567412589638888','03115276352','TAZ','45646565',NULL,'Allied',NULL,'2025-07-07 23:01:41','2025-07-08 02:08:52'),(6,'Farhan',0,'37405253944382','TEST','TST','1751947545.jpg','12345678541234','REG-1111','03319748582','TEST','54545241','987654','Alflah Bank','96321','2025-07-07 23:05:45','2025-07-07 23:05:45'),(7,'Shawaiz',0,'3740525394438','195 Lambton Quay\r\nPrivate Bag 18 901\r\nWellington 6160, New Zealand','TST','1751947644.jpg','4545454551','REG-96521','03115276352','Zahid','54654156','32556','Islamic','96521','2025-07-07 23:07:24','2025-07-07 23:07:24'),(8,'XYZ Traders',1,'56546','195 Lambton Quay\r\nPrivate Bag 18 901\r\nWellington 6160, New Zealand','jj','1751947746.png','11224587-65465','567446455','03115276352','Waheed','145456','6565','Faisal','321','2025-07-07 23:09:06','2025-07-07 23:09:06'),(9,'BUYER 12',0,'12345-1234567-1','195 Lambton Quay\r\nPrivate Bag 18 901\r\nWellington 6160, New Zealand','TST','1751947841.jpg','11224587-AC','65545454','03115276352','Junaid','454564',NULL,'JS Bank','9651','2025-07-07 23:10:41','2025-07-08 02:46:57');
+INSERT INTO `buyers` VALUES (1,'SkyPass',1,'478458-6','Office 304, Centaurus Mall, Islamabad','Islamabad','1752126900.png','SkyPass Technologies (Pvt) Ltd','00123456789012','REG-987654','03005325487','Waheed Ahmed','PK36ABPA0001234567890123','ABPAPKKA','F-8 Markaz Branch','0876','2025-07-10 00:55:00','2025-07-10 00:55:00'),(3,'F3 Technologies (Pvt) Ltd',0,'4230198-3','2nd Floor, Arfa Software Tech Park, Lahore','Islamabad','1752127824.jpeg','F3 Technologies Pvt Ltd','00098765432100','REG-2025013','Salman Qureshi','03211234567','PK92HABB0009876543210001','ABCDPKKB','Main Boulevard Gulberg Branch','0452','2025-07-10 01:10:24','2025-07-10 01:10:37');
 /*!40000 ALTER TABLE `buyers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -200,7 +202,7 @@ CREATE TABLE `invoice_details` (
   KEY `invoice_details_item_id_foreign` (`item_id`),
   CONSTRAINT `invoice_details_invoice_id_foreign` FOREIGN KEY (`invoice_id`) REFERENCES `invoices` (`invoice_id`) ON DELETE CASCADE,
   CONSTRAINT `invoice_details_item_id_foreign` FOREIGN KEY (`item_id`) REFERENCES `items` (`item_id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -209,7 +211,7 @@ CREATE TABLE `invoice_details` (
 
 LOCK TABLES `invoice_details` WRITE;
 /*!40000 ALTER TABLE `invoice_details` DISABLE KEYS */;
-INSERT INTO `invoice_details` VALUES (5,3,2,2,4720.00,4000.00,NULL,18.00,0.00,0.00,0.00,0.00,0.00,'services',NULL,NULL,'2025-07-08 05:16:07','2025-07-08 05:16:07'),(6,3,3,2,10810.80,4290.00,NULL,152.00,0.00,0.00,0.00,0.00,0.00,'services',NULL,NULL,'2025-07-08 05:16:07','2025-07-08 05:16:07'),(7,4,2,2,4720.00,4000.00,NULL,18.00,0.00,200.00,100.00,0.00,0.00,'services',NULL,NULL,'2025-07-08 06:34:18','2025-07-08 06:34:18'),(8,4,3,3,16216.20,6435.00,NULL,152.00,0.00,0.00,0.00,0.00,0.00,'services',NULL,NULL,'2025-07-08 06:34:18','2025-07-08 06:34:18'),(9,4,4,4,1476.60,1284.00,NULL,15.00,0.00,50.00,50.00,0.00,0.00,'services',NULL,NULL,'2025-07-08 06:34:18','2025-07-08 06:34:18'),(10,5,2,2,4720.00,4000.00,NULL,18.00,0.00,0.00,0.00,0.00,0.00,'services',NULL,NULL,'2025-07-08 07:09:40','2025-07-08 07:09:40'),(11,5,3,3,16216.20,6435.00,NULL,152.00,0.00,180.00,250.00,0.00,0.00,'services',NULL,NULL,'2025-07-08 07:09:40','2025-07-08 07:09:40'),(12,5,5,3,17512.32,15636.00,NULL,12.00,0.00,80.00,50.00,0.00,0.00,'services',NULL,NULL,'2025-07-08 07:09:40','2025-07-08 07:09:40');
+INSERT INTO `invoice_details` VALUES (1,1,1,1,177000.00,150000.00,NULL,18.00,0.00,0.00,0.00,0.00,0.00,'Services',NULL,NULL,'2025-07-10 02:01:35','2025-07-10 02:01:35'),(2,1,2,1,29000.00,25000.00,NULL,16.00,0.00,350.00,100.00,0.00,0.00,'Services',NULL,NULL,'2025-07-10 02:01:35','2025-07-10 02:01:35');
 /*!40000 ALTER TABLE `invoice_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -222,8 +224,10 @@ DROP TABLE IF EXISTS `invoices`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `invoices` (
   `invoice_id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `invoice_no` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `invoice_type` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `invoice_date` date NOT NULL,
+  `due_date` date DEFAULT NULL,
   `scenario_id` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `invoice_ref_no` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `seller_id` bigint unsigned NOT NULL,
@@ -244,7 +248,7 @@ CREATE TABLE `invoices` (
   KEY `invoices_buyer_id_foreign` (`buyer_id`),
   CONSTRAINT `invoices_buyer_id_foreign` FOREIGN KEY (`buyer_id`) REFERENCES `buyers` (`byr_id`) ON DELETE CASCADE,
   CONSTRAINT `invoices_seller_id_foreign` FOREIGN KEY (`seller_id`) REFERENCES `business_configurations` (`bus_config_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -253,7 +257,7 @@ CREATE TABLE `invoices` (
 
 LOCK TABLES `invoices` WRITE;
 /*!40000 ALTER TABLE `invoices` DISABLE KEYS */;
-INSERT INTO `invoices` VALUES (3,'Sales Invoice','2025-07-08','SN001',NULL,1,1,NULL,1,'Unknown','',NULL,NULL,NULL,NULL,NULL,'2025-07-08 05:16:07','2025-07-08 05:16:07'),(4,'Sales Invoice','2025-07-08','SN001',NULL,1,1,NULL,1,'Unknown','',11719,22412.8,10693.8,150,250,'2025-07-08 06:34:18','2025-07-08 06:34:18'),(5,'Sales Invoice','2025-07-08','SN001',NULL,1,4,NULL,1,'Unknown','',26071,38448.52,12377.52,300,260,'2025-07-08 07:09:40','2025-07-08 07:09:40');
+INSERT INTO `invoices` VALUES (1,'INV-000001','Sales Invoice','2025-07-10','2025-07-12',NULL,NULL,1,1,NULL,1,'Unknown','',175000,206000,31000,100,350,'2025-07-10 02:01:35','2025-07-10 02:01:35');
 /*!40000 ALTER TABLE `invoices` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -274,7 +278,7 @@ CREATE TABLE `items` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`item_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -283,7 +287,7 @@ CREATE TABLE `items` (
 
 LOCK TABLES `items` WRITE;
 /*!40000 ALTER TABLE `items` DISABLE KEYS */;
-INSERT INTO `items` VALUES (2,NULL,'The morning air was crisp and sharp as Sean walked down the road.',2000,'18','KG','2025-07-07 05:11:12','2025-07-08 05:13:10'),(3,'446','text description is a verbal representation of something, using written words to convey information about a person, place, thing, or idea. It aims to create a clear and vivid mental image',2145,'152','12','2025-07-07 23:27:29','2025-07-08 00:32:05'),(4,'852','A short description is a concise summary or overview of something, like a product, concept, or task, providing essential information in a brief and easily understandable manner',321,'15','52','2025-07-08 00:36:55','2025-07-08 00:36:55'),(5,'852','The best descriptions are simple and to the point. You want to sprinkle your descriptions throughout your writing so that they complement the message you\'re trying to convey, not bury it',5212,'12','12','2025-07-08 00:38:55','2025-07-08 02:49:38'),(6,NULL,'Add more depth to your tasks with a fully customizable item description. The description can be added to any item in your workspace as a widget. It can include formatting, images, and text, just like a mini monday Workdoc.',123,'10','12','2025-07-08 04:36:07','2025-07-08 04:36:07'),(7,'852','To add an Item Description as a new item view, head over to the Item Views Center. Open up the Updates Section of any item on your board and click the \"+\" in the header. From the list of views, select \"Item description',7410,'8','5','2025-07-08 04:36:35','2025-07-08 04:36:35'),(8,'123','You can change some of your widgets\' settings by clicking the 3-dot menu at the top right corner. From here, you can delete your widget if necessary. You can also click \"Full Screen\" to work a little more comfortably, as you would with a Workdoc.',321,'15','4','2025-07-08 04:37:08','2025-07-08 04:37:08'),(9,'123','You can resize your widget by hovering anywhere in it and dragging the corner to where you want it to be. You can also move the widget by hovering over the icon at the top left corner and then just dragging',410,'12','12','2025-07-08 04:54:07','2025-07-08 04:54:07');
+INSERT INTO `items` VALUES (1,NULL,'Custom website development using Laravel & React',150000,'18','Per Project','2025-07-10 01:11:44','2025-07-10 01:11:59'),(2,NULL,'SEO Optimization Package',25000,'16','Per Month','2025-07-10 01:12:21','2025-07-10 01:12:21'),(3,NULL,'AWS-based cloud hosting with 99.9% uptime SLA',10000,'15','Per Month','2025-07-10 01:12:48','2025-07-10 01:12:48'),(4,NULL,'Logo design, banners, and brand identity materials',12000,'15','Per Design Package','2025-07-10 01:13:08','2025-07-10 01:13:08'),(5,NULL,'Bug fixing and feature updates for Android/iOS apps',30000,'17','Per Month','2025-07-10 01:13:34','2025-07-10 01:13:34');
 /*!40000 ALTER TABLE `items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -359,7 +363,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -368,7 +372,7 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (7,'0001_01_01_000000_create_users_table',1),(8,'0001_01_01_000001_create_cache_table',1),(9,'0001_01_01_000002_create_jobs_table',1),(22,'2025_07_04_120046_create_business_configurations_table',2),(24,'2025_07_04_121405_create_buyers_table',3),(25,'2025_07_07_045332_create_items_table',4),(26,'2025_07_07_050034_create_invoices_table',5),(27,'2025_07_07_050036_create_invoice_details_table',5),(28,'2025_07_07_110924_add_bus_province_to_business_configurations_table',6),(29,'2025_07_07_111052_add_byr_province_to_buyers_table',7),(30,'2025_07_08_112513_add_totals_to_invoices_table',8);
+INSERT INTO `migrations` VALUES (7,'0001_01_01_000000_create_users_table',1),(8,'0001_01_01_000001_create_cache_table',1),(9,'0001_01_01_000002_create_jobs_table',1),(22,'2025_07_04_120046_create_business_configurations_table',2),(24,'2025_07_04_121405_create_buyers_table',3),(25,'2025_07_07_045332_create_items_table',4),(26,'2025_07_07_050034_create_invoices_table',5),(27,'2025_07_07_050036_create_invoice_details_table',5),(28,'2025_07_07_110924_add_bus_province_to_business_configurations_table',6),(29,'2025_07_07_111052_add_byr_province_to_buyers_table',7),(30,'2025_07_08_112513_add_totals_to_invoices_table',8),(31,'2025_07_10_052012_add_bus_account_title_to_business_configurations_table',9),(32,'2025_07_10_054824_add_byr_account_title_to_buyers_table',10),(33,'2025_07_10_063142_add_invoice_no_and_due_date_to_invoices_table',11);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -422,7 +426,7 @@ CREATE TABLE `sessions` (
 
 LOCK TABLES `sessions` WRITE;
 /*!40000 ALTER TABLE `sessions` DISABLE KEYS */;
-INSERT INTO `sessions` VALUES ('M7neyin2kBvabI2ElC41wJHYBXtsF7ClTvzslcdA',2,'127.0.0.1','Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Mobile Safari/537.36','YTo0OntzOjY6Il90b2tlbiI7czo0MDoiOEVobnpyUjJNMTNnOFlsQkRKWkVWaGNoanFGS1ZKRU85YjdWSTZOYyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9pbnZvaWNlcy9jcmVhdGUiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToyO30=',1752033961);
+INSERT INTO `sessions` VALUES ('oZW8fk8q3HkcnJEojEnnMmRqT84N4ZlvCUqXh1MT',4,'127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36','YTo0OntzOjY6Il90b2tlbiI7czo0MDoibTcyM3d5ZndtSDNPTEpQRkdXamFZU3FyTDlYVDVwZkM3UXB4S2hCRCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJuZXciO2E6MDp7fXM6Mzoib2xkIjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9kYXNoYm9hcmQiO31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aTo0O30=',1752132117);
 /*!40000 ALTER TABLE `sessions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -444,7 +448,7 @@ CREATE TABLE `users` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -453,7 +457,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (2,'Hammad Ali','hammad.ali@f3technologies.eu',NULL,'$2y$12$L.S4Y73wLI.F5tF6sbUyf.mkrEGCMbU7oh789Ba2caicyUAlK1ApW',NULL,'2025-07-02 01:29:39','2025-07-02 01:29:39'),(3,'Hammad Naseer','hammad.naseer@f3technologies.eu',NULL,'$2y$12$uUtR1dE5s3FQOYUd/2DSmOhnR64Mo/SkDT.PZ.j4CA5H0JTJDpmti',NULL,'2025-07-04 02:20:40','2025-07-04 02:20:40');
+INSERT INTO `users` VALUES (2,'Hammad Ali','hammad.ali@f3technologies.eu',NULL,'$2y$12$L.S4Y73wLI.F5tF6sbUyf.mkrEGCMbU7oh789Ba2caicyUAlK1ApW',NULL,'2025-07-02 01:29:39','2025-07-02 01:29:39'),(3,'Hammad Naseer','hammad.naseer@f3technologies.eu',NULL,'$2y$12$uUtR1dE5s3FQOYUd/2DSmOhnR64Mo/SkDT.PZ.j4CA5H0JTJDpmti',NULL,'2025-07-04 02:20:40','2025-07-04 02:20:40'),(4,'PRAL','admin@pral.com',NULL,'$2y$12$L.S4Y73wLI.F5tF6sbUyf.mkrEGCMbU7oh789Ba2caicyUAlK1ApW',NULL,'2025-07-02 01:29:39','2025-07-02 01:29:39');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -466,4 +470,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-07-09  9:08:40
+-- Dump completed on 2025-07-10 12:23:03
