@@ -48,6 +48,7 @@
         <link rel="stylesheet" href="{{asset('build/assets/style-BVr_C8ru.css')}}" /><!-- css end-->
     </head>
     <body>
+    @include('layouts.partials.errors')
         @yield('content')
     </body>
     <!--customizer-->
