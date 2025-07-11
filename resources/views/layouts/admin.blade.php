@@ -8,9 +8,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
   <meta name="keywords" content="">
-  <meta name="author" content="Hammad Ali">
-  <link rel="icon" href="{{asset('assets/images/logo/secureism_logo.svg')}}" type="image/x-icon">
-  <link rel="shortcut icon" href="{{asset('assets/images/logo/secureism_logo.svg')}}" type="image/x-icon">
+
+
+  <link rel="icon" href="{{asset('assets/images/logo/favicon_sec.png.png')}}" type="image/x-icon">
+  <link rel="shortcut icon" href="{{asset('assets/images/logo/favicon_sec.png.png')}}" type="image/x-icon">
   <title>{{ config('app.name', 'Secureism | Invoicing Management System') }}</title>
   <!-- meta and title end-->
   <!-- css start-->

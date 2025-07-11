@@ -41,6 +41,10 @@
                     </div>
                       <div class="col-12 mt-2">
                         <div class="mb-3">
+                          <div class="text-center mb-3">
+                              <span>Don't Have Your Account yet?</span>
+                              <a href="{{ route('register') }}" class="text-primary text-decoration-none fw-semibold ms-1">Sign up</a>
+                          </div>
                          <button type="submit"  role="button" class="btn btn-primary w-100">Sign In</button>
                         </div>
                       </div>
