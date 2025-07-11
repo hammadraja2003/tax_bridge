@@ -64,8 +64,11 @@
                                   </div>
                                 </li>
                                 <li class="app-divider-v dotted py-1"></li>
+                                @php
+                                $loginId = auth()->user()->id;
+                                @endphp
                                 <li>
-                                  <a class="dropdown-item" href="#">
+                                  <a class="dropdown-item" href="{{URL::to('update-profile/' . $loginId)}}">
                                     <i class="ti ti-user-circle pe-1 f-s-18"></i> Profile
                                   </a>
                                 </li>
