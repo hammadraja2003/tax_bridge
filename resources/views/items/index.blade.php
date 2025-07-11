@@ -2,7 +2,8 @@
 @section('content')
 
 <style>
-    table th, table td {
+    table th,
+    table td {
         white-space: nowrap;
         padding: 0.4rem 0.6rem;
         vertical-align: middle;
@@ -34,7 +35,8 @@
     /* Column Widths */
     #projectTableT th:nth-child(1),
     #projectTableT td:nth-child(1) {
-        width: 300px; /* Description */
+        width: 300px;
+        /* Description */
         text-align: left;
         white-space: normal;
         word-break: break-word;
@@ -42,27 +44,32 @@
 
     #projectTableT th:nth-child(2),
     #projectTableT td:nth-child(2) {
-        width: 80px; /* HS Code */
+        width: 80px;
+        /* HS Code */
     }
 
     #projectTableT th:nth-child(3),
     #projectTableT td:nth-child(3) {
-        width: 80px; /* Price */
+        width: 80px;
+        /* Price */
     }
 
     #projectTableT th:nth-child(4),
     #projectTableT td:nth-child(4) {
-        width: 80px; /* Tax Rate */
+        width: 80px;
+        /* Tax Rate */
     }
 
     #projectTableT th:nth-child(5),
     #projectTableT td:nth-child(5) {
-        width: 80px; /* UOM */
+        width: 80px;
+        /* UOM */
     }
 
     #projectTableT th:nth-child(6),
     #projectTableT td:nth-child(6) {
-        width: 100px; /* Actions */
+        width: 100px;
+        /* Actions */
     }
 
     .btn-xs {
@@ -82,59 +89,62 @@
         max-height: 4.5em;
         overflow: hidden;
     }
+
     @media (max-width: 991.98px) {
-                .list-table-header {
-                    flex-direction: column;
-                    align-items: flex-start;
-                    gap: 10px;
-                }
+        .list-table-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
 
-                .search {
-                    width: 100%;
-                }
+        .search {
+            width: 100%;
+        }
 
-                #projectTableT th, #projectTableT td {
-                    font-size: 11px;
-                    padding: 0.3rem 0.4rem;
-                }
+        #projectTableT th,
+        #projectTableT td {
+            font-size: 11px;
+            padding: 0.3rem 0.4rem;
+        }
 
-                .card-header h5 {
-                    font-size: 16px;
-                }
+        .card-header h5 {
+            font-size: 16px;
+        }
 
-                .btn {
-                    font-size: 12px;
-                    padding: 6px 10px;
-                }
-            }
+        .btn {
+            font-size: 12px;
+            padding: 6px 10px;
+        }
+    }
 
-            @media (max-width: 576px) {
-                .modal-content {
-                    font-size: 13px;
-                }
+    @media (max-width: 576px) {
+        .modal-content {
+            font-size: 13px;
+        }
 
-                table {
-                    font-size: 11px;
-                }
+        table {
+            font-size: 11px;
+        }
 
-                #projectTableT th:nth-child(n),
-                #projectTableT td:nth-child(n) {
-                    width: auto !important;
-                }
+        #projectTableT th:nth-child(n),
+        #projectTableT td:nth-child(n) {
+            width: auto !important;
+        }
 
-                .table-responsive {
-                    overflow-x: auto;
-                }
+        .table-responsive {
+            overflow-x: auto;
+        }
 
-                .app-scroll {
-                    -webkit-overflow-scrolling: touch;
-                }
-            }
-            @media (max-width: 999px) {
-                table {
-                    min-width: 1700px;
-                }
-            }  
+        .app-scroll {
+            -webkit-overflow-scrolling: touch;
+        }
+    }
+
+    @media (max-width: 999px) {
+        table {
+            min-width: 1700px;
+        }
+    }
 </style>
 
 <div class="container" style="max-width: 1873px;">
@@ -156,7 +166,8 @@
                                 </a>
                                 <form class="app-form app-icon-form" action="#">
                                     <div class="position-relative">
-                                        <input type="search" class="form-control search" placeholder="Search..." aria-label="Search">
+                                        <input type="search" class="form-control search" placeholder="Search..."
+                                            aria-label="Search">
                                     </div>
                                 </form>
                             </div>
@@ -174,25 +185,28 @@
                                     </thead>
                                     <tbody class="list" id="t-data">
                                         @foreach($items as $item)
-                                            <tr>
-                                                <td class="employee">{{ $item->item_description }}</td>
-                                                <td>{{ $item->item_hs_code }}</td>
-                                                <td>{{ $item->item_price }}</td>
-                                                <td>{{ $item->item_tax_rate }}</td>
-                                                <td>{{ $item->item_uom }}</td>
-                                                <td>
-                                                    <a href="{{ route('items.edit', Crypt::encryptString($item->item_id)) }}" class="btn btn-outline-success btn-xs me-1">
-                                                        <i class="ti ti-edit"></i>
-                                                    </a>
-                                                    <form action="{{ route('items.delete', $item->item_id) }}" method="POST" style="display:inline;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="button" class="btn btn-outline-danger btn-xs delete-button">
-                                                            <i class="ti ti-trash f-s-20"></i>
-                                                        </button>
-                                                    </form>
-                                                </td>
-                                            </tr>
+                                        <tr>
+                                            <td class="employee">{{ $item->item_description }}</td>
+                                            <td>{{ $item->item_hs_code }}</td>
+                                            <td>{{ $item->item_price }}</td>
+                                            <td>{{ $item->item_tax_rate }}</td>
+                                            <td>{{ $item->item_uom }}</td>
+                                            <td>
+                                                <a href="{{ route('items.edit', Crypt::encryptString($item->item_id)) }}"
+                                                    class="btn btn-outline-success btn-xs me-1">
+                                                    <i class="ti ti-edit"></i>
+                                                </a>
+                                                <form action="{{ route('items.delete', $item->item_id) }}" method="POST"
+                                                    style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="button"
+                                                        class="btn btn-outline-danger btn-xs delete-button">
+                                                        <i class="ti ti-trash f-s-20"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -207,14 +221,14 @@
                             </div>
                         </div>
                     </div>
-                   
+
                 </div>
             </div>
         </div>
     </div>
 </div>
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.delete-button').forEach(button => {
         button.addEventListener('click', function (e) {
             const form = this.closest('form');

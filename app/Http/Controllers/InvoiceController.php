@@ -24,15 +24,36 @@ class InvoiceController extends Controller
     public function index(Request $request)
     {
         $query = Invoice::with(['buyer', 'seller', 'details.item']);
-        if ($request->has('invoice_type')) {
+
+        // Filter by invoice type
+        if ($request->filled('invoice_type')) {
             $query->where('invoice_type', $request->invoice_type);
         }
-        if ($request->has('date_from') && $request->has('date_to')) {
+
+        // Filter by date range
+        if ($request->filled('date_from') && $request->filled('date_to')) {
             $query->whereBetween('invoice_date', [$request->date_from, $request->date_to]);
         }
-        $invoices = $query->orderByDesc('invoice_date')->paginate(10);
+        // Filter by fbr status
+        if ($request->has('is_posted_to_fbr') && $request->is_posted_to_fbr !== '') {
+            $query->where('is_posted_to_fbr', $request->is_posted_to_fbr);
+        }
+
+        // Paginate and preserve query parameters
+        $invoices = $query->orderByDesc('invoice_date')->paginate(10)->appends($request->query());
+
         return view('invoices.index', compact('invoices'));
     }
+    public function filter(Request $request)
+    {
+        return redirect()->route('invoices.index', [
+            'invoice_type' => $request->invoice_type,
+            'date_from' => $request->date_from,
+            'date_to' => $request->date_to,
+            'is_posted_to_fbr' => $request->is_posted_to_fbr,
+        ]);
+    }
+
     public function createNewInvoice(Request $request)
     {
         // Clean incoming data
@@ -63,10 +84,7 @@ class InvoiceController extends Controller
 
         // Filter incomplete items
         $filteredItems = array_filter($data['items'] ?? [], function ($item) {
-            return isset($item['item_id'], $item['quantity'], $item['totalValues']) &&
-                $item['item_id'] !== null &&
-                $item['quantity'] !== null &&
-                $item['totalValues'] !== null;
+            return isset($item['item_id'], $item['quantity'], $item['totalValues']);
         });
 
         $data['items'] = array_values($filteredItems); // Reindex

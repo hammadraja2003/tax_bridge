@@ -16,6 +16,7 @@
         "xeroapi/xero-php-oauth2": "8.1"
     },
     "require-dev": {
+        "enlightn/security-checker": "^2.0",
         "fakerphp/faker": "^1.23",
         "laravel/breeze": "^2.3",
         "laravel/pail": "^1.2.2",
@@ -23,6 +24,7 @@
         "laravel/sail": "^1.41",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.6",
+        "nunomaduro/larastan": "^3.5",
         "phpunit/phpunit": "^11.5.3"
     },
     "autoload": {

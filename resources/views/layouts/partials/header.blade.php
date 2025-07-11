@@ -78,20 +78,20 @@
                                     <x-dropdown-link :href="route('logout')"
                                             onclick="event.preventDefault();
                                                         this.closest('form').submit();">
-                                    <span class="text-danger">
-                                    <i class="ti ti-logout pe-1 f-s-18"></i>
-                                        Log Out</span>
-                                    </x-dropdown-link>
-                                </form>
-                              </ul>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
+                            <span class="text-danger">
+                              <i class="ti ti-logout pe-1 f-s-18"></i>
+                              Log Out</span>
+                          </x-dropdown-link>
+                        </form>
+                      </ul>
                     </div>
-                  </div>
-                </div>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
-        </header>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

@@ -37,6 +37,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/company/configuration', [CompanyController::class, 'storeOrUpdate'])->name('company.configuration.save');
     //Invoices
     Route::get('/invoices', [InvoiceController::class, 'index'])->name('invoices.index');
+    Route::post('/invoices/filter', [InvoiceController::class, 'filter'])->name('invoices.filter');
     Route::get('/invoices/create', [InvoiceController::class, 'create'])->name('invoices.create');
     Route::get('/invoices/print/{id}', [InvoiceController::class, 'print'])->name('xero.print');
     Route::post('/create-new-invoice', [InvoiceController::class, 'createNewInvoice'])->name('create-new-invoice');

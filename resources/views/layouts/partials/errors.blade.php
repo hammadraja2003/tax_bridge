@@ -1,6 +1,6 @@
 @if(session('message') || $errors->has('toast_error'))
 <script>
-document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function () {
     let toastText = @json(session('message') ?? $errors->first('toast_error'));
     let isError = {{ $errors->has('toast_error') ? 'true' : 'false' }};
     Toastify({
