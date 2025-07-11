@@ -10,8 +10,8 @@
   <meta name="keywords" content="">
 
 
-  <link rel="icon" href="{{asset('assets/images/logo/favicon_sec.png.png')}}" type="image/x-icon">
-  <link rel="shortcut icon" href="{{asset('assets/images/logo/favicon_sec.png.png')}}" type="image/x-icon">
+  <link rel="icon" href="{{asset('assets/images/logo/favicon_sec.png')}}" type="image/x-icon">
+  <link rel="shortcut icon" href="{{asset('assets/images/logo/favicon_sec.png')}}" type="image/x-icon">
   <title>{{ config('app.name', 'Secureism | Invoicing Management System') }}</title>
   <!-- meta and title end-->
   <!-- css start-->
