@@ -177,60 +177,62 @@
                                 class="fa-solid fa-step-backward fa-fw me-1"></i>Back</a>
                     </div>
                     <div class="card-body p-0">
-                    <div class="p-3 border-bottom">
-                        <form method="POST" action="{{ route('invoices.filter') }}" class="row g-2 align-items-end">
-                            @csrf
-                            {{-- Invoice Type Dropdown --}}
-                            <div class="col-md-2">
-                                <label for="invoice_type" class="form-label">Invoice Type</label>
-                                <select name="invoice_type" id="invoice_type" class="form-select">
-                                    <option value="">All Types</option>
-                                    <option value="Sales Invoice" {{ request('invoice_type')=='Sales Invoice' ? 'selected'
-                                        : '' }}>Sales Invoice</option>
-                                    <option value="Debit Note" {{ request('invoice_type')=='Debit Note' ? 'selected' : ''
-                                        }}>Debit Note</option>
-                                    <!-- Add other types if needed -->
-                                </select>
-                            </div>
-                            {{-- Invoice Status Dropdown --}}
-                            <div class="col-md-2">
-                                <label for="is_posted_to_fbr" class="form-label">Posted to FBR?</label>
-                                <select name="is_posted_to_fbr" id="is_posted_to_fbr" class="form-select">
-                                    <option value="">All</option>
-                                    <option value="1" {{ request('is_posted_to_fbr')==='1' ? 'selected' : '' }}>Yes</option>
-                                    <option value="0" {{ request('is_posted_to_fbr')==='0' ? 'selected' : '' }}>No</option>
-                                </select>
-                            </div>
+                        <div class="p-3 border-bottom">
+                            <form method="POST" action="{{ route('invoices.filter') }}" class="row g-2 align-items-end">
+                                @csrf
+                                {{-- Invoice Type Dropdown --}}
+                                <div class="col-md-2">
+                                    <label for="invoice_type" class="form-label">Invoice Type</label>
+                                    <select name="invoice_type" id="invoice_type" class="form-select">
+                                        <option value="">All Types</option>
+                                        <option value="Sales Invoice" {{ request('invoice_type')=='Sales Invoice'
+                                            ? 'selected' : '' }}>Sales Invoice</option>
+                                        <option value="Debit Note" {{ request('invoice_type')=='Debit Note' ? 'selected'
+                                            : '' }}>Debit Note</option>
+                                        <!-- Add other types if needed -->
+                                    </select>
+                                </div>
+                                {{-- Invoice Status Dropdown --}}
+                                <div class="col-md-2">
+                                    <label for="is_posted_to_fbr" class="form-label">Posted to FBR?</label>
+                                    <select name="is_posted_to_fbr" id="is_posted_to_fbr" class="form-select">
+                                        <option value="">All</option>
+                                        <option value="1" {{ request('is_posted_to_fbr')==='1' ? 'selected' : '' }}>Yes
+                                        </option>
+                                        <option value="0" {{ request('is_posted_to_fbr')==='0' ? 'selected' : '' }}>No
+                                        </option>
+                                    </select>
+                                </div>
 
-                            {{-- Date From --}}
-                            <div class="col-md-3">
-                                <label for="date_from" class="form-label">Date From</label>
-                                <input type="date" name="date_from" id="date_from" class="form-control"
-                                    value="{{ request('date_from') }}">
-                            </div>
+                                {{-- Date From --}}
+                                <div class="col-md-3">
+                                    <label for="date_from" class="form-label">Date From</label>
+                                    <input type="date" name="date_from" id="date_from" class="form-control"
+                                        value="{{ request('date_from') }}">
+                                </div>
 
-                            {{-- Date To --}}
-                            <div class="col-md-3">
-                                <label for="date_to" class="form-label">Date To</label>
-                                <input type="date" name="date_to" id="date_to" class="form-control"
-                                    value="{{ request('date_to') }}">
-                            </div>
-                            <div class="col-2 d-flex justify-content-end gap-2">
-                                {{-- Filter Button --}}
-                                <button type="submit" class="btn btn-primary">Filter</button>
+                                {{-- Date To --}}
+                                <div class="col-md-3">
+                                    <label for="date_to" class="form-label">Date To</label>
+                                    <input type="date" name="date_to" id="date_to" class="form-control"
+                                        value="{{ request('date_to') }}">
+                                </div>
+                                <div class="col-2 d-flex justify-content-end gap-2">
+                                    {{-- Filter Button --}}
+                                    <button type="submit" class="btn btn-primary">Filter</button>
 
-                                {{-- Clear Filter Button (only if any filter is applied) --}}
-                                @if(
-                                request()->filled('invoice_type') ||
-                                request()->filled('date_from') ||
-                                request()->filled('date_to') ||
-                                request()->filled('is_posted_to_fbr')
-                                )
-                                <a href="{{ route('invoices.index') }}" class="btn btn-secondary">Clear</a>
-                                @endif
-                            </div>
-                        </form>
-                    </div>
+                                    {{-- Clear Filter Button (only if any filter is applied) --}}
+                                    @if(
+                                    request()->filled('invoice_type') ||
+                                    request()->filled('date_from') ||
+                                    request()->filled('date_to') ||
+                                    request()->filled('is_posted_to_fbr')
+                                    )
+                                    <a href="{{ route('invoices.index') }}" class="btn btn-secondary">Clear</a>
+                                    @endif
+                                </div>
+                            </form>
+                        </div>
                         <div id="myTable">
                             <div class="list-table-header d-flex justify-content-sm-between">
                                 <a href="{{ route('invoices.create') }}" class="btn btn-primary"><i
@@ -251,6 +253,8 @@
                                     <thead>
                                         <tr class="app-sort">
                                             <th>Invoice Date</th>
+                                            <th>Invoice #</th>
+                                            <th>Invoice Status</th>
                                             <th>Type</th>
                                             <th>Buyer</th>
                                             <th>Seller</th>
@@ -268,6 +272,16 @@
                                         @forelse($invoices as $inv)
                                         <tr>
                                             <td>{{ \Carbon\Carbon::parse($inv->invoice_date)->format('d M Y') }}</td>
+                                            <td class="employee">{{ $inv->invoice_no }}</td>
+                                            <td class="employee">
+                                                @if ($inv->invoice_status === 1)
+                                                <span class="badge text-bg-secondary">Draft</span>
+                                                @elseif ($inv->invoice_status === 2)
+                                                <span class="badge text-bg-success">Posted</span>
+                                                @else
+                                                <span class="badge text-bg-secondary">N/A</span>
+                                                @endif
+                                            </td>
                                             <td class="employee">{{ $inv->invoice_type }}</td>
                                             <td class="email" style="white-space: normal;max-width: 100px;">
                                                 {{ $inv->buyer->byr_name ?? '-' }}</td>
@@ -289,6 +303,13 @@
                                             <td>{{ number_format($inv->totalfurtherTax, 2) }}</td>
                                             <td>{{ number_format($inv->totalextraTax, 2) }}</td>
                                             <td>
+                                                @if ($inv->invoice_status === 1)
+                                                <a href="{{ route('invoices.edit', Crypt::encryptString($inv->invoice_id)) }}"
+                                                    class="btn btn-xs btn-outline-warning" data-bs-toggle="tooltip"
+                                                    title="Edit Invoice">
+                                                    <i class="fa-solid fa-pen-to-square"></i>
+                                                </a>
+                                                @endif
                                                 <button type="button" class="btn btn-xs btn-outline-primary"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#itemsModal{{ $inv->invoice_id }}"
@@ -332,44 +353,48 @@
                                         <div class="modal-body">
                                             @if($invoice->details->count())
                                             <div class="table-responsive">
-                                            <table class="table table-sm table-bordered text-nowrap" style="min-width: 1200px; table-layout: fixed;">
-                                                <thead class="table-secondary">
-                                                    <tr>
-                                                        <th style="width: 300px; white-space: normal; word-wrap: break-word;">Description</th>
-                                                        <th style="width: 100px;">Price</th>
-                                                        <th style="width: 100px;">Tax Rate</th>
-                                                        <th style="width: 80px;">Quantity</th>
-                                                        <th style="width: 120px;">Val Inc Tax</th>
-                                                        <th style="width: 120px;">Val Exc Tax</th>
-                                                        <th style="width: 140px;">Sales Tax WithHeld</th>
-                                                        <th style="width: 100px;">Extra Tax</th>
-                                                        <th style="width: 100px;">Further Tax</th>
-                                                        <th style="width: 100px;">Fed Payable</th>
-                                                        <th style="width: 140px;">SRO Schedule #</th>
-                                                        <th style="width: 160px;">SRO Item Serial #</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($invoice->details as $item)
-                                                    <tr>
-                                                        <td style="white-space: normal; word-wrap: break-word; text-align: left; vertical-align: top;">
-                                                            {{ $item->item->item_description ?? 'N/A' }}
-                                                        </td>
-                                                        <td>{{ number_format($item->item->item_price, 2) }}</td>
-                                                        <td>{{ number_format($item->item->item_tax_rate, 2) }}</td>
-                                                        <td>{{ $item->quantity }}</td>
-                                                        <td>{{ number_format($item->total_value, 2) }}</td>
-                                                        <td>{{ number_format($item->value_excl_tax, 2) }}</td>
-                                                        <td>{{ number_format($item->sales_tax_withheld, 2) }}</td>
-                                                        <td>{{ number_format($item->extra_tax, 2) }}</td>
-                                                        <td>{{ number_format($item->further_tax, 2) }}</td>
-                                                        <td>{{ number_format($item->fed_payable, 2) }}</td>
-                                                        <td>{{ number_format($item->sro_schedule_no, 2) }}</td>
-                                                        <td>{{ number_format($item->sro_item_serial_no, 2) }}</td>
-                                                    </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
+                                                <table class="table table-sm table-bordered text-nowrap"
+                                                    style="min-width: 1200px; table-layout: fixed;">
+                                                    <thead class="table-secondary">
+                                                        <tr>
+                                                            <th
+                                                                style="width: 300px; white-space: normal; word-wrap: break-word;">
+                                                                Description</th>
+                                                            <th style="width: 100px;">Price</th>
+                                                            <th style="width: 100px;">Tax Rate</th>
+                                                            <th style="width: 80px;">Quantity</th>
+                                                            <th style="width: 120px;">Val Inc Tax</th>
+                                                            <th style="width: 120px;">Val Exc Tax</th>
+                                                            <th style="width: 140px;">Sales Tax WithHeld</th>
+                                                            <th style="width: 100px;">Extra Tax</th>
+                                                            <th style="width: 100px;">Further Tax</th>
+                                                            <th style="width: 100px;">Fed Payable</th>
+                                                            <th style="width: 140px;">SRO Schedule #</th>
+                                                            <th style="width: 160px;">SRO Item Serial #</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($invoice->details as $item)
+                                                        <tr>
+                                                            <td
+                                                                style="white-space: normal; word-wrap: break-word; text-align: left; vertical-align: top;">
+                                                                {{ $item->item->item_description ?? 'N/A' }}
+                                                            </td>
+                                                            <td>{{ number_format($item->item->item_price, 2) }}</td>
+                                                            <td>{{ number_format($item->item->item_tax_rate, 2) }}</td>
+                                                            <td>{{ $item->quantity }}</td>
+                                                            <td>{{ number_format($item->total_value, 2) }}</td>
+                                                            <td>{{ number_format($item->value_excl_tax, 2) }}</td>
+                                                            <td>{{ number_format($item->sales_tax_withheld, 2) }}</td>
+                                                            <td>{{ number_format($item->extra_tax, 2) }}</td>
+                                                            <td>{{ number_format($item->further_tax, 2) }}</td>
+                                                            <td>{{ number_format($item->fed_payable, 2) }}</td>
+                                                            <td>{{ number_format($item->sro_schedule_no, 2) }}</td>
+                                                            <td>{{ number_format($item->sro_item_serial_no, 2) }}</td>
+                                                        </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
 
                                             </div>
                                             @else

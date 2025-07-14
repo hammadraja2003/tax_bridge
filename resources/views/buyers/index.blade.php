@@ -173,7 +173,7 @@
                             <form method="GET" action="{{ route('buyers.index') }}" class="row g-3 align-items-end">
                                 {{-- Buyer Type --}}
                                 <div class="col-md-3">
-                                    <label for="byr_type" class="form-label">Buyer Type</label>
+                                    <label for="byr_type" class="form-label">Client Type</label>
                                     <select name="byr_type" id="byr_type" class="form-select">
                                         <option value="">All Types</option>
                                         <option value="1" {{ request('byr_type')==='1' ? 'selected' : '' }}>Registered

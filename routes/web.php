@@ -30,8 +30,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/update-profile/{id}',[ProfileController::class,'edit_profile'])->name('edit-profile');
-    Route::post('/update-profile/{id}',[ProfileController::class,'update_user_profile'])->name('update-profile');
+    Route::get('/update-profile/{id}', [ProfileController::class, 'edit_profile'])->name('edit-profile');
+    Route::post('/update-profile/{id}', [ProfileController::class, 'update_user_profile'])->name('update-profile');
     //Company OR Bussiness Configuration
     Route::get('/company/configuration', [CompanyController::class, 'index'])->name('company.configuration');
     Route::post('/company/configuration', [CompanyController::class, 'storeOrUpdate'])->name('company.configuration.save');
@@ -40,7 +40,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/invoices/filter', [InvoiceController::class, 'filter'])->name('invoices.filter');
     Route::get('/invoices/create', [InvoiceController::class, 'create'])->name('invoices.create');
     Route::get('/invoices/print/{id}', [InvoiceController::class, 'print'])->name('xero.print');
-    Route::post('/create-new-invoice', [InvoiceController::class, 'createNewInvoice'])->name('create-new-invoice');
+    Route::post('/invoice', [InvoiceController::class, 'storeOrUpdate'])->name('create-new-invoice');
+    Route::get('/invoices/{invoice}/edit', [InvoiceController::class, 'edit'])->name('invoices.edit');
+    Route::put('/invoice/{id}', [InvoiceController::class, 'storeOrUpdate'])->name('invoice.update');
+
     //Buyers
     Route::get('/buyers', [BuyerController::class, 'index'])->name('buyers.index');
     Route::get('/buyer/create', [BuyerController::class, 'create'])->name('buyer.create');

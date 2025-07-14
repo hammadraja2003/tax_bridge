@@ -29,6 +29,14 @@ class Invoice extends Model
         'totalSalesTax',
         'totalfurtherTax',
         'totalextraTax',
+
+        // Newly added fields
+        'invoice_status',
+        'shipping_charges',
+        'other_charges',
+        'discount_amount',
+        'payment_status',
+        'notes',
     ];
 
     // 🧾 Relationships
@@ -45,5 +53,9 @@ class Invoice extends Model
     public function details()
     {
         return $this->hasMany(InvoiceDetail::class, 'invoice_id', 'invoice_id');
+    }
+    public function items()
+    {
+        return $this->hasMany(\App\Models\InvoiceDetail::class, 'invoice_id', 'invoice_id');
     }
 }

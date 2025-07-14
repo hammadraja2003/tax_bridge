@@ -12,6 +12,7 @@
 <form class="app-form needs-validation" novalidate id="invoiceForm" action="{{ route('create-new-invoice') }}"
   method="POST">
   @csrf
+  <input type="hidden" name="invoice_status" id="invoice_status" value="1">
   <!-- Invoice Info -->
   <div class="card mb-4">
     <div class="card-header">Invoice Info</div>
@@ -125,37 +126,83 @@
       <!-- Dynamic items will be appended here -->
     </div>
   </div>
+  <!-- Invoice Summary -->
   <div class="card mb-4">
-    <div class="card-header">Summary</div>
-    <div class="card-body row g-3">
-      <div class="col-md-4">
-        <label>Total Invoice Amount Excluding Tax</label>
-        <input id="totalAmountExcludingTax" name="totalAmountExcludingTax" class="form-control" readonly value="0" />
+    <div class="card-header">Invoice Summary</div>
+    <div class="card-body row">
 
+      <!-- Left Side: Notes -->
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label for="notes" class="form-label">Notes</label>
+          <textarea id="notes" name="notes" rows="12" class="form-control"
+            placeholder="Additional comments or special instructions..."></textarea>
+        </div>
       </div>
-      <div class="col-md-4">
-        <label>Total Invoice Amount Including Tax</label>
-        <input id="totalAmountIncludingTax" name="totalAmountIncludingTax" class="form-control" value="0">
+
+      <!-- Right Side: Summary Fields with Label + Input in Same Row -->
+      <div class="col-md-6">
+        @php
+        $fields = [
+        'totalAmountExcludingTax' => 'Total Invoice Amount Excluding Tax',
+        'totalAmountIncludingTax' => 'Total Invoice Amount Including Tax',
+        'totalSalesTax' => 'Total Sales Tax',
+        'totalfurtherTax' => 'Total Further Tax',
+        'totalextraTax' => 'Total Extra Tax',
+        'shipping_charges' => 'Shipping Charges',
+        'other_charges' => 'Other Charges',
+        'discount_amount' => 'Discount Amount',
+        'payment_status' => 'Payment Status',
+        ];
+
+        $requiredFields = [
+        'totalAmountExcludingTax',
+        'totalAmountIncludingTax',
+        'totalSalesTax',
+        ];
+
+        $paymentStatusOptions = [
+        'Pending',
+        'Partially Paid',
+        'Fully Paid'
+        ];
+        @endphp
+
+        @foreach($fields as $id => $label)
+        @php
+        $isRequired = in_array($id, $requiredFields);
+        @endphp
+        <div class="mb-2 row align-items-center">
+          <label for="{{ $id }}" class="col-md-5 col-form-label {{ $isRequired ? 'required' : '' }}">{{ $label
+            }}</label>
+          <div class="col-md-7">
+            @if($id === 'payment_status')
+            <select id="{{ $id }}" name="{{ $id }}" class="form-control" {{ $isRequired ? 'required' : '' }}>
+              <option value="">Select Status</option>
+              @foreach($paymentStatusOptions as $option)
+              <option value="{{ $option }}">{{ $option }}</option>
+              @endforeach
+            </select>
+            @else
+            <input id="{{ $id }}" name="{{ $id }}" class="form-control" value="0" {{ $isRequired ? 'required' : '' }} />
+            @endif
+          </div>
+        </div>
+        @endforeach
       </div>
-      <div class="col-md-4">
-        <label>Total Sales Tax</label>
-        <input id="totalSalesTax" name="totalSalesTax" class="form-control" value="0">
-      </div>
-      <div class="col-md-4">
-        <label>Total Further Tax</label>
-        <input id="totalfurtherTax" name="totalfurtherTax" class="form-control" value="0">
-      </div>
-      <div class="col-md-4">
-        <label>Total Extra Tax</label>
-        <input id="totalextraTax" name="totalextraTax" class="form-control" value="0">
-      </div>
+
     </div>
   </div>
+
+
+
   <div class="card mb-4">
     <div class="card-body row g-3">
       <div class="col-md-12 text-end">
-        <button id="submitBtn" type="submit" class="btn btn-primary">Save Invoice
-        </button>
+        <button id="draftBtn" type="submit" class="btn btn-primary">Save As Draft</button>
+        {{-- in draftBtn case invoice_status should be 1 --}}
+        <button id="submitBtn" type="submit" class="btn btn-primary">Post To FBR</button>
+        {{-- in submitBtn case invoice_status should be 2 --}}
       </div>
     </div>
   </div>
@@ -493,11 +540,6 @@ function addItem() {
   });
 </script>
 
-
-
-
-
-
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const registrationType = document.getElementById('buyerRegistrationType');
@@ -519,6 +561,17 @@ function addItem() {
     updateFieldRequirements(); // Run on page load as well
   });
 </script>
+
+<script>
+  document.getElementById('draftBtn').addEventListener('click', function () {
+    document.getElementById('invoice_status').value = 1;
+  });
+
+  document.getElementById('submitBtn').addEventListener('click', function () {
+    document.getElementById('invoice_status').value = 2;
+  });
+</script>
+
 
 @endpush
 @endsection
