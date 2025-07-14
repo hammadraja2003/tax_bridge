@@ -12,7 +12,7 @@ class BuyerController extends Controller
     {
         $query = Buyer::query();
         // Filter by buyer type
-        if ($request->has('byr_type') && $request->byr_type !== '') {
+        if ($request->has('byr_type') && !empty($request->byr_type)) {
             $query->where('byr_type', $request->byr_type);
         }
         // Text search on multiple columns
