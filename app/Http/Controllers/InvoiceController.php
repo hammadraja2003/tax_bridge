@@ -348,40 +348,40 @@ class InvoiceController extends Controller
             }
 
             // 🔹 If invoice is being posted, send to FBR
-            // if (!$isDraft) {
-            //     try {
-            //         $fbrPayload = [
-            //             'InvoiceNumber' => $invoice->invoice_no,
-            //             'InvoiceDate' => $invoice->invoice_date,
-            //             'BuyerName' => $invoice->buyer->byr_name,
-            //             'BuyerNTN' => $invoice->buyer->byr_ntn_cnic,
-            //             'TotalAmount' => $invoice->totalAmountIncludingTax,
-            //             'Items' => $data['items'],
-            //             // Add other fields as per FBR format
-            //         ];
+            if (!$isDraft) {
+                try {
+                    $fbrPayload = [
+                        'InvoiceNumber' => $invoice->invoice_no,
+                        'InvoiceDate' => $invoice->invoice_date,
+                        'BuyerName' => $invoice->buyer->byr_name,
+                        'BuyerNTN' => $invoice->buyer->byr_ntn_cnic,
+                        'TotalAmount' => $invoice->totalAmountIncludingTax,
+                        'Items' => $data['items'],
+                        // Add other fields as per FBR format
+                    ];
 
-            //         $response = Http::withHeaders([
-            //             'Authorization' => 'Bearer ' . env('FBR_API_TOKEN'),
-            //             'Content-Type' => 'application/json',
-            //         ])->post('https://gw.fbr.gov.pk/di_data/v1/di/postinvoicedata', $fbrPayload);
+                    // $response = Http::withHeaders([
+                    //     'Authorization' => 'Bearer ' . env('FBR_API_TOKEN'),
+                    //     'Content-Type' => 'application/json',
+                    // ])->post('https://gw.fbr.gov.pk/di_data/v1/di/postinvoicedata', $fbrPayload);
 
-            //         $responseData = $response->json();
+                    // $responseData = $response->json();
 
-            //         if ($response->successful()) {
-            //             $invoice->update([
-            //                 'fbr_invoice_number' => $responseData['invoiceNumber'] ?? null,
-            //                 'is_posted_to_fbr' => 1,
-            //                 'response_status' => $responseData['validationResponse']['status'] ?? 'Success',
-            //                 'response_message' => $responseData['validationResponse']['error'] ?? '',
-            //             ]);
-            //         } else {
-            //             throw new \Exception($responseData['message'] ?? 'FBR posting failed');
-            //         }
-            //     } catch (\Exception $e) {
-            //         DB::rollBack();
-            //         return back()->with('error', 'Invoice saved but FBR posting failed: ' . $e->getMessage());
-            //     }
-            // }
+                    // if ($response->successful()) {
+                    $invoice->update([
+                        'fbr_invoice_number' => $responseData['invoiceNumber'] ?? null,
+                        'is_posted_to_fbr' => 1,
+                        'response_status' => $responseData['validationResponse']['status'] ?? 'Success',
+                        'response_message' => $responseData['validationResponse']['error'] ?? '',
+                    ]);
+                    // } else {
+                    //     throw new \Exception($responseData['message'] ?? 'FBR posting failed');
+                    // }
+                } catch (\Exception $e) {
+                    DB::rollBack();
+                    return back()->with('error', 'Invoice saved but FBR posting failed: ' . $e->getMessage());
+                }
+            }
 
             DB::commit();
 
@@ -391,9 +391,6 @@ class InvoiceController extends Controller
             return back()->with('error', 'Error: ' . $e->getMessage());
         }
     }
-
-
-
 
     public function edit($id)
     {
@@ -405,8 +402,6 @@ class InvoiceController extends Controller
 
         return view('invoices.create', compact('invoice', 'buyers', 'items', 'seller'));
     }
-
-
 
     public function print($id)
     {

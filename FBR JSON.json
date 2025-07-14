@@ -48,3 +48,5 @@
 // truncate table invoices;
 // truncate table items;
 // SET FOREIGN_KEY_CHECKS=1
+
+// SN018 & SN019
