@@ -225,7 +225,7 @@
           <th>Quantity</th>
           <th>Unit Price</th>
           <th>Tax</th>
-          <th>AmountPKR</th>
+          <th>Amount</th>
         </tr>
       </thead>
       <tbody>

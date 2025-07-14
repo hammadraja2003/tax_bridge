@@ -9,11 +9,11 @@
           <li> <a href="#"> V1.0 </a></li>
         </ul>
       </div>
-      <div class="col-sm-3">
+      {{-- <div class="col-sm-3">
         <ul class="footer-text text-end">
           <li> <a href="mailto:teqlathemes@gmail.com."> Need Help <i class="ti ti-help"></i></a></li>
         </ul>
-      </div>
+      </div> --}}
     </div>
   </div>
 </footer>
