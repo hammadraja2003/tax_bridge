@@ -59,9 +59,9 @@
             <div class="card project-cards">
                 <div class="card-body d-flex justify-content-between">
                     <div>
-                        <h6 class="text-secondary">Total Draft <span class="badge text-success">0%</span></h6>
+                        <h6 class="text-secondary">Total Draft <span class="badge text-success">{{ $draftPercentage }}%</span></h6>
                         <div class="d-flex align-items-center gap-2 mt-2">
-                            <h4 class=" text-success f-w-600 counting inline" data-count='199'></h4>
+                            <h4 class=" text-success f-w-600 counting inline" data-count={{$draftInvoices}}>{{$draftInvoices}}</h4>
                             <!-- <p class="m-0 text-secondary">Finished This Month</p> -->
                         </div>
                     </div>
@@ -87,6 +87,12 @@
                 </div>
             </div>
         </div>
+        <script>
+            var salesTaxData = @json($salesTaxData);
+            var furtherTaxData = @json($furtherTaxData);
+            var extraTaxData = @json($extraTaxData);
+            var monthLabels = @json($monthlyLabels);
+        </script>
         <!-- Basic Column Chart end -->
         <!--  Column Chart with Datalabels start -->
         <div class="col-lg-6">

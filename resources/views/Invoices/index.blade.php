@@ -444,4 +444,5 @@
         updateTableCount(currentPage, itemsPerPage, totalItems);
     });
 </script>
+
 @endsection

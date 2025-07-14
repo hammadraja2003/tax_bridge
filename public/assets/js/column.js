@@ -1,58 +1,62 @@
 //  **------column_chart 1*
 var options = {
-    series: [{
-    name: 'Net Profit',
-    data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
+  series: [{
+      name: 'Total Sales Tax',
+      data: salesTaxData
   }, {
-    name: 'Revenue',
-    data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
+      name: 'Total Further Tax',
+      data: furtherTaxData
   }, {
-    name: 'Free Cash Flow',
-    data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
+      name: 'Total Extra Tax',
+      data: extraTaxData
   }],
-    chart: {
-    type: 'bar',
-    height: 350
+  chart: {
+      type: 'bar',
+      height: 350
   },
   plotOptions: {
-    bar: {
-      horizontal: false,
-      columnWidth: '55%',
-      endingShape: 'rounded'
-    },
+      bar: {
+          horizontal: false,
+          columnWidth: '55%',
+          endingShape: 'rounded'
+      }
   },
- 
-colors: [getLocalStorageItem('color-primary','#056464'),getLocalStorageItem('color-secondary','#74788D'),'#0FB450'],
+  colors: [
+      getLocalStorageItem('color-primary','#056464'),
+      getLocalStorageItem('color-secondary','#74788D'),
+      '#0FB450'
+  ],
   dataLabels: {
-    enabled: false
+      enabled: false
   },
   stroke: {
-    show: true,
-    width: 2,
-    colors: ['transparent']
+      show: true,
+      width: 2,
+      colors: ['transparent']
   },
   xaxis: {
-    categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+      categories: monthLabels
   },
   yaxis: {
-    title: {
-      text: ''
-    }
+      title: {
+          text: 'Tax Amount (PKR)'
+      }
   },
   fill: {
-    opacity: 1
+      opacity: 1
   },
   tooltip: {
-    y: {
-      formatter: function (val) {
-        return "$ " + val + " thousands"
+      y: {
+          formatter: function (val) {
+              return "Rs. " + val.toLocaleString();
+          }
       }
-    }
   }
-  };
+};
 
-  var chart = new ApexCharts(document.querySelector("#column1"), options);
-  chart.render();
+var chart = new ApexCharts(document.querySelector("#column1"), options);
+chart.render();
+
 
   document.addEventListener("DOMContentLoaded", function() {
     var options = {
