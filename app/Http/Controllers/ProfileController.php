@@ -28,7 +28,8 @@ class ProfileController extends Controller
 
     public function edit_profile($id)
     {
-        $user = User::find($id);
+        $decryptedId = Crypt::decrypt($id);
+        $user = User::findOrFail($decryptedId);
         if (!$user) {
             return redirect()->back()->with('error', 'User not found');
         }
@@ -36,7 +37,8 @@ class ProfileController extends Controller
     }
     public function update_user_profile(Request $request, $id)
         {
-            $user = User::find($id);
+            $decryptedId = Crypt::decrypt($id);
+            $user = User::findOrFail($decryptedId);
             if (!$user) {
                 return redirect()->back()->with('error', 'User not found');
             }

@@ -30,13 +30,19 @@
                     </div>
                     <div class="col-12 mt-2">
                     <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <a href="#" class="link-primary float-end">Forgot Password?</a>
-                        <input type="password" name="password" required class="form-control" placeholder="Enter Your Password" id="password">
-                        <div class="invalid-feedback">
-                        Please enter your password.
-                        </div>
-                    </div>
+                      <label for="password" class="form-label">Password</label>
+                      <a href="#" class="link-primary float-end">Forgot Password?</a>
+                      <div class="input-group">
+                          <input type="password" name="password" required class="form-control" placeholder="Enter Your Password" id="password">
+                          <span class="input-group-text" id="togglePassword" style="cursor: pointer;">
+                              <i class="fa fa-eye"></i>
+                          </span>
+                      </div>
+                      <div class="invalid-feedback">
+                          Please enter your password.
+                      </div>
+                  </div>
+
                     </div>
                     </div>
                       <div class="col-12 mt-2">
@@ -54,4 +60,20 @@
             </div>
           </div>
         </div>
+@stack('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+        const icon = togglePassword.querySelector('i');
+
+        togglePassword.addEventListener('click', function () {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            icon.classList.toggle('fa-eye');
+            icon.classList.toggle('fa-eye-slash');
+        });
+    });
+</script>
+@endstack
 @endsection

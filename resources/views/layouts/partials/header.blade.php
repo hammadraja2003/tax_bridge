@@ -65,13 +65,16 @@
                                 </li>
                                 <li class="app-divider-v dotted py-1"></li>
                                 @php
-                                $loginId = auth()->user()->id;
+                                  use Illuminate\Support\Facades\Crypt;
+                                  $encryptedId = auth()->check() ? Crypt::encrypt(auth()->user()->id) : null;
                                 @endphp
-                                <li>
-                                  <a class="dropdown-item" href="{{URL::to('update-profile/' . $loginId)}}">
-                                    <i class="ti ti-user-circle pe-1 f-s-18"></i> Profile
-                                  </a>
-                                </li>
+                                @if(auth()->check())
+                                  <li>
+                                      <a class="dropdown-item" href="{{ route('edit-profile', ['id' => $encryptedId]) }}">
+                                          <i class="ti ti-user-circle pe-1 f-s-18"></i> Profile
+                                      </a>
+                                  </li>
+                                @endif
                                 <li class="app-divider-v dotted py-1"></li>
                                 <form method="POST" class="btn-light-danger b-r-5" action="{{ route('logout') }}">
                                     @csrf
