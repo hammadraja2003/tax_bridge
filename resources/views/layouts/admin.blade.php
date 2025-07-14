@@ -69,7 +69,6 @@
       <main>
         @include('layouts.partials.errors')
         @yield('content')
-
       </main>
     </div>
     <div class="go-top">
