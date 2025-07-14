@@ -77,14 +77,14 @@ $(document).on("click", ".menu-next", function (e) {
     }
 });
 
-$(function () {
-    setUpHorizontalHeader();
-    console.log("Loading");
-    let themeMode = getLocalStorageItem("theme-mode", "light");
-    setTimeout(() => {
-        $("body").addClass(`${themeMode}`);
-    }, 1000);
-});
+// $(function () {
+//     setUpHorizontalHeader();
+//     console.log("Loading");
+//     let themeMode = getLocalStorageItem("theme-mode", "light");
+//     setTimeout(() => {
+//         $("body").addClass(`${themeMode}`);
+//     }, 1000);
+// });
 
 //  **------flag dropdown**
 $(function () {
@@ -247,19 +247,19 @@ function myFunction() {
 
 // >>-- 10 dark mode js --<<
 
-document.querySelector(".header-dark").addEventListener("click", () => {
-    document.querySelector(".sun-logo").classList.toggle("sun");
-    document.querySelector(".moon-logo").classList.toggle("moon");
-    if ($("body").hasClass("dark")) {
-        document.body.classList.remove("dark");
-        document.body.classList.add("light");
-        setLocalStorageItem("theme-mode", "light");
-    } else {
-        document.body.classList.remove("light");
-        document.body.classList.add("dark");
-        setLocalStorageItem("theme-mode", "dark");
-    }
-});
+// document.querySelector(".header-dark").addEventListener("click", () => {
+//     document.querySelector(".sun-logo").classList.toggle("sun");
+//     document.querySelector(".moon-logo").classList.toggle("moon");
+//     if ($("body").hasClass("dark")) {
+//         document.body.classList.remove("dark");
+//         document.body.classList.add("light");
+//         setLocalStorageItem("theme-mode", "light");
+//     } else {
+//         document.body.classList.remove("light");
+//         document.body.classList.add("dark");
+//         setLocalStorageItem("theme-mode", "dark");
+//     }
+// });
 function appendHtml() {
     var div = document.getElementsByClassName("app-wrapper");
     div.innerHTML += "<p>This is some HTML code</p>";

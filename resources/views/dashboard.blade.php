@@ -7,14 +7,16 @@
             <div class="card project-cards">
                 <div class="card-body d-flex justify-content-between">
                     <div>
-                        <h6>Total Projects<span class="badge text-success">3.1%</span></h6>
+                        <h6>Total Clients 
+                            <!-- <span class="badge text-success">+3.1%</span> -->
+                        </h6>
                         <div class="d-flex align-items-center gap-2 mt-2">
-                            <h4 class=" text-success f-w-600 counting" data-count='499'></h4>
-                            <p class="m-0 text-secondary">All Projects This Month</p>
+                            <h4 class="text-success f-w-600 counting" data-count="{{ $totalClients }}">{{ $totalClients }}</h4>
+                            <!-- <p class="m-0 text-secondary">All Clients This Month</p> -->
                         </div>
                     </div>
                     <div class="project-card-icon project-success bg-light-success h-55 w-55 d-flex-center b-r-100">
-                        <i class="ti ti-select f-s-30 mb-1"></i>
+                        <i class="ti ti-users f-s-30 mb-1"></i>
                     </div>
                 </div>
             </div>
@@ -23,14 +25,16 @@
             <div class="card project-cards">
                 <div class="card-body d-flex justify-content-between">
                     <div>
-                        <h6>Running Project<span class="badge text-warning">0.20%</span></h6>
+                        <h6>Total Invoices
+                            <!-- <span class="badge text-warning">0.20%</span> -->
+                        </h6>
                         <div class="d-flex align-items-center gap-2 mt-2">
-                            <h4 class=" text-warning f-w-600 counting" data-count='159'></h4>
-                            <p class="m-0 text-secondary">Delayed This Month</p>
+                            <h4 class=" text-warning f-w-600 counting" data-count="{{ $totalInvoices }}">{{$totalInvoices}}</h4>
+                            <!-- <p class="m-0 text-secondary">Total Invoices This Month</p> -->
                         </div>
                     </div>
                     <div class="project-card-icon project-secondary bg-light-warning h-55 w-55 d-flex-center b-r-100">
-                        <i class="ti ti-alarm-minus f-s-30 mb-1"></i>
+                        <i class="ti ti-file-invoice f-s-30 mb-1"></i>
                     </div>
                 </div>
             </div>
@@ -39,14 +43,14 @@
             <div class="card project-cards">
                 <div class="card-body d-flex justify-content-between">
                     <div>
-                        <h6>Pending<span class="badge text-danger">2.10%</span></h6>
+                        <h6>Total FBR Posted<span class="badge text-danger">{{ $fbrUnpostedPercentage }}%</span></h6>
                         <div class="d-flex align-items-center gap-2 mt-2">
-                            <h4 class=" text-danger f-w-600 counting" data-count='220'></h4>
-                            <p class="m-0 text-secondary">Pending This Month</p>
+                        <h4 class="text-danger f-w-600 counting" data-count="{{ $fbrPostedInvoices }}">{{ $fbrPostedInvoices }}</h4>
+                        <!-- <p class="m-0 text-secondary">Posted This Month</p> -->
                         </div>
                     </div>
                     <div class="project-card-icon project-danger bg-light-danger h-55 w-55 d-flex-center b-r-100">
-                        <i class="ti ti-rotate-clockwise-2 f-s-30 mb-1"></i>
+                        <i class="ti ti-file-upload f-s-30 mb-1"></i>
                     </div>
                 </div>
             </div>
@@ -55,10 +59,10 @@
             <div class="card project-cards">
                 <div class="card-body d-flex justify-content-between">
                     <div>
-                        <h6 class="text-secondary">Finished Projects<span class="badge text-success">1.1%</span></h6>
+                        <h6 class="text-secondary">Total Draft <span class="badge text-success">0%</span></h6>
                         <div class="d-flex align-items-center gap-2 mt-2">
                             <h4 class=" text-success f-w-600 counting inline" data-count='199'></h4>
-                            <p class="m-0 text-secondary">Finished This Month</p>
+                            <!-- <p class="m-0 text-secondary">Finished This Month</p> -->
                         </div>
                     </div>
                     <div class="project-card-icon project-primary bg-light-success h-60 w-60 d-flex-center b-r-100">

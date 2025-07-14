@@ -159,13 +159,13 @@
         <div class="row table_setting">
             <!-- List Js Table start -->
             <div class="col-xxl-12">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Client Details</h5>
-                        <a href="{{ url()->previous() }}" class="btn btn-outline-dark">
-                            <i class="fa-solid fa-step-backward fa-fw me-1"></i>Back
-                        </a>
-                    </div>
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Client Details</h5>
+                    <!-- <a href="{{ url()->previous() }}" class="btn btn-outline-dark">
+                        <i class="fa-solid fa-step-backward fa-fw me-1"></i>Back
+                    </a> -->
+                </div>
 
                     <div class="card-body p-0">
                         {{-- Filter Section --}}
