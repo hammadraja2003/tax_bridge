@@ -1,58 +1,62 @@
 //  **------column_chart 1*
 var options = {
-    series: [{
-    name: 'Net Profit',
-    data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
+  series: [{
+      name: 'Sales Tax',
+      data: salesTaxData
   }, {
-    name: 'Revenue',
-    data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
+      name: 'Further Tax',
+      data: furtherTaxData
   }, {
-    name: 'Free Cash Flow',
-    data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
+      name: 'Extra Tax',
+      data: extraTaxData
   }],
-    chart: {
-    type: 'bar',
-    height: 350
+  chart: {
+      type: 'bar',
+      height: 350
   },
   plotOptions: {
-    bar: {
-      horizontal: false,
-      columnWidth: '55%',
-      endingShape: 'rounded'
-    },
+      bar: {
+          horizontal: false,
+          columnWidth: '55%',
+          endingShape: 'rounded'
+      },
   },
- 
-colors: [getLocalStorageItem('color-primary','#056464'),getLocalStorageItem('color-secondary','#74788D'),'#0FB450'],
+  colors: [
+      getLocalStorageItem('color-primary', '#056464'),
+      getLocalStorageItem('color-secondary', '#74788D'),
+      '#0FB450'
+  ],
   dataLabels: {
-    enabled: false
+      enabled: false
   },
   stroke: {
-    show: true,
-    width: 2,
-    colors: ['transparent']
+      show: true,
+      width: 2,
+      colors: ['transparent']
   },
   xaxis: {
-    categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+      categories: monthLabels
   },
   yaxis: {
-    title: {
-      text: ''
-    }
+      title: {
+          text: ''
+      }
   },
   fill: {
-    opacity: 1
+      opacity: 1
   },
   tooltip: {
-    y: {
-      formatter: function (val) {
-        return "$ " + val + " thousands"
+      y: {
+          formatter: function (val) {
+              return "Rs. " + val;
+          }
       }
-    }
   }
-  };
+};
 
-  var chart = new ApexCharts(document.querySelector("#column1"), options);
-  chart.render();
+var chart = new ApexCharts(document.querySelector("#column1"), options);
+chart.render();
+
 
   document.addEventListener("DOMContentLoaded", function() {
     var options = {
@@ -210,52 +214,55 @@ colors: ['#FAC10F','#3C91F3','#ACB8C8','#231928'],
 
 //  **------column_chart 4**
 var options = {
-    series: [{
-    name: 'PRODUCT A',
-    data: [44, 55, 41, 67, 22, 43, 21, 49]
+  series: [{
+      name: 'Posted',
+      data: monthlyPostedCounts
   }, {
-    name: 'PRODUCT B',
-    data: [13, 23, 20, 8, 13, 27, 33, 12]
-  }, {
-    name: 'PRODUCT C',
-    data: [11, 17, 15, 15, 21, 14, 15, 13]
+      name: 'Draft',
+      data: monthlyDraftCounts
   }],
-    chart: {
-    type: 'bar',
-    height: 350,
-    stacked: true,
-    stackType: '100%'
+  chart: {
+      type: 'bar',
+      height: 350,
+      stacked: true,
+      stackType: '100%'
   },
   responsive: [{
-    breakpoint: 480,
-    options: {
-      legend: {
-        position: 'bottom',
-        offsetX: -10,
-        offsetY: 0
+      breakpoint: 480,
+      options: {
+          legend: {
+              position: 'bottom',
+              offsetX: -10,
+              offsetY: 0
+          }
       }
-    }
   }],
   xaxis: {
-    categories: ['2011 Q1', '2011 Q2', '2011 Q3', '2011 Q4', '2012 Q1', '2012 Q2',
-      '2012 Q3', '2012 Q4'
-    ],
+      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
   },
   fill: {
-    opacity: 1
+      opacity: 1
   },
- 
-colors: [getLocalStorageItem('color-primary','#056464'),getLocalStorageItem('color-secondary','#74788D'),'#0FB450'],
+  colors: [
+      getLocalStorageItem('color-primary','#0FB450'),
+      getLocalStorageItem('color-secondary','#74788D')
+  ],
   legend: {
-    position: 'right',
-    offsetX: 0,
-    offsetY: 50
+      position: 'right',
+      offsetX: 0,
+      offsetY: 50
   },
-  };
-  
+  tooltip: {
+      y: {
+          formatter: function (val) {
+              return val + " Invoices";
+          }
+      }
+  }
+};
 
-  var chart = new ApexCharts(document.querySelector("#column4"), options);
-  chart.render();
+var chart = new ApexCharts(document.querySelector("#column4"), options);
+chart.render();
 
 
 //  **------column_chart 5**

@@ -59,9 +59,9 @@
             <div class="card project-cards">
                 <div class="card-body d-flex justify-content-between">
                     <div>
-                        <h6 class="text-secondary">Total Draft <span class="badge text-success">0%</span></h6>
+                        <h6 class="text-secondary">Total Draft <span class="badge text-success">{{ $draftPercentage }}%</span></h6>
                         <div class="d-flex align-items-center gap-2 mt-2">
-                            <h4 class=" text-success f-w-600 counting inline" data-count='199'></h4>
+                            <h4 class=" text-success f-w-600 counting inline" data-count={{$draftInvoices}}>{{$draftInvoices}}</h4>
                             <!-- <p class="m-0 text-secondary">Finished This Month</p> -->
                         </div>
                     </div>
@@ -80,13 +80,20 @@
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-header">
-                    <h5> Basic Column Chart</h5>
+                    <h5> Tax Graph Chart</h5>
                 </div>
                 <div class="card-body">
                     <div id="column1"></div>
                 </div>
             </div>
         </div>
+     
+            <script>
+                var salesTaxData = @json($salesTaxData ?? []);
+                var furtherTaxData = @json($furtherTaxData ?? []);
+                var extraTaxData = @json($extraTaxData ?? []);
+                var monthLabels = @json($monthlyLabels ?? []);
+            </script>
         <!-- Basic Column Chart end -->
         <!--  Column Chart with Datalabels start -->
         <div class="col-lg-6">
@@ -116,13 +123,28 @@
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-header">
-                    <h5> 100% Stacked Column Chart</h5>
+                    <h5>Total Invoices Posted Draft</h5>
                 </div>
                 <div class="card-body">
                     <div id="column4"></div>
                 </div>
             </div>
         </div>
+        <script>
+         var monthlyDraftCounts = @json($monthlyDraftCounts);
+         var monthlyPostedCounts = @json($monthlyPostedCounts);
+        </script>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Simple Donut Chart</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="pie2"></div>
+                    </div>
+                </div>
+            </div>
+        
     </div>
 </div>
 @endsection
