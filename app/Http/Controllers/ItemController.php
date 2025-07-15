@@ -10,7 +10,7 @@ class ItemController extends Controller
 {
     public function index()
     {
-        $items = Item::latest()->paginate(10);
+        $items = Item::latest()->get();
         return view('items.index', compact('items'));
     }
     public function create()

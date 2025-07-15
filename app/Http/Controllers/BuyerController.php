@@ -24,7 +24,7 @@ class BuyerController extends Controller
                     ->orWhere('byr_address', 'like', "%$search%");
             });
         }
-        $buyers = $query->latest()->paginate(10)->appends($request->query());
+        $buyers = $query->latest()->get();
 
         return view('buyers.index', compact('buyers'));
     }

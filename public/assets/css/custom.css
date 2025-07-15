@@ -1,0 +1,18 @@
+.required::after {
+    content: " *";
+    color: red;
+}
+
+.activeTab {
+    background: #056464;
+}
+.app-logo {
+    background-color: #bc202e;
+}
+.dark-logo {
+    margin-bottom: 4px;
+    width: 185px;
+}
+table td {
+    white-space: nowrap;
+}

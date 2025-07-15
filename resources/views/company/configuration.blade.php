@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('content')
-<div class="container">
+<div class="container-fluid">
   <h2 class="mb-4 text-center">Configuration</h2>
   <form class="app-form needs-validation" novalidate method="POST" action="{{ route('company.configuration.save') }}"
     enctype="multipart/form-data">
@@ -203,11 +203,4 @@
     </div>
   </form>
 </div>
-
-<style>
-  .required::after {
-    content: ' *';
-    color: red;
-  }
-</style>
 @endsection

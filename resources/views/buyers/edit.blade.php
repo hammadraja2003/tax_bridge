@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('content')
 @include('layouts.partials.errors')
-<div class="container">
+<div class="container-fluid">
     <h2 class="mb-4 text-center">Edit Client</h2>
     <form class="app-form needs-validation" novalidate method="POST"
         action="{{ route('buyers.update', $buyer->byr_id) }}" enctype="multipart/form-data">
@@ -193,10 +193,4 @@
     </form>
 
 </div>
-<style>
-    .required::after {
-        content: ' *';
-        color: red;
-    }
-</style>
 @endsection

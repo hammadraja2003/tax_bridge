@@ -38,10 +38,7 @@ class InvoiceController extends Controller
         if ($request->has('is_posted_to_fbr') && $request->is_posted_to_fbr !== '') {
             $query->where('is_posted_to_fbr', $request->is_posted_to_fbr);
         }
-
-        // Paginate and preserve query parameters
-        $invoices = $query->orderByDesc('invoice_date')->paginate(10)->appends($request->query());
-
+        $invoices = $query->orderByDesc('invoice_date')->get();
         return view('invoices.index', compact('invoices'));
     }
     public function filter(Request $request)

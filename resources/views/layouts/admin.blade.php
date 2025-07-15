@@ -49,6 +49,7 @@
   <link rel="preload" as="style" href="{{asset('build/assets/style-BVr_C8ru.css')}}" />
   <link rel="stylesheet" href="{{asset('build/assets/style-BVr_C8ru.css')}}" /><!-- css end-->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="{{asset('assets/css/custom.css')}}" />
 
 </head>
 
@@ -119,39 +120,14 @@
   <script src="{{asset('assets/vendor/notifications/toastify-js.js')}}"></script>
   <!-- sweetalert js-->
   <script src="{{asset('assets/vendor/sweetalert/sweetalert.js')}}"></script>
-  <!-- js -->
+
   <script src="{{asset('assets/js/sweet_alert.js')}}"></script>
   <!-- scripts end-->
   <script src="{{asset('assets/js/column.js')}}"></script>
   <script src="{{asset('assets/vendor/apexcharts/column/dayjs.min.js')}}"></script>
   <script src="{{asset('assets/vendor/apexcharts/column/quarterOfYear.min.js')}}"></script>
+  <script src="{{ asset('assets/js/custom.js') }}"></script>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-       
-      const form = document.querySelector('form');
-      const submitBtn = form?.querySelector('button[type="submit"]');
-  
-      if (form && submitBtn) {
-        // Prevent Enter key from submitting form (except in textarea)
-        form.addEventListener('keydown', function (e) {
-          if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
-            e.preventDefault();
-          }
-        });
-  
-        form.addEventListener('submit', function (e) {
-          // Trim all text inputs and textareas
-          const inputs = form.querySelectorAll('input[type="text"], textarea');
-          inputs.forEach(input => input.value = input.value.trim());
-  
-          // Disable the submit button and show spinner
-          submitBtn.disabled = true;
-          submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Saving...';
-        });
-      }
-    });
-  </script>
 </body>
 
 </html>

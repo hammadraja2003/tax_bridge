@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('content')
 @include('layouts.partials.errors')
-<div class="container">
+<div class="container-fluid">
   <h2 class="mb-4 text-center">Edit Item / Services</h2>
   @if(session('success'))
   <div class="alert alert-success">{{ session('success') }}</div>
@@ -61,10 +61,4 @@
     </div>
   </form>
 </div>
-<style>
-  .required::after {
-    content: ' *';
-    color: red;
-  }
-</style>
 @endsection
