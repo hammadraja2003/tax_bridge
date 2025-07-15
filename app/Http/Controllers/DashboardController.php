@@ -62,6 +62,31 @@ class DashboardController extends Controller
                 $furtherTaxData[$index] = (float) $data->totalFurtherTax;
                 $extraTaxData[$index] = (float) $data->totalExtraTax;
             }
+            // End Graph Tax
+            
+            $monthlyInvoiceStatusData = DB::table('invoices')
+                ->selectRaw('
+                    MONTH(invoice_date) as month,
+                    SUM(CASE WHEN invoice_status = 1 THEN 1 ELSE 0 END) as draft_count,
+                    SUM(CASE WHEN invoice_status = 2 THEN 1 ELSE 0 END) as posted_count
+                ')
+                ->whereYear('invoice_date', now()->year)
+                ->groupBy(DB::raw('MONTH(invoice_date)'))
+                ->orderBy(DB::raw('MONTH(invoice_date)'))
+                ->get();
+
+            // Step 2: Initialize arrays
+            $monthlyDraftCounts = array_fill(0, 12, 0);
+            $monthlyPostedCounts = array_fill(0, 12, 0);
+
+            // Step 3: Fill arrays
+            foreach ($monthlyInvoiceStatusData as $data) {
+                $index = $data->month - 1;
+                $monthlyDraftCounts[$index] = (int) $data->draft_count;
+                $monthlyPostedCounts[$index] = (int) $data->posted_count;
+            }
+            // End Draft and Posted
+
             return view('dashboard', compact(
                 'totalClients',
                 'totalInvoices',
@@ -72,7 +97,9 @@ class DashboardController extends Controller
                 'salesTaxData',
                 'furtherTaxData',
                 'extraTaxData',
-                'monthlyLabels'
+                'monthlyLabels',
+                'monthlyDraftCounts',
+                'monthlyPostedCounts'
             ));
     }
 

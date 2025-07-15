@@ -101,19 +101,23 @@
                                             <td>{{ $buyer->byr_account_number }}</td>
                                             <td style="white-space: normal;">{{ $buyer->byr_address }}</td>
                                             <td>
-                                                <a href="{{ route('buyers.edit', Crypt::encryptString($buyer->byr_id)) }}"
+                                                <div style="display: flex; gap: 5px;">
+                                                    <a href="{{ route('buyers.edit', Crypt::encryptString($buyer->byr_id)) }}"
                                                     class="btn btn-outline-success btn-sm">
-                                                    <i class="ti ti-edit"></i>
-                                                </a>
-                                                <form action="{{ route('buyers.delete', $buyer->byr_id) }}"
-                                                    method="POST" class="d-inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="button"
-                                                        class="btn btn-outline-danger btn-sm delete-button">
-                                                        <i class="ti ti-trash"></i>
-                                                    </button>
-                                                </form>
+                                                        <i class="ti ti-edit"></i>
+                                                    </a>
+
+                                                    <form action="{{ route('buyers.delete', $buyer->byr_id) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit"
+                                                                class="btn btn-outline-danger btn-sm"
+                                                                onclick="return confirm('Are you sure you want to delete this buyer?');">
+                                                            <i class="ti ti-trash"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
                                             </td>
                                         </tr>
                                         @empty

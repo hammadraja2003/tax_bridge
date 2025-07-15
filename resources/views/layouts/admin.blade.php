@@ -46,6 +46,9 @@
   <!-- data table-->
   <script src="{{asset('assets/vendor/datatable/jquery.dataTables.min.js')}}"></script>
 
+    <!-- apexcharts css-->
+  <link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/apexcharts/apexcharts.css')}}">
+
   <link rel="preload" as="style" href="{{asset('build/assets/style-BVr_C8ru.css')}}" />
   <link rel="stylesheet" href="{{asset('build/assets/style-BVr_C8ru.css')}}" /><!-- css end-->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
@@ -97,6 +100,10 @@
   <script src="{{asset('assets/js/script.js')}}"></script>
   <!--customizer-->
   <div id="customizer"></div>
+    <!-- apexcharts js-->
+    <script src="{{asset('assets/vendor/apexcharts/apexcharts.min.js')}}"></script>
+    <!-- js-->
+    <script src="{{asset('assets/js/pie_charts.js')}}"></script> 
   <!-- slick-file -->
   <script src="{{asset('assets/vendor/slick/slick.min.js')}}"></script>
   <!-- vector map plugin js -->
@@ -108,8 +115,8 @@
   <script src="{{asset('assets/vendor/glightbox/glightbox.min.js')}}"></script>
 
   <script src="{{asset('assets/js/advance_table.js')}}"></script>
-  <!-- apexcharts js-->
-  <script src="{{asset('assets/vendor/apexcharts/apexcharts.min.js')}}"></script>
+
+  
   <!-- List js -->
   <script src="{{asset('assets/vendor/listJs/list-jquery.min.js')}}"></script>
   <script src="{{asset('assets/vendor/listJs/list.min.js')}}"></script>
@@ -125,6 +132,8 @@
   <script src="{{asset('assets/js/column.js')}}"></script>
   <script src="{{asset('assets/vendor/apexcharts/column/dayjs.min.js')}}"></script>
   <script src="{{asset('assets/vendor/apexcharts/column/quarterOfYear.min.js')}}"></script>
+
+
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
