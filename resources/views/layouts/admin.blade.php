@@ -35,6 +35,8 @@
   <link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/bootstrap/bootstrap.min.css')}}">
   <!-- Simplebar css-->
   <link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/simplebar/simplebar.css')}}">
+   <!-- apexcharts css-->
+   <link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/apexcharts/apexcharts.css')}}">
   <!-- Toatify css-->
   <link rel="stylesheet" href="{{asset('assets/vendor/notifications/toastify.min.css')}}">
   <!-- Data Table css-->
@@ -43,9 +45,6 @@
   <script src="{{asset('assets/js/jquery-3.6.3.min.js')}}"></script>
   <!-- data table-->
   <script src="{{asset('assets/vendor/datatable/jquery.dataTables.min.js')}}"></script>
-
-  <!-- apexcharts css-->
-  <link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/apexcharts/apexcharts.css')}}">
 
   <link rel="preload" as="style" href="{{asset('build/assets/style-BVr_C8ru.css')}}" />
   <link rel="stylesheet" href="{{asset('build/assets/style-BVr_C8ru.css')}}" /><!-- css end-->
@@ -99,8 +98,6 @@
   <div id="customizer"></div>
   <!-- apexcharts js-->
   <script src="{{asset('assets/vendor/apexcharts/apexcharts.min.js')}}"></script>
-  <!-- js-->
-  <script src="{{asset('assets/js/pie_charts.js')}}"></script>
   <!-- slick-file -->
   <script src="{{asset('assets/vendor/slick/slick.min.js')}}"></script>
   <!-- vector map plugin js -->
@@ -110,9 +107,7 @@
   <script src="{{asset('assets/vendor/cleavejs/cleave.min.js')}}"></script>
   <!-- Glight js -->
   <script src="{{asset('assets/vendor/glightbox/glightbox.min.js')}}"></script>
-
   <script src="{{asset('assets/js/advance_table.js')}}"></script>
-
 
   <!-- List js -->
   <script src="{{asset('assets/vendor/listJs/list-jquery.min.js')}}"></script>

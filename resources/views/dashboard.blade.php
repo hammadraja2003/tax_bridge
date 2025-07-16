@@ -81,11 +81,32 @@
 </div>
 <div class="container-fluid">
     <div class="row">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Top 5 Clients - Revenue Basis</h5>
+                </div>
+                <div class="card-body">
+                    <div id="pie1" style="min-height: 300px;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Simple Donut Chart</h5>
+                </div>
+                <div class="card-body">
+                    <div id="pie2"></div>
+                </div>
+            </div>
+        </div>                       
+
         <!-- Basic Column Chart start -->
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-header">
-                    <h5> Tax Details</h5>
+                    <h5>Month-wise Sales-Futher-Extra Tax Details</h5>
                 </div>
                 <div class="card-body">
                     <div id="column1"></div>
@@ -96,46 +117,13 @@
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-header">
-                    <h5>Posted & Draft Invoices</h5>
+                    <h5>FBR Posted & Draft Invoices</h5>
                 </div>
                 <div class="card-body">
                     <div id="column4"></div>
                 </div>
             </div>
         </div>
-
-        <div class="col-lg-6">
-            <div class="card">
-                <div class="card-header">
-                    <h5> Column Chart with Datalabels</h5>
-                </div>
-                <div class="card-body">
-                    <div id="column2"></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-6">
-            <div class="card">
-                <div class="card-header">
-                    <h5>Stacked Column Chart</h5>
-                </div>
-                <div class="card-body">
-                    <div id="column3"></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-6">
-            <div class="card">
-                <div class="card-header">
-                    <h5>Simple Donut Chart</h5>
-                </div>
-                <div class="card-body">
-                    <div id="pie1"></div>
-                </div>
-            </div>
-        </div>
-
     </div>
 </div>
 @push('scripts')
@@ -151,6 +139,14 @@
         monthlyPostedCounts: @json($monthlyPostedCounts)
     };
 </script>
+<script nonce="{{ $nonce }}">
+    window.topClientData = {
+        names: @json($topClientNames),
+        totals: @json($topClientTotals),
+    };
+</script>
+<!-- js-->
+<script src="{{asset('assets/js/pie_charts.js')}}"></script>
 <script src="{{asset('assets/js/column.js')}}"></script>
 @endpush
 @endsection
