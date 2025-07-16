@@ -3,87 +3,149 @@
 // **------ pie_charts 1**
 document.addEventListener('DOMContentLoaded', function () {
   setTimeout(function () {
-    const rawNames = window.topClientData?.names || [];
-    const rawTotals = window.topClientData?.totals || [];
+      const rawNames = window.topClientData?.names || [];
+      const rawTotals = window.topClientData?.totals || [];
 
-    const names = [];
-    const totals = [];
+      const names = [];
+      const totals = [];
 
-    rawTotals.forEach((val, idx) => {
-        if (val !== null) {
-            names.push(rawNames[idx]);
-            totals.push(val);
-        }
-    });
+      // Filter valid entries
+      for (let i = 0; i < rawNames.length; i++) {
+          const name = rawNames[i];
+          const total = rawTotals[i];
 
-    console.log('Labels:', names);
-    console.log('Series:', totals);
+          if (name && total !== null && !isNaN(total)) {
+              names.push(name);
+              totals.push(total);
+          }
+      }
 
-    const options = {
-        series: totals,
-        chart: {
-            height: 340,
-            type: 'pie',
-        },
-        labels: names,
-        colors: [
-            getLocalStorageItem('color-primary', '#056464'),
-            getLocalStorageItem('color-secondary', '#74788D'),
-            '#0FB450', '#EA5659', '#FAC10F'
-        ],
-        legend: {
-            position: 'bottom',
-            show: true,
-        },
-        responsive: [{
-            breakpoint: 1366,
-            options: {
-                chart: {
-                    height: 250
-                },
-                legend: {
-                    show: true,
-                },
-            }
-        }]
-    };
+      if (!names.length || !totals.length) {
+          console.warn('No data available for Top Clients chart.');
+          return;
+      }
 
-    const pieContainer = document.querySelector("#pie1");
-    if (pieContainer) {
-        const chart = new ApexCharts(pieContainer, options);
-        chart.render();
-    }
-  }, 200); // delay 200ms to ensure data is attached to window object
+      console.log('Labels:', names);
+      console.log('Series:', totals);
+
+      const options = {
+          series: totals,
+          chart: {
+              height: 340,
+              type: 'pie',
+          },
+          labels: names,
+          colors: [
+              getLocalStorageItem('color-primary', '#056464'),
+              getLocalStorageItem('color-secondary', '#74788D'),
+              '#0FB450', '#EA5659', '#FAC10F'
+          ],
+          legend: {
+              position: 'bottom',
+              show: true,
+          },
+          responsive: [{
+              breakpoint: 1366,
+              options: {
+                  chart: {
+                      height: 250
+                  },
+                  legend: {
+                      show: true,
+                  },
+              }
+          }]
+      };
+
+      const pieContainer = document.querySelector("#pie1");
+      if (pieContainer) {
+          // If chart is already rendered, destroy it
+          if (pieContainer._chartInstance) {
+              pieContainer._chartInstance.destroy();
+          }
+
+          const chart = new ApexCharts(pieContainer, options);
+          chart.render();
+
+          // Save reference for future cleanup
+          pieContainer._chartInstance = chart;
+      }
+  }, 200); // Allow Blade to inject window.topClientData
 });
-
 
 //  **------pie_charts 2**
 
-var options = {
-    series: [44, 55, 41, 17, 15],
-    chart: {
-        type: 'donut',
-        height: 340,
-    },
-    legend: {
-      position: 'bottom'
-  },
-    colors: ['#3C91F3','#ACB8C8','#231928',getLocalStorageItem('color-primary','#056464'),getLocalStorageItem('color-secondary','#74788D')],
-    responsive: [{
-      breakpoint: 1366,
-      options: {
-          chart: {
-              height: 250
-          },
-          legend: {
-            show: false,
-          },
-      }
-  }]
-};
+document.addEventListener('DOMContentLoaded', function () {
+  setTimeout(function () {
+      const rawNames = window.topClientSalesTaxData?.names || [];
+      const rawTotals = window.topClientSalesTaxData?.totals || [];
 
-var chart = new ApexCharts(document.querySelector("#pie2"), options);
-chart.render();
+      const names = [];
+      const totals = [];
+
+      for (let i = 0; i < rawNames.length; i++) {
+          const name = rawNames[i];
+          const total = rawTotals[i];
+
+          if (name && total !== null && !isNaN(total)) {
+              names.push(name);
+              totals.push(total);
+          }
+      }
+
+      if (!names.length || !totals.length) {
+          console.warn('No data for Top Clients Sale Tax chart.');
+          return;
+      }
+
+      console.log('Sales Tax Labels:', names);
+      console.log('Sales Tax Series:', totals);
+
+      const options = {
+          series: totals,
+          chart: {
+              type: 'donut',
+              height: 340,
+          },
+          labels: names,
+          legend: {
+              position: 'bottom',
+              show: true,
+          },
+          colors: [
+              '#3C91F3',
+              '#ACB8C8',
+              '#231928',
+              getLocalStorageItem('color-primary', '#056464'),
+              getLocalStorageItem('color-secondary', '#74788D')
+          ],
+          responsive: [{
+              breakpoint: 1366,
+              options: {
+                  chart: {
+                      height: 250
+                  },
+                  legend: {
+                      show: false,
+                  }
+              }
+          }]
+      };
+
+      const pieContainer = document.querySelector("#pie2");
+      if (pieContainer) {
+          // Cleanup old instance if exists
+          if (pieContainer._chartInstance) {
+              pieContainer._chartInstance.destroy();
+          }
+
+          const chart = new ApexCharts(pieContainer, options);
+          chart.render();
+
+          pieContainer._chartInstance = chart;
+      }
+  }, 200); // Let blade inject data
+});
 
 // **------ pie_charts 3**
 

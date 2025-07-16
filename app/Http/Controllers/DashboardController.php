@@ -81,27 +81,38 @@ class DashboardController extends Controller
             $monthlyDraftCounts[$index] = (int) $data->draft_count;
             $monthlyPostedCounts[$index] = (int) $data->posted_count;
         }
+        // Total Amount Excluding Tax
         $topClients = Cache::remember('dashboard.topClients', 300, function () {
-            return Buyer::withSum('invoices as total', 'totalAmountExcludingTax')
+            return Buyer::select('byr_id', 'byr_name')
+                ->withSum('invoices as total', 'totalAmountExcludingTax')
                 ->orderByDesc('total')
-                ->take(5)
-                ->get(['byr_id', 'byr_name']); 
+                ->limit(5)
+                ->get();
         });
-    
+        
         $topClientNames = $topClients->pluck('byr_name');
         $topClientTotals = $topClients->pluck('total');
-
-        $filteredClients = $topClients->filter(function ($client) {
-            return !is_null($client->total);
-        });
-        $topClientNames = $filteredClients->pluck('byr_name')->values();
-        $topClientTotals = $filteredClients->pluck('total')->values();
-    
+        
         $totalSum = $topClientTotals->sum();
         $topClientPercentages = $topClientTotals->map(function ($val) use ($totalSum) {
             return $totalSum > 0 ? round(($val / $totalSum) * 100, 2) : 0;
         });
-
+        // Sale Tax
+        $topClientsSalesTax = Cache::remember('dashboard.topClientsSalesTax', 300, function () {
+            return Buyer::select('byr_id', 'byr_name')
+                ->withSum('invoices as total_sales_tax', 'totalSalesTax')
+                ->orderByDesc('total_sales_tax')
+                ->limit(5)
+                ->get();
+        });
+        
+        $topClientNamesSalesTax = $topClientsSalesTax->pluck('byr_name');
+        $topClientTotalsSalesTax = $topClientsSalesTax->pluck('total_sales_tax');
+        
+        $totalSalesTaxSum = $topClientTotalsSalesTax->sum();
+        $topClientPercentagesSalesTax = $topClientTotalsSalesTax->map(function ($val) use ($totalSalesTaxSum) {
+            return $totalSalesTaxSum > 0 ? round(($val / $totalSalesTaxSum) * 100, 2) : 0;
+        });
         return view('dashboard', compact(
             'totalClients',
             'totalInvoices',
@@ -117,7 +128,10 @@ class DashboardController extends Controller
             'monthlyPostedCounts',
             'topClientNames',
             'topClientTotals',
-            'topClientPercentages'
+            'topClientPercentages',
+            'topClientNamesSalesTax',
+            'topClientTotalsSalesTax',
+            'topClientPercentagesSalesTax',
         ));
     }
 }

@@ -94,7 +94,7 @@
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-header">
-                    <h5>Simple Donut Chart</h5>
+                    <h5>Top 5 Clients Sale Tax</h5>
                 </div>
                 <div class="card-body">
                     <div id="pie2"></div>
@@ -143,6 +143,12 @@
     window.topClientData = {
         names: @json($topClientNames),
         totals: @json($topClientTotals),
+    };
+</script>
+<script nonce="{{ $nonce }}">
+    window.topClientSalesTaxData = {
+        names: @json($topClientNamesSalesTax),
+        totals: @json($topClientTotalsSalesTax),
     };
 </script>
 <!-- js-->
