@@ -45,6 +45,12 @@
                         <a class="{{ $isItemsRoute ? 'activeTab' : '' }}" href="{{ route('items.index') }}">Items /
                             Services</a>
                     </li>
+                    <li>
+                        <a href="{{ route('invoices.import.form') }}">
+                            Import Invoices
+                        </a>
+                    </li>
+
                 </ul>
             </li>
             <!-- Hidden logout form -->
