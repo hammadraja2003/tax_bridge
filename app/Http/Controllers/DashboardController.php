@@ -81,6 +81,26 @@ class DashboardController extends Controller
             $monthlyDraftCounts[$index] = (int) $data->draft_count;
             $monthlyPostedCounts[$index] = (int) $data->posted_count;
         }
+        $topClients = Cache::remember('dashboard.topClients', 300, function () {
+            return Buyer::withSum('invoices as total', 'totalAmountExcludingTax')
+                ->orderByDesc('total')
+                ->take(5)
+                ->get(['byr_id', 'byr_name']); 
+        });
+    
+        $topClientNames = $topClients->pluck('byr_name');
+        $topClientTotals = $topClients->pluck('total');
+
+        $filteredClients = $topClients->filter(function ($client) {
+            return !is_null($client->total);
+        });
+        $topClientNames = $filteredClients->pluck('byr_name')->values();
+        $topClientTotals = $filteredClients->pluck('total')->values();
+    
+        $totalSum = $topClientTotals->sum();
+        $topClientPercentages = $topClientTotals->map(function ($val) use ($totalSum) {
+            return $totalSum > 0 ? round(($val / $totalSum) * 100, 2) : 0;
+        });
 
         return view('dashboard', compact(
             'totalClients',
@@ -94,7 +114,10 @@ class DashboardController extends Controller
             'extraTaxData',
             'monthlyLabels',
             'monthlyDraftCounts',
-            'monthlyPostedCounts'
+            'monthlyPostedCounts',
+            'topClientNames',
+            'topClientTotals',
+            'topClientPercentages'
         ));
     }
 }

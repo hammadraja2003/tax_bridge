@@ -1,32 +1,61 @@
 
 
 // **------ pie_charts 1**
-var options = {
-    series: [44, 55, 13, 43, 22],
-    chart: {
-        height: 340,
-        type: 'pie',
-    },
-    colors: [getLocalStorageItem('color-primary','#056464'),getLocalStorageItem('color-secondary','#74788D'),'#0FB450','#EA5659','#FAC10F'],
-    labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
-    legend: {
-      position: 'bottom'
-  },
-    responsive: [{
-        breakpoint: 1366,
-        options: {
-            chart: {
-                height: 250
-            },
-            legend: {
-              show: false,
-            },
-        }
-    }]
-};
+document.addEventListener('DOMContentLoaded', function () {
+  setTimeout(function () {
+    const rawNames = window.topClientData?.names || [];
+    const rawTotals = window.topClientData?.totals || [];
 
-var chart = new ApexCharts(document.querySelector("#pie1"), options);
-chart.render();
+    const names = [];
+    const totals = [];
+
+    rawTotals.forEach((val, idx) => {
+        if (val !== null) {
+            names.push(rawNames[idx]);
+            totals.push(val);
+        }
+    });
+
+    console.log('Labels:', names);
+    console.log('Series:', totals);
+
+    const options = {
+        series: totals,
+        chart: {
+            height: 340,
+            type: 'pie',
+        },
+        labels: names,
+        colors: [
+            getLocalStorageItem('color-primary', '#056464'),
+            getLocalStorageItem('color-secondary', '#74788D'),
+            '#0FB450', '#EA5659', '#FAC10F'
+        ],
+        legend: {
+            position: 'bottom',
+            show: true,
+        },
+        responsive: [{
+            breakpoint: 1366,
+            options: {
+                chart: {
+                    height: 250
+                },
+                legend: {
+                    show: true,
+                },
+            }
+        }]
+    };
+
+    const pieContainer = document.querySelector("#pie1");
+    if (pieContainer) {
+        const chart = new ApexCharts(pieContainer, options);
+        chart.render();
+    }
+  }, 200); // delay 200ms to ensure data is attached to window object
+});
+
 
 //  **------pie_charts 2**
 
@@ -99,34 +128,34 @@ var options = {
   chartItem.render();
 
 
-function appendData() {
-  var arr = chartItem.w.globals.series.slice()
-  arr.push(Math.floor(Math.random() * (100 - 1 + 1)) + 1)
-  return arr;
-}
+// function appendData() {
+//   var arr = chartItem.w.globals.series.slice()
+//   arr.push(Math.floor(Math.random() * (100 - 1 + 1)) + 1)
+//   return arr;
+// }
 
-function removeData() {
-  var arr = chartItem.w.globals.series.slice()
-  arr.pop()
-  return arr;
-}
+// function removeData() {
+//   var arr = chartItem.w.globals.series.slice()
+//   arr.pop()
+//   return arr;
+// }
 
-function reset() {
-    return [44, 55, 13, 33];
+// function reset() {
+//     return [44, 55, 13, 33];
 
-}
+// }
 
-document.querySelector("#add").addEventListener("click", function() {
-  chartItem.updateSeries(appendData())
-})
+// document.querySelector("#add").addEventListener("click", function() {
+//   chartItem.updateSeries(appendData())
+// })
 
-document.querySelector("#remove").addEventListener("click", function() {
-  chartItem.updateSeries(removeData())
-})
+// document.querySelector("#remove").addEventListener("click", function() {
+//   chartItem.updateSeries(removeData())
+// })
 
-document.querySelector("#reset").addEventListener("click", function() {
-  chartItem.updateSeries(reset())
-})
+// document.querySelector("#reset").addEventListener("click", function() {
+//   chartItem.updateSeries(reset())
+// })
 
 
 //  **------pie_charts 4**

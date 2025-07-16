@@ -26,4 +26,8 @@ class Buyer extends Model
         'byr_acc_branch_name',
         'byr_acc_branch_code',
     ];
+    public function invoices()
+    {
+        return $this->hasMany(\App\Models\Invoice::class, 'buyer_id', 'byr_id');
+    }
 }
