@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
     initInvoiceStatusButtons();
     initDeleteConfirmation();
     initEditInvoiceItems();
+    // toggleInvoiceRef();
 });
 
 function initTooltips() {
@@ -21,10 +22,14 @@ function initTooltips() {
 
 function initBuyerChangeHandler() {
     const buyerSelect = document.getElementById("byr_id");
+    const loader = document.getElementById("buyerLoader");
+
     if (!buyerSelect) return;
 
     buyerSelect.addEventListener("change", function () {
         const id = this.value;
+
+        // Clear fields if no buyer selected
         if (!id) {
             [
                 "buyerNTNCNIC",
@@ -32,25 +37,37 @@ function initBuyerChangeHandler() {
                 "buyerProvince",
                 "buyerRegistrationType",
             ].forEach((field) => {
-                document.querySelector(`[name=${field}]`).value = "";
+                const input = document.querySelector(`[name=${field}]`);
+                if (input) input.value = "";
             });
             return;
         }
+
+        if (loader) loader.classList.remove("d-none"); // Show loader
 
         fetch(`/buyers/${id}`)
             .then((res) => res.json())
             .then((b) => {
                 document.querySelector("[name=buyerNTNCNIC]").value =
-                    b.byr_ntn_cnic;
+                    b.byr_ntn_cnic || "";
                 document.querySelector("[name=buyerAddress]").value =
-                    b.byr_address;
+                    b.byr_address || "";
                 document.querySelector("[name=buyerProvince]").value =
-                    b.byr_province;
+                    b.byr_province || "";
                 document.querySelector("[name=buyerRegistrationType]").value =
                     b.byr_type == 1 ? "Registered" : "Unregistered";
+            })
+            .catch(() => {
+                alert("Failed to fetch buyer details.");
+            })
+            .finally(() => {
+                if (loader) loader.classList.add("d-none"); // Hide loader
             });
     });
 }
+
+// Run this after DOM is ready
+document.addEventListener("DOMContentLoaded", initBuyerChangeHandler);
 
 function initItemHandlers() {
     if (!document.getElementById("itemsContainer")) return;
@@ -257,6 +274,15 @@ function initDeleteConfirmation() {
         });
     });
 }
+const raw = document.getElementById("invoice-data")?.textContent;
+if (raw) {
+    const data = JSON.parse(raw);
+    window.isEdit = !!data.isEdit;
+    window.existingItems = data.existingItems || [];
+} else {
+    window.isEdit = false;
+    window.existingItems = [];
+}
 
 function initEditInvoiceItems() {
     if (!window.isEdit) {
@@ -302,5 +328,25 @@ function initEditInvoiceItems() {
         });
     }, 0);
 }
+
+// function toggleInvoiceRef() {
+//     const type = document.getElementById("invoiceType").value;
+//     const refWrapper = document.getElementById("invoiceRefWrapper");
+
+//     if (type === "Debit Note") {
+//         refWrapper.classList.remove("d-none");
+//     } else {
+//         refWrapper.classList.add("d-none");
+//         document.getElementById("invoiceRefNo").value = ""; // Optional: clear value
+//     }
+// }
+
+document.addEventListener("click", function (e) {
+    if (e.target.closest("#logout-link")) {
+        e.preventDefault();
+        const logoutForm = document.getElementById("logout-form");
+        if (logoutForm) logoutForm.submit();
+    }
+});
 
 let itemIndex = 0;

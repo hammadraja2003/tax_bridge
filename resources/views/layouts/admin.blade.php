@@ -82,8 +82,6 @@
     </div>
     @include('layouts.partials.footer')
   </div>
-  @stack('scripts')
-
 
   <!--customizer-->
   <div id="myChart"></div>
@@ -127,14 +125,9 @@
   <script src="{{asset('assets/vendor/notifications/toastify-js.js')}}"></script>
   <!-- sweetalert js-->
   <script src="{{asset('assets/vendor/sweetalert/sweetalert.js')}}"></script>
-
   <script src="{{asset('assets/js/sweet_alert.js')}}"></script>
-  <!-- scripts end-->
-  <script src="{{asset('assets/js/column.js')}}"></script>
-  <script src="{{asset('assets/vendor/apexcharts/column/dayjs.min.js')}}"></script>
-  <script src="{{asset('assets/vendor/apexcharts/column/quarterOfYear.min.js')}}"></script>
   <script src="{{ asset('assets/js/custom.js') }}"></script>
-
+  @stack('scripts')
 </body>
 
 </html>

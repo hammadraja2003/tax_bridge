@@ -1,10 +1,7 @@
 @extends('layouts.admin')
 @section('content')
-
 <div class="container-fluid">
-    <!-- List Js Table start -->
     <div class="row table_setting">
-        <!-- List Js Table start -->
         <div class="col-xxl-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">

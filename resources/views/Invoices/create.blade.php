@@ -21,14 +21,13 @@ $isEdit = isset($invoice);
       <div class="card-body row g-3">
         <div class="col-md-3">
           <label class="form-label required">Invoice Type</label>
-          <select name="invoiceType" id="invoiceType" class="form-select" required onchange="toggleInvoiceRef()">
+          <select name="invoiceType" id="invoiceType" class="form-select" required>
             <option value="">Select Invoice Type</option>
             <option value="Sales Invoice" {{ $isEdit && $invoice->invoice_type === 'Sales Invoice' ? 'selected' : ''
               }}>Sales Invoice</option>
             <option value="Debit Note" {{ $isEdit && $invoice->invoice_type === 'Debit Note' ? 'selected' : '' }}>Debit
               Note</option>
           </select>
-
         </div>
         <div class="col-md-3">
           <label class="form-label required">Invoice Date</label>
@@ -40,7 +39,7 @@ $isEdit = isset($invoice);
           <input type="date" name="due_date" class="form-control"
             value="{{ $isEdit && $invoice->due_date ? \Carbon\Carbon::parse($invoice->due_date)->format('Y-m-d') : '' }}" />
         </div>
-        <div class="col-md-3" id="invoiceRefWrapper" style="display: none;">
+        <div class="col-md-3" id="invoiceRefWrapper">
           <label class="form-label">Invoice Ref No (if Debit Note)</label>
           <input type="text" name="invoiceRefNo" id="invoiceRefNo" class="form-control"
             value="{{ $isEdit ? $invoice->invoice_ref_no : '' }}" />
@@ -96,11 +95,15 @@ $isEdit = isset($invoice);
           <select id="byr_id" class="form-select" name="byr_id">
             <option value="">-- Choose Client --</option>
             @foreach($buyers as $b)
-            <option value="{{ $b->byr_id }}" {{ $isEdit && $invoice->buyer_id == $b->byr_id ? 'selected' : '' }}>
+            <option value="{{  Crypt::encryptString($b->byr_id) }}" {{ $isEdit && $invoice->buyer_id == $b->byr_id ?
+              'selected' : '' }}>
               {{ $b->byr_name }}
             </option>
             @endforeach
           </select>
+          <span id="buyerLoader" class="ms-2 d-none">
+            <i class="spinner-border spinner-border-sm text-primary" role="status" aria-hidden="true"></i>
+          </span>
         </div>
 
         <div class="col-md-4">
@@ -210,14 +213,10 @@ $isEdit = isset($invoice);
       <div class="card-body row g-3">
         <div class="col-md-12 text-end">
           <button id="draftBtn" type="submit" class="btn btn-primary">Save As Draft</button>
-          {{-- in draftBtn case invoice_status should be 1 --}}
           <button id="submitBtn" type="submit" class="btn btn-primary">Post To FBR</button>
-          {{-- in submitBtn case invoice_status should be 2 --}}
         </div>
       </div>
     </div>
-
-
   </form>
 </div>
 <!-- Item Template (hidden) -->
@@ -338,9 +337,10 @@ $isEdit = isset($invoice);
     </div>
   </div>
 </template>
-<script>
-  window.isEdit = {{ $isEdit ? 'true' : 'false' }};
-  window.existingItems = @json($invoice->items ?? []);
+<script type="application/json" id="invoice-data">
+  {!! json_encode([
+      'isEdit' => $isEdit,
+      'existingItems' => $invoice->items ?? [],
+  ]) !!}
 </script>
-
 @endsection

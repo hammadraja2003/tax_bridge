@@ -9,7 +9,7 @@
                 </div>
                 <div class="card-body p-0">
                     <div id="myTable">
-                        <div class="list-table-header d-flex justify-content-between align-items-center px-3 py-2">
+                        <div class="list-table-header d-flex justify-content-between align-items-center p-3">
                             <a href="{{ route('items.create') }}" class="btn btn-primary">
                                 <i class="fa-solid fa-plus fa-fw"></i>Add New Item
                             </a>
@@ -20,8 +20,8 @@
                                 </div>
                             </form>
                         </div>
-                        <div class="app-scroll">
-                            <table id="projectTableT" class="table table-striped table-bordered">
+                        <div class="app-scroll overflow-auto">
+                            <table id="projectTableT" class="table table-striped table-bordered m-0">
                                 <thead>
                                     <tr>
                                         <th>Description</th>

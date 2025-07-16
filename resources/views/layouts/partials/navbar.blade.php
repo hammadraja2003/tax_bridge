@@ -52,11 +52,13 @@
                 <form id="logout-form" action="{{ route('logout') }}" method="POST">
                     @csrf
                 </form>
-                <!-- Styled logout link -->
-                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+
+                <a href="#" id="logout-link">
                     <i class="ti ti-logout pe-1 f-s-20"></i> Logout
                 </a>
             </li>
+
+
         </ul>
     </div>
     <div class="menu-navs">

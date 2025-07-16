@@ -7,6 +7,7 @@ use App\Http\Controllers\BuyerController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\DashboardController;
+use Illuminate\Support\Facades\Crypt;
 /*
 |--------------------------------------------------------------------------
 | Public Routes
@@ -16,9 +17,7 @@ use App\Http\Controllers\DashboardController;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/buyers/{id}', function ($id) {
-    return App\Models\Buyer::findOrFail($id);
-});
+
 /*
 |--------------------------------------------------------------------------
 | Authenticated Routes
@@ -51,6 +50,11 @@ Route::middleware(['auth', 'verified', 'security.headers'])->group(function () {
     Route::get('/buyers/edit/{id}', [BuyerController::class, 'edit'])->name('buyers.edit');
     Route::post('/buyers/update/{id}', [BuyerController::class, 'update'])->name('buyers.update');
     Route::delete('/buyers/delete/{id}', [BuyerController::class, 'delete'])->name('buyers.delete');
+    Route::get('/buyers/{id}', function ($id) {
+        $decryptedId = Crypt::decryptString($id);
+        return App\Models\Buyer::findOrFail($decryptedId);
+    });
+
     //Items
     Route::get('/items', [ItemController::class, 'index'])->name('items.index');
     Route::get('/items/create', [ItemController::class, 'create'])->name('items.create');

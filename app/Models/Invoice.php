@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Invoice extends Model
 {
+    public const STATUS_DRAFT = 1;
+    public const STATUS_POSTED = 2;
     use HasFactory;
 
     protected $primaryKey = 'invoice_id';
