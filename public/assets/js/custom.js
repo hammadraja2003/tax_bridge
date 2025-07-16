@@ -13,6 +13,20 @@ document.addEventListener("DOMContentLoaded", function () {
     // toggleInvoiceRef();
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+    if (window.buyerId) {
+        const buyerSelect = document.getElementById("byr_id");
+        if (buyerSelect) {
+            buyerSelect.value = window.buyerId;
+
+            // Trigger after a slight delay to ensure listeners are ready
+            setTimeout(() => {
+                buyerSelect.dispatchEvent(new Event("change"));
+            }, 200);
+        }
+    }
+});
+
 function initTooltips() {
     const tooltipTriggerList = [].slice.call(
         document.querySelectorAll('[data-bs-toggle="tooltip"]')
@@ -92,7 +106,7 @@ function initItemHandlers() {
         $row.find('[name$="[SalesTaxApplicable]"]').val(opt.data("tax") || "");
 
         calculateRow($row);
-        updateTotals();
+        // updateTotals();
     });
     $(document).on(
         "input",
@@ -290,14 +304,19 @@ function initEditInvoiceItems() {
         return;
     }
 
-    $("#byr_id").trigger("change");
+    // Step 3: Add existing items
     setTimeout(() => {
-        window.existingItems.forEach((item) => {
+        window.existingItems.forEach((item, index) => {
             addItem();
             const $row = $(".item-group").last();
-            $row.find('[name$="[item_id]"]')
-                .val(item.item_id)
-                .trigger("change");
+
+            // Delay change for select if needed
+            setTimeout(() => {
+                $row.find('[name$="[item_id]"]')
+                    .val(item.item_id)
+                    .trigger("change");
+            }, 100);
+
             $row.find('[name$="[hsCode]"]').val(item.hs_code);
             $row.find('[name$="[productDescription]"]').val(
                 item.product_description
@@ -314,7 +333,7 @@ function initEditInvoiceItems() {
                 item.sales_tax_applicable
             );
             $row.find('[name$="[SalesTaxWithheldAtSource]"]').val(
-                item.sales_tax_withheld_at_source
+                item.sales_tax_withheld
             );
             $row.find('[name$="[saleType]"]').val(item.sale_type);
             $row.find('[name$="[furtherTax]"]').val(item.further_tax);

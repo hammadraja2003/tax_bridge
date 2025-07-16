@@ -95,7 +95,7 @@ $isEdit = isset($invoice);
           <select id="byr_id" class="form-select" name="byr_id">
             <option value="">-- Choose Client --</option>
             @foreach($buyers as $b)
-            <option value="{{  Crypt::encryptString($b->byr_id) }}" {{ $isEdit && $invoice->buyer_id == $b->byr_id ?
+            <option value="{{  $b->byr_id }}" {{ $isEdit && $invoice->buyer_id == $b->byr_id ?
               'selected' : '' }}>
               {{ $b->byr_name }}
             </option>
@@ -151,6 +151,7 @@ $isEdit = isset($invoice);
             <label for="notes" class="form-label">Notes</label>
             <textarea id="notes" name="notes" rows="12" class="form-control"
               placeholder="Additional comments or special instructions...">{{ $isEdit ? $invoice->notes : '' }}</textarea>
+
           </div>
         </div>
 
@@ -343,4 +344,8 @@ $isEdit = isset($invoice);
       'existingItems' => $invoice->items ?? [],
   ]) !!}
 </script>
+<script nonce="{{ $nonce }}">
+  window.buyerId = "{{ $invoice->buyer_id ?? '' }}";
+</script>
+
 @endsection

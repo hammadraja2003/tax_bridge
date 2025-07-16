@@ -20,10 +20,6 @@
     <!-- Weather icon css-->
     <link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/weather/weather-icons.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/weather/weather-icons-wind.css')}}">
-    <!--font-awesome-css-->
-    <link rel="stylesheet" href="{{asset('assets/vendor/fontawesome/css/all.css')}}">
-    <!--Flag Icon css-->
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/flag-icons-master/flag-icon.css')}}">
     <!-- Tabler icons-->
     <link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/tabler-icons/tabler-icons.css')}}">
     <!-- Prism css-->

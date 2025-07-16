@@ -51,8 +51,7 @@ Route::middleware(['auth', 'verified', 'security.headers'])->group(function () {
     Route::post('/buyers/update/{id}', [BuyerController::class, 'update'])->name('buyers.update');
     Route::delete('/buyers/delete/{id}', [BuyerController::class, 'delete'])->name('buyers.delete');
     Route::get('/buyers/{id}', function ($id) {
-        $decryptedId = Crypt::decryptString($id);
-        return App\Models\Buyer::findOrFail($decryptedId);
+        return App\Models\Buyer::findOrFail($id);
     });
 
     //Items
