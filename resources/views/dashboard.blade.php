@@ -84,7 +84,7 @@
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-header">
-                    <h5>Top 5 Clients - Revenue Basis</h5>
+                    <h5>Top Five Clients - Revenue Basis</h5>
                 </div>
                 <div class="card-body">
                     <div id="pie1" style="min-height: 300px;"></div>
@@ -94,7 +94,7 @@
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-header">
-                    <h5>Top 5 Clients Sale Tax</h5>
+                    <h5>Leading Top Five Clients Based on Sales Tax Generated</h5>
                 </div>
                 <div class="card-body">
                     <div id="pie2"></div>
