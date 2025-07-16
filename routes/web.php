@@ -42,6 +42,10 @@ Route::middleware(['auth', 'verified', 'security.headers'])->group(function () {
     Route::post('/invoice', [InvoiceController::class, 'storeOrUpdate'])->name('create-new-invoice');
     Route::get('/invoices/{invoice}/edit', [InvoiceController::class, 'edit'])->name('invoices.edit');
     Route::put('/invoice/{id}', [InvoiceController::class, 'storeOrUpdate'])->name('invoice.update');
+    //Excel Import
+    Route::get('/invoices/import', [InvoiceController::class, 'showForm'])->name('invoices.import.form');
+    Route::post('/invoices/import', [InvoiceController::class, 'importInvoice'])->name('invoices.import.process');
+
 
     //Buyers
     Route::get('/buyers', [BuyerController::class, 'index'])->name('buyers.index');

@@ -12,6 +12,11 @@ use App\Models\BusinessConfiguration;
 use App\Models\Item;
 use Illuminate\Support\Facades\Crypt;
 
+use Maatwebsite\Excel\Facades\Excel;
+// use App\Models\FbrInvoice;
+// use App\Models\FbrInvoiceItem;
+use Illuminate\Support\Facades\Validator;
+
 class InvoiceController extends Controller
 {
     public function create()
@@ -50,7 +55,6 @@ class InvoiceController extends Controller
             'is_posted_to_fbr' => $request->is_posted_to_fbr,
         ]);
     }
-
     // public function createNewInvoice(Request $request)
     // {
     //     // Clean incoming data
@@ -194,7 +198,6 @@ class InvoiceController extends Controller
     //         return back()->with('error', 'Error: ' . $e->getMessage());
     //     }
     // }
-
     public function storeOrUpdate(Request $request, $id = null)
     {
         $data = $request->only([
@@ -388,7 +391,6 @@ class InvoiceController extends Controller
             return back()->with('error', 'Error: ' . $e->getMessage());
         }
     }
-
     public function edit($id)
     {
         $invoiceId = Crypt::decryptString($id);
@@ -399,7 +401,6 @@ class InvoiceController extends Controller
 
         return view('invoices.create', compact('invoice', 'buyers', 'items', 'seller'));
     }
-
     public function print($id)
     {
         $invoiceId = Crypt::decryptString($id);
@@ -410,5 +411,109 @@ class InvoiceController extends Controller
         ])->findOrFail($invoiceId);
 
         return view('invoices.print', compact('invoice'));
+    }
+    public function showForm()
+    {
+        return view('invoices.import');
+    }
+    public function importInvoice(Request $request)
+    {
+        $request->validate([
+            'excel_file' => 'required|file|mimes:xlsx,xls',
+        ]);
+
+        $rows = Excel::toCollection(null, $request->file('excel_file'))->first();
+
+        if ($rows->isEmpty()) {
+            return back()->with('error', 'Excel file is empty.');
+        }
+
+        // Group by invoiceRefNo (one invoice, many items)
+        $grouped = $rows->groupBy('invoiceRefNo');
+        $successCount = 0;
+        $failures = [];
+
+        foreach ($grouped as $invoiceRef => $invoiceRows) {
+            $first = $invoiceRows->first();
+
+            // Validate required invoice-level fields
+            $validator = Validator::make($first->toArray(), [
+                'invoiceType' => 'required',
+                'invoiceDate' => 'required|date',
+                'sellerNTNCNIC' => 'required',
+                'sellerBusinessName' => 'required',
+                'sellerProvince' => 'required',
+                'sellerAddress' => 'required',
+                'scenarioId' => 'required',
+            ]);
+
+            if ($validator->fails()) {
+                $failures[] = "InvoiceRef: {$invoiceRef} validation failed: " . implode(", ", $validator->errors()->all());
+                continue;
+            }
+
+            $invoice = FbrInvoice::create([
+                'invoice_ref_no' => $invoiceRef,
+                'invoice_type' => $first['invoiceType'],
+                'invoice_date' => $first['invoiceDate'],
+                'seller_ntn_cnic' => $first['sellerNTNCNIC'],
+                'seller_business_name' => $first['sellerBusinessName'],
+                'seller_province' => $first['sellerProvince'],
+                'seller_address' => $first['sellerAddress'],
+                'buyer_ntn_cnic' => $first['buyerNTNCNIC'],
+                'buyer_business_name' => $first['buyerBusinessName'],
+                'buyer_province' => $first['buyerProvince'],
+                'buyer_address' => $first['buyerAddress'],
+                'buyer_registration_type' => $first['buyerRegistrationType'],
+                'scenario_id' => $first['scenarioId'],
+                'status' => 'draft',
+            ]);
+
+            foreach ($invoiceRows as $row) {
+                FbrInvoiceItem::create([
+                    'fbr_invoice_id' => $invoice->id,
+                    'hs_code' => $row['hsCode'],
+                    'product_description' => $row['productDescription'],
+                    'rate' => $row['rate'],
+                    'uo_m' => $row['uoM'],
+                    'quantity' => $row['quantity'],
+                    'total_values' => $row['totalValues'],
+                    'value_sales_excluding_st' => $row['valueSalesExcludingST'],
+                    'fixed_notified_value_or_retail_price' => $row['fixedNotifiedValueOrRetailPrice'],
+                    'sales_tax_applicable' => $row['SalesTaxApplicable'],
+                    'sales_tax_withheld' => $row['SalesTaxWithheldAtSource'],
+                    'extra_tax' => $row['extraTax'],
+                    'further_tax' => $row['furtherTax'],
+                    'sro_schedule_no' => $row['sroScheduleNo'],
+                    'fed_payable' => $row['fedPayable'],
+                    'discount' => $row['discount'],
+                    'sale_type' => $row['saleType'],
+                    'sro_item_serial_no' => $row['sroItemSerialNo'],
+                ]);
+            }
+
+            // Optional: Send to FBR here
+            $sendNow = true; // Set to false if saving drafts only
+            if ($sendNow) {
+                $payload = $invoice->toFbrPayload();
+
+                $response = Http::withToken('YOUR_ACCESS_TOKEN')
+                    ->post('https://sandbox.fbr.gov.pk/api/invoice', $payload);
+
+                if ($response->successful()) {
+                    $invoice->update(['status' => 'sent']);
+                    $successCount++;
+                } else {
+                    $invoice->update(['status' => 'failed']);
+                    $failures[] = "InvoiceRef {$invoiceRef} failed: " . $response->body();
+                }
+            }
+        }
+
+        if ($failures) {
+            return back()->with('error', "Sent: $successCount, Failed: " . count($failures) . "<br>" . implode("<br>", $failures));
+        }
+
+        return back()->with('success', "$successCount invoice(s) processed and sent.");
     }
 }
