@@ -1,28 +1,3 @@
-//  -----------------------------------------------------------------------------------
-
-//     Template Name: AdminX Admin
-//     Template URI: https://phpstack-959325-3347777.cloudwaysapps.com/laadmin/template/landing.html
-//     Description: This is Admin theme
-//     Author: la-themes
-//     Author URI: https://themeforest.net/user/la-themes
-
-// -----------------------------------------------------------------------------------
-
-// 01 Flag  Icon Js
-// 02. copy js
-// 03. sidebar toggle js
-// 04.  List page js
-// 05 Sidebar scroll js
-// 06. Loader JS
-// 07. tap on top
-// 08. flag dropdown
-// 09. hide-show
-// 10. dark mode js
-// 11 close on click js
-// 12 change title
-
-// >>-- 01 Flag  Icon Js --<<
-// Horizontal Nav css
 let navBar = $(".main-nav");
 let size = "150px";
 let leftsideLimit = -100;
@@ -76,15 +51,6 @@ $(document).on("click", ".menu-next", function (e) {
         }
     }
 });
-
-// $(function () {
-//     setUpHorizontalHeader();
-//     console.log("Loading");
-//     let themeMode = getLocalStorageItem("theme-mode", "light");
-//     setTimeout(() => {
-//         $("body").addClass(`${themeMode}`);
-//     }, 1000);
-// });
 
 //  **------flag dropdown**
 $(function () {
@@ -245,21 +211,6 @@ function myFunction() {
     }
 }
 
-// >>-- 10 dark mode js --<<
-
-// document.querySelector(".header-dark").addEventListener("click", () => {
-//     document.querySelector(".sun-logo").classList.toggle("sun");
-//     document.querySelector(".moon-logo").classList.toggle("moon");
-//     if ($("body").hasClass("dark")) {
-//         document.body.classList.remove("dark");
-//         document.body.classList.add("light");
-//         setLocalStorageItem("theme-mode", "light");
-//     } else {
-//         document.body.classList.remove("light");
-//         document.body.classList.add("dark");
-//         setLocalStorageItem("theme-mode", "dark");
-//     }
-// });
 function appendHtml() {
     var div = document.getElementsByClassName("app-wrapper");
     div.innerHTML += "<p>This is some HTML code</p>";
