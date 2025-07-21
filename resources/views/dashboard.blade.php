@@ -87,7 +87,7 @@
                     <h5>Top Five Clients - Revenue Basis</h5>
                 </div>
                 <div class="card-body">
-                    <div id="pie1" style="min-height: 300px;"></div>
+                    <div id="pie1" style="min-height: 340px;"></div>
                 </div>
             </div>
         </div>
@@ -148,10 +148,7 @@
         totals: @json($topClientTotalsRevenue),
         percentages: @json($topClientPercentagesRevenue),
     };
-
-    console.log("Revenue Data:", window.topClientsRevenueData);
 </script>
-
 <!-- js-->
 <script src="{{asset('assets/js/pie_charts.js')}}"></script>
 <script src="{{asset('assets/js/column.js')}}"></script>

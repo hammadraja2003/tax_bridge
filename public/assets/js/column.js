@@ -317,7 +317,12 @@ chart.render();
 ///
 document.addEventListener("DOMContentLoaded", function () {
   const data = topClientsSalesTaxMonthly;
-
+  if (data.series.length === 0) {
+      data.series = [{
+          name: "No Data",
+          data: Array(12).fill(0)
+      }];
+  }
   var options = {
       series: data.series,
       chart: {
@@ -329,12 +334,13 @@ document.addEventListener("DOMContentLoaded", function () {
       plotOptions: {
           bar: {
               horizontal: false,
-              columnWidth: '95%', // ✅ Increase bar width (default is ~50%)
+              columnWidth: '95%',
           }
       },
       xaxis: {
           categories: data.months,
       },
+      
       colors: [
           '#00E396', '#0090FF', '#775DD0', '#FFA000', '#F44336'
       ],
@@ -362,7 +368,7 @@ document.addEventListener("DOMContentLoaded", function () {
                   return val.toFixed(2) + " of month total Sale Tax";
               },
           },
-      },
+      }, 
   };
 
   var chart = new ApexCharts(document.querySelector("#column4"), options);

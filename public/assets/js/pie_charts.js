@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     setTimeout(function () {
         const rawNames = window.topClientData?.names || [];
         const rawTotals = window.topClientData?.totals || [];
-
+      
         const names = [];
         const totals = [];
 
@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
           },
           labels: names,
           legend: {
-              show: true, // ✅ force show
+              show: true, 
               position: 'bottom',
               horizontalAlign: 'center',
               fontSize: '14px',
@@ -111,7 +111,7 @@ document.addEventListener("DOMContentLoaded", function () {
                       height: 250
                   },
                   legend: {
-                      show: true, // ✅ KEEP true here
+                      show: true, 
                       position: 'bottom'
                   }
               }
