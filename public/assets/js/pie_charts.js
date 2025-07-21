@@ -24,10 +24,6 @@ document.addEventListener('DOMContentLoaded', function () {
           console.warn('No data available for Top Clients chart.');
           return;
       }
-
-      console.log('Labels:', names);
-      console.log('Series:', totals);
-
       const options = {
           series: totals,
           chart: {
@@ -75,31 +71,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
 //  **------pie_charts 2**
 
-document.addEventListener('DOMContentLoaded', function () {
-  setTimeout(function () {
-      const rawNames = window.topClientSalesTaxData?.names || [];
-      const rawTotals = window.topClientSalesTaxData?.totals || [];
-
-      const names = [];
-      const totals = [];
-
-      for (let i = 0; i < rawNames.length; i++) {
-          const name = rawNames[i];
-          const total = rawTotals[i];
-
-          if (name && total !== null && !isNaN(total)) {
-              names.push(name);
-              totals.push(total);
-          }
-      }
-
-      if (!names.length || !totals.length) {
-          console.warn('No data for Top Clients Sale Tax chart.');
-          return;
-      }
-
-      console.log('Sales Tax Labels:', names);
-      console.log('Sales Tax Series:', totals);
+document.addEventListener("DOMContentLoaded", function () {
+  if (typeof window.topClientsRevenueData !== 'undefined') {
+      const names = window.topClientsRevenueData.names || [];
+      const totals = window.topClientsRevenueData.totals || [];
 
       const options = {
           series: totals,
@@ -109,8 +84,13 @@ document.addEventListener('DOMContentLoaded', function () {
           },
           labels: names,
           legend: {
+              show: true, // ✅ force show
               position: 'bottom',
-              show: true,
+              horizontalAlign: 'center',
+              fontSize: '14px',
+              labels: {
+                  colors: '#333'
+              }
           },
           colors: [
               '#3C91F3',
@@ -119,6 +99,13 @@ document.addEventListener('DOMContentLoaded', function () {
               getLocalStorageItem('color-primary', '#056464'),
               getLocalStorageItem('color-secondary', '#74788D')
           ],
+          tooltip: {
+              y: {
+                  formatter: function (val) {
+                      return new Intl.NumberFormat().format(val) + ' PKR';
+                  }
+              }
+          },
           responsive: [{
               breakpoint: 1366,
               options: {
@@ -126,26 +113,21 @@ document.addEventListener('DOMContentLoaded', function () {
                       height: 250
                   },
                   legend: {
-                      show: false,
+                      show: true, // ✅ KEEP true here
+                      position: 'bottom'
                   }
               }
           }]
       };
 
-      const pieContainer = document.querySelector("#pie2");
-      if (pieContainer) {
-          // Cleanup old instance if exists
-          if (pieContainer._chartInstance) {
-              pieContainer._chartInstance.destroy();
-          }
-
-          const chart = new ApexCharts(pieContainer, options);
-          chart.render();
-
-          pieContainer._chartInstance = chart;
-      }
-  }, 200); // Let blade inject data
+      const chart = new ApexCharts(document.querySelector("#pie2"), options);
+      chart.render();
+  }
 });
+
+
+// 
+
 
 // **------ pie_charts 3**
 

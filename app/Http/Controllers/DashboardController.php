@@ -98,21 +98,84 @@ class DashboardController extends Controller
             return $totalSum > 0 ? round(($val / $totalSum) * 100, 2) : 0;
         });
         // Sale Tax
-        $topClientsSalesTax = Cache::remember('dashboard.topClientsSalesTax', 300, function () {
-            return Buyer::select('byr_id', 'byr_name')
-                ->withSum('invoices as total_sales_tax', 'totalSalesTax')
+        // $topClientsSalesTax = Cache::remember('dashboard.topClientsSalesTax', 300, function () {
+        //     return Buyer::select('byr_id', 'byr_name')
+        //         ->withSum('invoices as total_sales_tax', 'totalSalesTax')
+        //         ->orderByDesc('total_sales_tax')
+        //         ->limit(5)
+        //         ->get();
+        // });
+        
+        // $topClientNamesSalesTax = $topClientsSalesTax->pluck('byr_name');
+        // $topClientTotalsSalesTax = $topClientsSalesTax->pluck('total_sales_tax');
+        
+        // $totalSalesTaxSum = $topClientTotalsSalesTax->sum();
+        // $topClientPercentagesSalesTax = $topClientTotalsSalesTax->map(function ($val) use ($totalSalesTaxSum) {
+        //     return $totalSalesTaxSum > 0 ? round(($val / $totalSalesTaxSum) * 100, 2) : 0;
+        // });
+        ///
+        $topClientsSalesTaxMonthly = Cache::remember('dashboard.topClientsSalesTaxMonthly', 300, function () {
+            // First: Get Top 5 clients overall
+            $topClients = Buyer::select('buyers.byr_id', 'buyers.byr_name')
+                ->join('invoices', 'invoices.buyer_id', '=', 'buyers.byr_id')
+                ->groupBy('buyers.byr_id', 'buyers.byr_name')
+                ->selectRaw('SUM(invoices.totalSalesTax) as total_sales_tax')
                 ->orderByDesc('total_sales_tax')
+                ->limit(5)
+                ->get();
+        
+            $months = collect(range(1, 12))->map(function ($month) {
+                return Carbon::create()->month($month)->format('M');
+            });
+        
+            $data = [];
+        
+            foreach ($topClients as $client) {
+                $monthlyData = Invoice::selectRaw('MONTH(invoice_date) as month, SUM(totalSalesTax) as total')
+                    ->where('buyer_id', $client->byr_id)
+                    ->groupByRaw('MONTH(invoice_date)')
+                    ->pluck('total', 'month');
+        
+                $monthlySales = [];
+        
+                for ($m = 1; $m <= 12; $m++) {
+                    $monthlySales[] = round($monthlyData[$m] ?? 0, 2);
+                }
+        
+                $data[] = [
+                    'name' => $client->byr_name,
+                    'data' => $monthlySales,
+                ];
+            }
+        
+            return [
+                'months' => $months,
+                'series' => $data,
+            ];
+        });
+        ///
+        $topClientsRevenue = Cache::remember('dashboard.topClientsRevenue', 300, function () {
+            return Buyer::select('buyers.byr_id', 'buyers.byr_name')
+                ->join('invoices', 'invoices.buyer_id', '=', 'buyers.byr_id')
+                ->join('invoice_details', 'invoice_details.invoice_id', '=', 'invoices.invoice_id')
+                ->join('items', 'items.item_id', '=', 'invoice_details.item_id')
+                ->groupBy('buyers.byr_id', 'buyers.byr_name')
+                ->selectRaw('SUM(invoice_details.total_value) as total_revenue')
+                ->orderByDesc('total_revenue')
                 ->limit(5)
                 ->get();
         });
         
-        $topClientNamesSalesTax = $topClientsSalesTax->pluck('byr_name');
-        $topClientTotalsSalesTax = $topClientsSalesTax->pluck('total_sales_tax');
+        // Extract and convert to float
+        $topClientNamesRevenue = $topClientsRevenue->pluck('byr_name');
+        $topClientTotalsRevenue = $topClientsRevenue->pluck('total_revenue')->map(fn($v) => (float)$v);
         
-        $totalSalesTaxSum = $topClientTotalsSalesTax->sum();
-        $topClientPercentagesSalesTax = $topClientTotalsSalesTax->map(function ($val) use ($totalSalesTaxSum) {
-            return $totalSalesTaxSum > 0 ? round(($val / $totalSalesTaxSum) * 100, 2) : 0;
+        // Calculate percentages
+        $totalRevenueSum = $topClientTotalsRevenue->sum();
+        $topClientPercentagesRevenue = $topClientTotalsRevenue->map(function ($val) use ($totalRevenueSum) {
+            return $totalRevenueSum > 0 ? round(($val / $totalRevenueSum) * 100, 2) : 0;
         });
+        
         return view('dashboard', compact(
             'totalClients',
             'totalInvoices',
@@ -129,9 +192,10 @@ class DashboardController extends Controller
             'topClientNames',
             'topClientTotals',
             'topClientPercentages',
-            'topClientNamesSalesTax',
-            'topClientTotalsSalesTax',
-            'topClientPercentagesSalesTax',
+            'topClientNamesRevenue',
+            'topClientTotalsRevenue',
+            'topClientPercentagesRevenue',
+            'topClientsSalesTaxMonthly',
         ));
     }
 }

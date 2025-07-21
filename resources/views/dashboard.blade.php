@@ -94,7 +94,7 @@
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-header">
-                    <h5>Leading Top Five Clients Based on Sales Tax Generated</h5>
+                    <h5>Leading Top Five Clients Services for Revenue</h5>
                 </div>
                 <div class="card-body">
                     <div id="pie2"></div>
@@ -117,7 +117,7 @@
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-header">
-                    <h5>FBR Posted & Draft Invoices</h5>
+                    <h5>Monthly Top 5 Clients Ranked by Sales Tax Generated</h5>
                 </div>
                 <div class="card-body">
                     <div id="column4"></div>
@@ -134,10 +134,7 @@
         var monthLabels = @json($monthlyLabels ?? []);
 </script>
 <script nonce="{{ $nonce }}">
-    window.dashboardChartData = {
-        monthlyDraftCounts: @json($monthlyDraftCounts),
-        monthlyPostedCounts: @json($monthlyPostedCounts)
-    };
+    const topClientsSalesTaxMonthly = @json($topClientsSalesTaxMonthly);
 </script>
 <script nonce="{{ $nonce }}">
     window.topClientData = {
@@ -146,11 +143,15 @@
     };
 </script>
 <script nonce="{{ $nonce }}">
-    window.topClientSalesTaxData = {
-        names: @json($topClientNamesSalesTax),
-        totals: @json($topClientTotalsSalesTax),
+    window.topClientsRevenueData = {
+        names: @json($topClientNamesRevenue),
+        totals: @json($topClientTotalsRevenue),
+        percentages: @json($topClientPercentagesRevenue),
     };
+
+    console.log("Revenue Data:", window.topClientsRevenueData);
 </script>
+
 <!-- js-->
 <script src="{{asset('assets/js/pie_charts.js')}}"></script>
 <script src="{{asset('assets/js/column.js')}}"></script>

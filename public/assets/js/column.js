@@ -16,7 +16,7 @@ var options = {
     ],
     chart: {
         type: "bar",
-        height: 350,
+        height: 400,
     },
     plotOptions: {
         bar: {
@@ -245,74 +245,131 @@ var chart = new ApexCharts(document.querySelector("#column3"), options);
 chart.render();
 
 //  **------column_chart 4**
-var options = {
-    series: [
-        {
-            name: "Posted",
-            data: dashboardChartData.monthlyPostedCounts,
-        },
-        {
-            name: "Draft",
-            data: dashboardChartData.monthlyDraftCounts,
-        },
-    ],
-    chart: {
-        type: "bar",
-        height: 350,
-        stacked: true,
-        stackType: "100%",
-    },
-    responsive: [
-        {
-            breakpoint: 480,
-            options: {
-                legend: {
-                    position: "bottom",
-                    offsetX: -10,
-                    offsetY: 0,
-                },
-            },
-        },
-    ],
-    xaxis: {
-        categories: [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-        ],
-    },
-    fill: {
-        opacity: 1,
-    },
-    colors: [
-        getLocalStorageItem("color-primary", "#0FB450"),
-        getLocalStorageItem("color-secondary", "#74788D"),
-    ],
-    legend: {
-        position: "right",
-        offsetX: 0,
-        offsetY: 50,
-    },
-    tooltip: {
-        y: {
-            formatter: function (val) {
-                return val + " Invoices";
-            },
-        },
-    },
-};
+// var options = {
+//     series: [
+//         {
+//             name: "Posted",
+//             data: dashboardChartData.monthlyPostedCounts,
+//         },
+//         {
+//             name: "Draft",
+//             data: dashboardChartData.monthlyDraftCounts,
+//         },
+//     ],
+//     chart: {
+//         type: "bar",
+//         height: 350,
+//         stacked: true,
+//         stackType: "100%",
+//     },
+//     responsive: [
+//         {
+//             breakpoint: 480,
+//             options: {
+//                 legend: {
+//                     position: "bottom",
+//                     offsetX: -10,
+//                     offsetY: 0,
+//                 },
+//             },
+//         },
+//     ],
+//     xaxis: {
+//         categories: [
+//             "Jan",
+//             "Feb",
+//             "Mar",
+//             "Apr",
+//             "May",
+//             "Jun",
+//             "Jul",
+//             "Aug",
+//             "Sep",
+//             "Oct",
+//             "Nov",
+//             "Dec",
+//         ],
+//     },
+//     fill: {
+//         opacity: 1,
+//     },
+//     colors: [
+//         getLocalStorageItem("color-primary", "#0FB450"),
+//         getLocalStorageItem("color-secondary", "#74788D"),
+//     ],
+//     legend: {
+//         position: "right",
+//         offsetX: 0,
+//         offsetY: 50,
+//     },
+//     tooltip: {
+//         y: {
+//             formatter: function (val) {
+//                 return val + " Invoices";
+//             },
+//         },
+//     },
+// };
 
-var chart = new ApexCharts(document.querySelector("#column4"), options);
-chart.render();
+// var chart = new ApexCharts(document.querySelector("#column4"), options);
+// chart.render();
+
+///
+document.addEventListener("DOMContentLoaded", function () {
+  const data = topClientsSalesTaxMonthly;
+
+  var options = {
+      series: data.series,
+      chart: {
+          type: "bar",
+          height: 400,
+          stacked: true,
+          stackType: "100%"
+      },
+      plotOptions: {
+          bar: {
+              horizontal: false,
+              columnWidth: '95%', // ✅ Increase bar width (default is ~50%)
+          }
+      },
+      xaxis: {
+          categories: data.months,
+      },
+      colors: [
+          '#00E396', '#0090FF', '#775DD0', '#FFA000', '#F44336'
+      ],
+      legend: {
+          position: "bottom",
+          offsetY: 10,
+      },
+      fill: {
+          opacity: 1,
+      },
+      dataLabels: {
+          enabled: true,
+          formatter: function (val, opts) {
+              return val.toFixed(2) + "%";
+          },
+          style: {
+              fontSize: '10px',
+              fontWeight: 'bold',
+              colors: ["#fff"]
+          },
+      },
+      tooltip: {
+          y: {
+              formatter: function (val) {
+                  return val.toFixed(2) + " of month total Sale Tax";
+              },
+          },
+      },
+  };
+
+  var chart = new ApexCharts(document.querySelector("#column4"), options);
+  chart.render();
+});
+
+//
 
 //  **------column_chart 5**
 var options = {
