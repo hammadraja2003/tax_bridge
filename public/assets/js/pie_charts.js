@@ -1,150 +1,148 @@
-
-
 // **------ pie_charts 1**
-document.addEventListener('DOMContentLoaded', function () {
-  setTimeout(function () {
-      const rawNames = window.topClientData?.names || [];
-      const rawTotals = window.topClientData?.totals || [];
+document.addEventListener("DOMContentLoaded", function () {
+    setTimeout(function () {
+        const rawNames = window.topClientData?.names || [];
+        const rawTotals = window.topClientData?.totals || [];
 
-      const names = [];
-      const totals = [];
+        const names = [];
+        const totals = [];
 
-      // Filter valid entries
-      for (let i = 0; i < rawNames.length; i++) {
-          const name = rawNames[i];
-          const total = rawTotals[i];
+        // Filter valid entries
+        for (let i = 0; i < rawNames.length; i++) {
+            const name = rawNames[i];
+            const total = rawTotals[i];
 
-          if (name && total !== null && !isNaN(total)) {
-              names.push(name);
-              totals.push(total);
-          }
-      }
+            if (name && total !== null && !isNaN(total)) {
+                names.push(name);
+                totals.push(total);
+            }
+        }
 
-      if (!names.length || !totals.length) {
-          console.warn('No data available for Top Clients chart.');
-          return;
-      }
+        if (!names.length || !totals.length) {
+            console.warn("No data available for Top Clients chart.");
+            return;
+        }
 
-      console.log('Labels:', names);
-      console.log('Series:', totals);
+        const options = {
+            series: totals,
+            chart: {
+                height: 340,
+                type: "pie",
+            },
+            labels: names,
+            colors: [
+                getLocalStorageItem("color-primary", "#056464"),
+                getLocalStorageItem("color-secondary", "#74788D"),
+                "#0FB450",
+                "#EA5659",
+                "#FAC10F",
+            ],
+            legend: {
+                position: "bottom",
+                show: true,
+            },
+            responsive: [
+                {
+                    breakpoint: 1366,
+                    options: {
+                        chart: {
+                            height: 250,
+                        },
+                        legend: {
+                            show: true,
+                        },
+                    },
+                },
+            ],
+        };
 
-      const options = {
-          series: totals,
-          chart: {
-              height: 340,
-              type: 'pie',
-          },
-          labels: names,
-          colors: [
-              getLocalStorageItem('color-primary', '#056464'),
-              getLocalStorageItem('color-secondary', '#74788D'),
-              '#0FB450', '#EA5659', '#FAC10F'
-          ],
-          legend: {
-              position: 'bottom',
-              show: true,
-          },
-          responsive: [{
-              breakpoint: 1366,
-              options: {
-                  chart: {
-                      height: 250
-                  },
-                  legend: {
-                      show: true,
-                  },
-              }
-          }]
-      };
+        const pieContainer = document.querySelector("#pie1");
+        if (pieContainer) {
+            // If chart is already rendered, destroy it
+            if (pieContainer._chartInstance) {
+                pieContainer._chartInstance.destroy();
+            }
 
-      const pieContainer = document.querySelector("#pie1");
-      if (pieContainer) {
-          // If chart is already rendered, destroy it
-          if (pieContainer._chartInstance) {
-              pieContainer._chartInstance.destroy();
-          }
+            const chart = new ApexCharts(pieContainer, options);
+            chart.render();
 
-          const chart = new ApexCharts(pieContainer, options);
-          chart.render();
-
-          // Save reference for future cleanup
-          pieContainer._chartInstance = chart;
-      }
-  }, 200); // Allow Blade to inject window.topClientData
+            // Save reference for future cleanup
+            pieContainer._chartInstance = chart;
+        }
+    }, 200); // Allow Blade to inject window.topClientData
 });
 
 //  **------pie_charts 2**
 
-document.addEventListener('DOMContentLoaded', function () {
-  setTimeout(function () {
-      const rawNames = window.topClientSalesTaxData?.names || [];
-      const rawTotals = window.topClientSalesTaxData?.totals || [];
+document.addEventListener("DOMContentLoaded", function () {
+    setTimeout(function () {
+        const rawNames = window.topClientSalesTaxData?.names || [];
+        const rawTotals = window.topClientSalesTaxData?.totals || [];
 
-      const names = [];
-      const totals = [];
+        const names = [];
+        const totals = [];
 
-      for (let i = 0; i < rawNames.length; i++) {
-          const name = rawNames[i];
-          const total = rawTotals[i];
+        for (let i = 0; i < rawNames.length; i++) {
+            const name = rawNames[i];
+            const total = rawTotals[i];
 
-          if (name && total !== null && !isNaN(total)) {
-              names.push(name);
-              totals.push(total);
-          }
-      }
+            if (name && total !== null && !isNaN(total)) {
+                names.push(name);
+                totals.push(total);
+            }
+        }
 
-      if (!names.length || !totals.length) {
-          console.warn('No data for Top Clients Sale Tax chart.');
-          return;
-      }
+        if (!names.length || !totals.length) {
+            console.warn("No data for Top Clients Sale Tax chart.");
+            return;
+        }
 
-      console.log('Sales Tax Labels:', names);
-      console.log('Sales Tax Series:', totals);
+        const options = {
+            series: totals,
+            chart: {
+                type: "donut",
+                height: 340,
+            },
+            labels: names,
+            legend: {
+                position: "bottom",
+                show: true,
+            },
+            colors: [
+                "#3C91F3",
+                "#ACB8C8",
+                "#231928",
+                getLocalStorageItem("color-primary", "#056464"),
+                getLocalStorageItem("color-secondary", "#74788D"),
+            ],
+            responsive: [
+                {
+                    breakpoint: 1366,
+                    options: {
+                        chart: {
+                            height: 250,
+                        },
+                        legend: {
+                            show: false,
+                        },
+                    },
+                },
+            ],
+        };
 
-      const options = {
-          series: totals,
-          chart: {
-              type: 'donut',
-              height: 340,
-          },
-          labels: names,
-          legend: {
-              position: 'bottom',
-              show: true,
-          },
-          colors: [
-              '#3C91F3',
-              '#ACB8C8',
-              '#231928',
-              getLocalStorageItem('color-primary', '#056464'),
-              getLocalStorageItem('color-secondary', '#74788D')
-          ],
-          responsive: [{
-              breakpoint: 1366,
-              options: {
-                  chart: {
-                      height: 250
-                  },
-                  legend: {
-                      show: false,
-                  }
-              }
-          }]
-      };
+        const pieContainer = document.querySelector("#pie2");
+        if (pieContainer) {
+            // Cleanup old instance if exists
+            if (pieContainer._chartInstance) {
+                pieContainer._chartInstance.destroy();
+            }
 
-      const pieContainer = document.querySelector("#pie2");
-      if (pieContainer) {
-          // Cleanup old instance if exists
-          if (pieContainer._chartInstance) {
-              pieContainer._chartInstance.destroy();
-          }
+            const chart = new ApexCharts(pieContainer, options);
+            chart.render();
 
-          const chart = new ApexCharts(pieContainer, options);
-          chart.render();
-
-          pieContainer._chartInstance = chart;
-      }
-  }, 200); // Let blade inject data
+            pieContainer._chartInstance = chart;
+        }
+    }, 200); // Let blade inject data
 });
 
 // **------ pie_charts 3**
@@ -152,43 +150,69 @@ document.addEventListener('DOMContentLoaded', function () {
 var options = {
     series: [44, 55, 13, 33],
     chart: {
-      height: 340,
-    type: 'donut',
-  },
-  dataLabels: {
-    enabled: false
-  },
-  markers: {
-    colors: [getLocalStorageItem('color-primary','#056464'),getLocalStorageItem('color-secondary','#74788D'), '#0FB450','#EA5659','#FAC10F','#3C91F3','#ACB8C8','#231928']
- },
-  fill: {
-    colors: [getLocalStorageItem('color-primary','#056464'),getLocalStorageItem('color-secondary','#74788D'), '#0FB450','#EA5659','#FAC10F','#3C91F3','#ACB8C8','#231928']
-  },
-  labels: ["Device 1", "Device 2","Device 3","Device 4"],
+        height: 340,
+        type: "donut",
+    },
+    dataLabels: {
+        enabled: false,
+    },
+    markers: {
+        colors: [
+            getLocalStorageItem("color-primary", "#056464"),
+            getLocalStorageItem("color-secondary", "#74788D"),
+            "#0FB450",
+            "#EA5659",
+            "#FAC10F",
+            "#3C91F3",
+            "#ACB8C8",
+            "#231928",
+        ],
+    },
+    fill: {
+        colors: [
+            getLocalStorageItem("color-primary", "#056464"),
+            getLocalStorageItem("color-secondary", "#74788D"),
+            "#0FB450",
+            "#EA5659",
+            "#FAC10F",
+            "#3C91F3",
+            "#ACB8C8",
+            "#231928",
+        ],
+    },
+    labels: ["Device 1", "Device 2", "Device 3", "Device 4"],
 
-  colors:[getLocalStorageItem('color-primary','#056464'),getLocalStorageItem('color-secondary','#74788D'), '#0FB450','#EA5659','#FAC10F','#3C91F3','#ACB8C8','#231928'],
-  responsive: [{
-    breakpoint: 1366,
-    options: {
-        chart: {
-          height: 240
+    colors: [
+        getLocalStorageItem("color-primary", "#056464"),
+        getLocalStorageItem("color-secondary", "#74788D"),
+        "#0FB450",
+        "#EA5659",
+        "#FAC10F",
+        "#3C91F3",
+        "#ACB8C8",
+        "#231928",
+    ],
+    responsive: [
+        {
+            breakpoint: 1366,
+            options: {
+                chart: {
+                    height: 240,
+                },
+                legend: {
+                    show: false,
+                },
+            },
         },
-        legend: {
-          show: false,
-        },
-    }
-}],
-  legend: {
-    position: 'bottom',
-    offsetY: 0,
+    ],
+    legend: {
+        position: "bottom",
+        offsetY: 0,
+    },
+};
 
-  }
-  
-  };
-
-  var chartItem = new ApexCharts(document.querySelector("#chart9"), options);
-  chartItem.render();
-
+var chartItem = new ApexCharts(document.querySelector("#chart9"), options);
+chartItem.render();
 
 // function appendData() {
 //   var arr = chartItem.w.globals.series.slice()
@@ -219,58 +243,64 @@ var options = {
 //   chartItem.updateSeries(reset())
 // })
 
-
 //  **------pie_charts 4**
 
 var pie4 = {
     series: [25, 15, 44, 55, 41, 17],
     chart: {
-      height: 340,
+        height: 340,
         // width: '100%',
-        type: 'pie',
+        type: "pie",
     },
-    labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    labels: [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+    ],
     theme: {
         monochrome: {
-            enabled: true
-        }
+            enabled: true,
+        },
     },
     plotOptions: {
         pie: {
             dataLabels: {
-                offset: -5
-            }
-        }
+                offset: -5,
+            },
+        },
     },
     title: {
-        text: "Monochrome Pie"
+        text: "Monochrome Pie",
     },
-    
+
     dataLabels: {
         formatter(val, opts) {
-            console.log("val", val, "opt", opts);
-            const name = opts.w.globals.labels[opts.seriesIndex]
-            console.log("name", name);
-            return name + val.toFixed(1) + '%'
-        }
+            const name = opts.w.globals.labels[opts.seriesIndex];
+            return name + val.toFixed(1) + "%";
+        },
     },
     legend: {
-        show: false
+        show: false,
     },
     fill: {
-        colors: [getLocalStorageItem('color-primary','#056464')]
-      },
-      responsive: [{
-        breakpoint: 567,
-        options: {
-            chart: {
-              height: 250
+        colors: [getLocalStorageItem("color-primary", "#056464")],
+    },
+    responsive: [
+        {
+            breakpoint: 567,
+            options: {
+                chart: {
+                    height: 250,
+                },
+                legend: {
+                    show: false,
+                },
             },
-            legend: {
-              show: false,
-            },
-        }
-    }]
+        },
+    ],
 };
 
 var chart4 = new ApexCharts(document.querySelector("#pie4"), pie4);
@@ -281,44 +311,58 @@ chart4.render();
 var options = {
     series: [44, 55, 41, 17],
     chart: {
-      height: 340,
-        type: 'donut',
+        height: 340,
+        type: "donut",
     },
     plotOptions: {
         pie: {
             startAngle: -90,
-            endAngle: 270
-        }
+            endAngle: 270,
+        },
     },
     dataLabels: {
-        enabled: false
+        enabled: false,
     },
     fill: {
-        type: 'gradient',
-        colors: [getLocalStorageItem('color-primary','#056464'),getLocalStorageItem('color-secondary','#74788D'),'#0FB450','#EA5659','#FAC10F'],
+        type: "gradient",
+        colors: [
+            getLocalStorageItem("color-primary", "#056464"),
+            getLocalStorageItem("color-secondary", "#74788D"),
+            "#0FB450",
+            "#EA5659",
+            "#FAC10F",
+        ],
     },
-    colors: [getLocalStorageItem('color-primary','#056464'),getLocalStorageItem('color-secondary','#74788D'),'#0FB450','#EA5659','#FAC10F'],
+    colors: [
+        getLocalStorageItem("color-primary", "#056464"),
+        getLocalStorageItem("color-secondary", "#74788D"),
+        "#0FB450",
+        "#EA5659",
+        "#FAC10F",
+    ],
     legend: {
         formatter: function (val, opts) {
-            return val + " - " + opts.w.globals.series[opts.seriesIndex]
+            return val + " - " + opts.w.globals.series[opts.seriesIndex];
         },
-        position: 'bottom'
+        position: "bottom",
     },
     title: {
-        text: ''
+        text: "",
     },
-    
-    responsive: [{
-        breakpoint: 1366,
-        options: {
-            chart: {
-              height: 250
+
+    responsive: [
+        {
+            breakpoint: 1366,
+            options: {
+                chart: {
+                    height: 250,
+                },
+                legend: {
+                    show: false,
+                },
             },
-            legend: {
-              show: false,
-            },
-        }
-    }]
+        },
+    ],
 };
 
 var chart = new ApexCharts(document.querySelector("#pie5"), options);
@@ -330,15 +374,15 @@ var options = {
     series: [44, 55, 41, 17, 15],
     chart: {
         height: 380,
-        type: 'donut',
+        type: "donut",
         dropShadow: {
             enabled: true,
-            color: '#111',
+            color: "#111",
             top: -1,
             left: 3,
             blur: 3,
-            opacity: 0.2
-        }
+            opacity: 0.2,
+        },
     },
     stroke: {
         width: 0,
@@ -350,53 +394,67 @@ var options = {
                     show: true,
                     total: {
                         showAlways: true,
-                        show: true
-                    }
-                }
-            }
-        }
+                        show: true,
+                    },
+                },
+            },
+        },
     },
     labels: ["Comedy", "Action", "SciFi", "Drama", "Horror"],
     dataLabels: {
         dropShadow: {
             blur: 3,
-            opacity: 0.8
-        }
+            opacity: 0.8,
+        },
     },
     fill: {
-        type: 'pattern',
+        type: "pattern",
         opacity: 1,
         pattern: {
             enabled: true,
-            style: ['verticalLines', 'squares', 'horizontalLines', 'circles', 'slantedLines'],
+            style: [
+                "verticalLines",
+                "squares",
+                "horizontalLines",
+                "circles",
+                "slantedLines",
+            ],
         },
     },
     states: {
         hover: {
-            filter: 'none'
-        }
+            filter: "none",
+        },
     },
     theme: {
-        palette: 'palette2'
+        palette: "palette2",
     },
     title: {
-        text: "Favourite Movie Type"
+        text: "Favourite Movie Type",
     },
     legend: {
-      position: 'bottom',
+        position: "bottom",
     },
-    responsive: [{
-      breakpoint: 1366,
-      options: {
-          chart: {
-              height: 250
-          },
-          legend: {
-            show: false,
-          },
-      }
-  }],
-    colors: [getLocalStorageItem('color-primary','#056464'),getLocalStorageItem('color-secondary','#74788D'),'#0FB450','#EA5659','#FAC10F'],
+    responsive: [
+        {
+            breakpoint: 1366,
+            options: {
+                chart: {
+                    height: 250,
+                },
+                legend: {
+                    show: false,
+                },
+            },
+        },
+    ],
+    colors: [
+        getLocalStorageItem("color-primary", "#056464"),
+        getLocalStorageItem("color-secondary", "#74788D"),
+        "#0FB450",
+        "#EA5659",
+        "#FAC10F",
+    ],
 };
 
 var chart = new ApexCharts(document.querySelector("#pie6"), options);
@@ -407,113 +465,152 @@ chart.render();
 var options = {
     series: [44, 33, 54, 45],
     chart: {
-    height: 340,
-    type: 'pie',
-  },
-  colors: [getLocalStorageItem('color-primary','#056464'),getLocalStorageItem('color-secondary','#74788D'),'#0FB450','#EA5659','#FAC10F'],
-  fill: {
-    type: 'image',
-    opacity: 0.85,
-    image: {
-        src: ['../assets/images/blog/27.jpg', '../assets/images/blog/27.jpg', '../assets/images/blog/27.jpg', '../assets/images/blog/27.jpg'],
-      width: 25,
-      imagedHeight: 25
+        height: 340,
+        type: "pie",
     },
-  },
-  stroke: {
-    width: 4
-  },
-  legend: {
-    position: 'bottom',
-  },
-  dataLabels: {
-    enabled: true,
-    style: {
-      colors: ['#111']
+    colors: [
+        getLocalStorageItem("color-primary", "#056464"),
+        getLocalStorageItem("color-secondary", "#74788D"),
+        "#0FB450",
+        "#EA5659",
+        "#FAC10F",
+    ],
+    fill: {
+        type: "image",
+        opacity: 0.85,
+        image: {
+            src: [
+                "../assets/images/blog/27.jpg",
+                "../assets/images/blog/27.jpg",
+                "../assets/images/blog/27.jpg",
+                "../assets/images/blog/27.jpg",
+            ],
+            width: 25,
+            imagedHeight: 25,
+        },
     },
-    background: {
-      enabled: true,
-      foreColor: '#fff',
-      borderWidth: 0
-    }
-  },
-  };
+    stroke: {
+        width: 4,
+    },
+    legend: {
+        position: "bottom",
+    },
+    dataLabels: {
+        enabled: true,
+        style: {
+            colors: ["#111"],
+        },
+        background: {
+            enabled: true,
+            foreColor: "#fff",
+            borderWidth: 0,
+        },
+    },
+};
 
-  var chart = new ApexCharts(document.querySelector("#pie7"), options);
-  chart.render();
+var chart = new ApexCharts(document.querySelector("#pie7"), options);
+chart.render();
 
-  // **------ polar_chart 1**
+// **------ polar_chart 1**
 
 var options = {
     series: [14, 23, 21, 17, 15],
     height: 600,
     chart: {
-      type: 'polarArea',
+        type: "polarArea",
     },
     stroke: {
-      colors: ['#fff']
+        colors: ["#fff"],
     },
     fill: {
-      opacity: 0.8
+        opacity: 0.8,
     },
     legend: {
-      position: 'bottom'
+        position: "bottom",
     },
-    colors: [getLocalStorageItem('color-primary','#056464'),getLocalStorageItem('color-secondary','#74788D'), '#0FB450', '#EA5659', '#FAC10F '],
-    responsive: [{
-      breakpoint: 1366,
-      options: {
-        chart: {
-          height:250,
+    colors: [
+        getLocalStorageItem("color-primary", "#056464"),
+        getLocalStorageItem("color-secondary", "#74788D"),
+        "#0FB450",
+        "#EA5659",
+        "#FAC10F ",
+    ],
+    responsive: [
+        {
+            breakpoint: 1366,
+            options: {
+                chart: {
+                    height: 250,
+                },
+            },
         },
-      }
-    }]
-  };
-  
-  var chart = new ApexCharts(document.querySelector("#polar1"), options);
-  chart.render();
-  
-  
-  //  **------polar_chart 2**
-  
-  
-  var options = {
+    ],
+};
+
+var chart = new ApexCharts(document.querySelector("#polar1"), options);
+chart.render();
+
+//  **------polar_chart 2**
+
+var options = {
     series: [42, 30, 52, 40, 56],
     chart: {
-      height: 340,
-      type: 'polarArea'
+        height: 340,
+        type: "polarArea",
     },
-    labels: ['Rose A', 'Rose B', 'Rose C', 'Rose D'],
+    labels: ["Rose A", "Rose B", "Rose C", "Rose D"],
     fill: {
-      opacity: 1,
-  
+        opacity: 1,
     },
-    colors: [getLocalStorageItem('color-primary','#056464'),getLocalStorageItem('color-secondary','#74788D'), '#0FB450', '#EA5659', '#FAC10F', '#3C91F3', '#ACB8C8'],
+    colors: [
+        getLocalStorageItem("color-primary", "#056464"),
+        getLocalStorageItem("color-secondary", "#74788D"),
+        "#0FB450",
+        "#EA5659",
+        "#FAC10F",
+        "#3C91F3",
+        "#ACB8C8",
+    ],
     stroke: {
-      width: 1,
-      colors: [getLocalStorageItem('color-primary','#056464'),getLocalStorageItem('color-secondary','#74788D'), '#0FB450', '#EA5659', '#FAC10F', '#3C91F3', '#ACB8C8'],
+        width: 1,
+        colors: [
+            getLocalStorageItem("color-primary", "#056464"),
+            getLocalStorageItem("color-secondary", "#74788D"),
+            "#0FB450",
+            "#EA5659",
+            "#FAC10F",
+            "#3C91F3",
+            "#ACB8C8",
+        ],
     },
     yaxis: {
-      show: false
+        show: false,
     },
     legend: {
-      position: 'bottom',
+        position: "bottom",
     },
-  
-    plotOptions: {
-      polarArea: {
-        rings: {
-          strokeWidth: 0
-        },
-        colors: [getLocalStorageItem('color-primary','#056464'),getLocalStorageItem('color-secondary','#74788D'), '#0FB450', '#EA5659', '#FAC10F', '#3C91F3', '#ACB8C8', '#231928',],
-        spokes: {
-          strokeWidth: 0,
-        },
-      }
-    },
-  };
-  
-  var chart = new ApexCharts(document.querySelector("#polar2"), options);
-  chart.render();
-  
 
+    plotOptions: {
+        polarArea: {
+            rings: {
+                strokeWidth: 0,
+            },
+            colors: [
+                getLocalStorageItem("color-primary", "#056464"),
+                getLocalStorageItem("color-secondary", "#74788D"),
+                "#0FB450",
+                "#EA5659",
+                "#FAC10F",
+                "#3C91F3",
+                "#ACB8C8",
+                "#231928",
+            ],
+            spokes: {
+                strokeWidth: 0,
+            },
+        },
+    },
+};
+
+var chart = new ApexCharts(document.querySelector("#polar2"), options);
+chart.render();
