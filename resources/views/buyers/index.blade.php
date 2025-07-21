@@ -71,7 +71,7 @@
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class="list" id="t-data">
                                     @forelse($buyers as $buyer)
                                     <tr>
                                         <td>
@@ -82,21 +82,21 @@
                                             N/A
                                             @endif
                                         </td>
-                                        <td>{{ $buyer->byr_name }}</td>
-                                        <td>
+                                        <td class="employee">{{ $buyer->byr_name }}</td>
+                                        <td class="email">
                                             @if($buyer->byr_type == 1)
                                             <span class="badge bg-success">Registered</span>
                                             @else
                                             <span class="badge bg-secondary">Unregistered</span>
                                             @endif
                                         </td>
-                                        <td>{{ $buyer->byr_ntn_cnic }}</td>
-                                        <td>{{ $buyer->byr_contact_person }}</td>
-                                        <td>{{ $buyer->byr_contact_num }}</td>
-                                        <td>{{ $buyer->byr_IBAN }}</td>
-                                        <td>{{ $buyer->byr_account_title }}</td>
-                                        <td>{{ $buyer->byr_account_number }}</td>
-                                        <td>{{ $buyer->byr_address }}</td>
+                                        <td class="contact">{{ $buyer->byr_ntn_cnic }}</td>
+                                        <td class="contact">{{ $buyer->byr_contact_person }}</td>
+                                        <td class="contact">{{ $buyer->byr_contact_num }}</td>
+                                        <td class="contact">{{ $buyer->byr_IBAN }}</td>
+                                        <td class="contact">{{ $buyer->byr_account_title }}</td>
+                                        <td class="contact">{{ $buyer->byr_account_number }}</td>
+                                        <td class="contact">{{ $buyer->byr_address }}</td>
                                         <td>
                                             <a href="{{ route('buyers.edit', Crypt::encryptString($buyer->byr_id)) }}"
                                                 class="btn btn-outline-success btn-sm me-1">
