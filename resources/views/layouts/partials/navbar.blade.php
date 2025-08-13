@@ -18,10 +18,11 @@
             </li>
             <li class="no-sub">
                 @php
-                $isInvoiceRoute = request()->routeIs('invoices.*');
-                $isCompanyeRoute = request()->routeIs('company.*');
-                $isBuyersRoute = request()->routeIs('buyers.*');
-                $isItemsRoute = request()->routeIs('items.*');
+                    $isInvoiceRoute = request()->routeIs('invoices.*');
+                    $isCompanyeRoute = request()->routeIs('company.*');
+                    $isBuyersRoute = request()->routeIs('buyers.*');
+                    $isItemsRoute = request()->routeIs('items.*');
+                    $isActivityRoute = request()->routeIs('activity.*');
                 @endphp
                 <a class="{{ $isInvoiceRoute ? 'activeTab' : '' }}" href="{{ route('invoices.index') }}">
                     <i class="ti ti-chart-treemap"></i>Invoices
@@ -44,6 +45,11 @@
                     <li>
                         <a class="{{ $isItemsRoute ? 'activeTab' : '' }}" href="{{ route('items.index') }}">Items /
                             Services</a>
+                    </li>
+                    <li>
+                        <a class="{{ $isActivityRoute ? 'activeTab' : '' }}"
+                            href="{{ route('activity.logs') }}">Activity
+                            Logs</a>
                     </li>
                     <!-- <li>
                         <a href="{{ route('invoices.import.form') }}">

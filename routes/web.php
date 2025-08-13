@@ -6,6 +6,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\BuyerController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Crypt;
 /*
@@ -39,7 +40,7 @@ Route::middleware(['auth', 'verified', 'security.headers'])->group(function () {
     Route::post('/invoices/filter', [InvoiceController::class, 'filter'])->name('invoices.filter');
     Route::get('/invoices/create', [InvoiceController::class, 'create'])->name('invoices.create');
     Route::get('/invoices/print/{id}', [InvoiceController::class, 'print'])->name('xero.print');
-    Route::post('/invoice', [InvoiceController::class, 'storeOrUpdate'])->name('create-new-invoice');
+    Route::post('/invoicedddd', [InvoiceController::class, 'storeOrUpdate'])->name('create-new-invoice');
     Route::get('/invoices/{invoice}/edit', [InvoiceController::class, 'edit'])->name('invoices.edit');
     Route::put('/invoice/{id}', [InvoiceController::class, 'storeOrUpdate'])->name('invoice.update');
     //Excel Import
@@ -54,9 +55,8 @@ Route::middleware(['auth', 'verified', 'security.headers'])->group(function () {
     Route::get('/buyers/edit/{id}', [BuyerController::class, 'edit'])->name('buyers.edit');
     Route::post('/buyers/update/{id}', [BuyerController::class, 'update'])->name('buyers.update');
     Route::delete('/buyers/delete/{id}', [BuyerController::class, 'delete'])->name('buyers.delete');
-    Route::get('/buyers/{id}', function ($id) {
-        return App\Models\Buyer::findOrFail($id);
-    });
+    Route::get('/buyers/fetch/{id}', [BuyerController::class, 'fetch'])->name('buyers.fetch');
+
 
     //Items
     Route::get('/items', [ItemController::class, 'index'])->name('items.index');
@@ -65,6 +65,11 @@ Route::middleware(['auth', 'verified', 'security.headers'])->group(function () {
     Route::get('/items/edit/{id}', [ItemController::class, 'edit'])->name('items.edit');
     Route::post('/items/update/{id}', [ItemController::class, 'update'])->name('items.update');
     Route::delete('/items/delete/{id}', [ItemController::class, 'delete'])->name('items.delete');
+
+
+    Route::get('/activity-logs', [ActivityLogController::class, 'index'])
+        ->name('activity.logs')
+        ->middleware('auth');
 });
 /*
 |--------------------------------------------------------------------------

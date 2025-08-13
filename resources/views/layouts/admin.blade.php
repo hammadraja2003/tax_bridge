@@ -35,8 +35,8 @@
   <link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/bootstrap/bootstrap.min.css')}}">
   <!-- Simplebar css-->
   <link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/simplebar/simplebar.css')}}">
-   <!-- apexcharts css-->
-   <link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/apexcharts/apexcharts.css')}}">
+  <!-- apexcharts css-->
+  <link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/apexcharts/apexcharts.css')}}">
   <!-- Toatify css-->
   <link rel="stylesheet" href="{{asset('assets/vendor/notifications/toastify.min.css')}}">
   <!-- Data Table css-->
@@ -49,6 +49,7 @@
   <link rel="preload" as="style" href="{{asset('build/assets/style-BVr_C8ru.css')}}" />
   <link rel="stylesheet" href="{{asset('build/assets/style-BVr_C8ru.css')}}" /><!-- css end-->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <!-- Custom Css -->
   <link rel="stylesheet" href="{{asset('assets/css/custom.css')}}" />
 
 </head>
@@ -107,7 +108,7 @@
   <script src="{{asset('assets/vendor/cleavejs/cleave.min.js')}}"></script>
   <!-- Glight js -->
   <script src="{{asset('assets/vendor/glightbox/glightbox.min.js')}}"></script>
-  <script src="{{asset('assets/js/advance_table.js')}}"></script>
+  {{-- <script src="{{asset('assets/js/advance_table.js')}}"></script> --}}
 
   <!-- List js -->
   <script src="{{asset('assets/vendor/listJs/list-jquery.min.js')}}"></script>
@@ -119,7 +120,9 @@
   <!-- sweetalert js-->
   <script src="{{asset('assets/vendor/sweetalert/sweetalert.js')}}"></script>
   <script src="{{asset('assets/js/sweet_alert.js')}}"></script>
-  <script src="{{ asset('assets/js/custom.js') }}"></script>
+  <!--Global Custom js -->
+  <script src="{{ asset('assets/js/globalcustom.js') }}"></script>
+  {{-- <script src="{{ asset('assets/js/custom.js') }}"></script> --}}
   @stack('scripts')
 </body>
 

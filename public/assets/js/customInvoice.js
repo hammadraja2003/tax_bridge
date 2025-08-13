@@ -1,87 +1,64 @@
-// custom.js - Refactored and Modular
+// Immediately block buyer auto fetch if form was just submitted
+if (sessionStorage.getItem("justSubmittedForm") === "1") {
+    console.log("⛔ Blocked buyer fetch before anything loads");
+    sessionStorage.removeItem("justSubmittedForm");
+    window.skipBuyerFetch = true; // ✅ use this later
+}
 
+let lastClickedSubmitButton = null;
 document.addEventListener("DOMContentLoaded", function () {
-    initTooltips();
-    initBuyerChangeHandler();
+    // initBuyerChangeHandler();
     initItemHandlers();
-    initFormBehavior();
-    initToastMessage();
-    initPasswordToggle();
     initInvoiceStatusButtons();
-    initDeleteConfirmation();
     initEditInvoiceItems();
-    // toggleInvoiceRef();
+    initFormBehavior();
+    initBuyerChangeDispatchIfNeeded(); // <-- add this here
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-    if (window.buyerId) {
-        const buyerSelect = document.getElementById("byr_id");
-        if (buyerSelect) {
-            buyerSelect.value = window.buyerId;
+// function initBuyerChangeHandler() {
+//     const buyerSelect = document.getElementById("byr_id");
+//     const loader = document.getElementById("buyerLoader");
+//     if (!buyerSelect) return;
 
-            // Trigger after a slight delay to ensure listeners are ready
-            setTimeout(() => {
-                buyerSelect.dispatchEvent(new Event("change"));
-            }, 200);
-        }
-    }
-});
+//     buyerSelect.addEventListener("change", function () {
+//         if (window.formIsSubmitting || window.skipBuyerFetch) {
+//             console.log("⛔ Blocked buyer fetch during submit or after reload");
+//             return;
+//         }
 
-function initTooltips() {
-    const tooltipTriggerList = [].slice.call(
-        document.querySelectorAll('[data-bs-toggle="tooltip"]')
-    );
-    tooltipTriggerList.forEach((el) => new bootstrap.Tooltip(el));
-}
+//         const id = this.value;
+//         if (!id) {
+//             [
+//                 "buyerNTNCNIC",
+//                 "buyerAddress",
+//                 "buyerProvince",
+//                 "buyerRegistrationType",
+//             ].forEach((field) => {
+//                 const input = document.querySelector(`[name=${field}]`);
+//                 if (input) input.value = "";
+//             });
+//             return;
+//         }
 
-function initBuyerChangeHandler() {
-    const buyerSelect = document.getElementById("byr_id");
-    const loader = document.getElementById("buyerLoader");
+//         if (loader) loader.classList.remove("d-none");
 
-    if (!buyerSelect) return;
-
-    buyerSelect.addEventListener("change", function () {
-        const id = this.value;
-
-        // Clear fields if no buyer selected
-        if (!id) {
-            [
-                "buyerNTNCNIC",
-                "buyerAddress",
-                "buyerProvince",
-                "buyerRegistrationType",
-            ].forEach((field) => {
-                const input = document.querySelector(`[name=${field}]`);
-                if (input) input.value = "";
-            });
-            return;
-        }
-
-        if (loader) loader.classList.remove("d-none"); // Show loader
-
-        fetch(`/buyers/${id}`)
-            .then((res) => res.json())
-            .then((b) => {
-                document.querySelector("[name=buyerNTNCNIC]").value =
-                    b.byr_ntn_cnic || "";
-                document.querySelector("[name=buyerAddress]").value =
-                    b.byr_address || "";
-                document.querySelector("[name=buyerProvince]").value =
-                    b.byr_province || "";
-                document.querySelector("[name=buyerRegistrationType]").value =
-                    b.byr_type == 1 ? "Registered" : "Unregistered";
-            })
-            .catch(() => {
-                alert("Failed to fetch buyer details.");
-            })
-            .finally(() => {
-                if (loader) loader.classList.add("d-none"); // Hide loader
-            });
-    });
-}
-
-// Run this after DOM is ready
-document.addEventListener("DOMContentLoaded", initBuyerChangeHandler);
+//         fetch(`/buyers/fetch/${id}`)
+//             .then((res) => res.json())
+//             .then((b) => {
+//                 if (!b) return;
+//                 document.querySelector("[name=buyerNTNCNIC]").value =
+//                     b.byr_ntn_cnic || "";
+//                 document.querySelector("[name=buyerAddress]").value =
+//                     b.byr_address || "";
+//                 document.querySelector("[name=buyerProvince]").value =
+//                     b.byr_province || "";
+//                 document.querySelector("[name=buyerRegistrationType]").value =
+//                     b.byr_type == 1 ? "Registered" : "Unregistered";
+//             })
+//             .catch(() => alert("Failed to fetch buyer details."))
+//             .finally(() => loader?.classList.add("d-none"));
+//     });
+// }
 
 function initItemHandlers() {
     if (!document.getElementById("itemsContainer")) return;
@@ -103,7 +80,7 @@ function initItemHandlers() {
             opt.data("description") || ""
         );
         $row.find('[name$="[item_price]"]').val(opt.data("price") || "");
-        $row.find('[name$="[SalesTaxApplicable]"]').val(opt.data("tax") || "");
+        // $row.find('[name$="[SalesTaxApplicable]"]').val(opt.data("tax") || "");
 
         calculateRow($row);
         // updateTotals();
@@ -151,9 +128,7 @@ function updateSubmitButton() {
 function calculateRow($row) {
     const qty = parseFloatSafe($row.find('[name$="[quantity]"]').val());
     const price = parseFloatSafe($row.find('[name$="[item_price]"]').val());
-    const taxRate = parseFloatSafe(
-        $row.find('[name$="[SalesTaxApplicable]"]').val()
-    );
+    const taxRate = parseFloatSafe($row.find('[name$="[rate]"]').val());
 
     const taxAmount = qty * price * (taxRate / 100);
     const excl = qty * price;
@@ -162,6 +137,7 @@ function calculateRow($row) {
     $row.find('[name$="[valueSalesExcludingST]"]').val(excl.toFixed(2));
     $row.find('[name$="[totalValues]"]').val(incl.toFixed(2));
     $row.find('[name$="[calculatedTax]"]').val(taxAmount.toFixed(2));
+    $row.find('[name$="[SalesTaxApplicable]"]').val(taxAmount.toFixed(2));
 }
 
 function updateTotals() {
@@ -197,10 +173,30 @@ function parseFloatSafe(val) {
     return parseFloat(val) || 0;
 }
 
+function initBuyerChangeDispatchIfNeeded() {
+    if (
+        window.isEdit &&
+        window.buyerId &&
+        !window.formIsSubmitting &&
+        !window.skipBuyerFetch
+    ) {
+        const buyerSelect = document.getElementById("byr_id");
+        if (buyerSelect) {
+            buyerSelect.value = window.buyerId;
+
+            setTimeout(() => {
+                console.log(
+                    "✅ Dispatching buyer change (not from submission)"
+                );
+                buyerSelect.dispatchEvent(new Event("change"));
+            }, 200);
+        }
+    }
+}
+
 function initFormBehavior() {
     const form = document.querySelector("form");
     const submitBtn = form?.querySelector('button[type="submit"]');
-
     if (!form || !submitBtn) return;
 
     form.addEventListener("keydown", function (e) {
@@ -209,53 +205,31 @@ function initFormBehavior() {
         }
     });
 
-    form.addEventListener("submit", function () {
-        form.querySelectorAll('input[type="text"], textarea').forEach(
-            (input) => {
-                input.value = input.value.trim();
-            }
-        );
+    form.addEventListener("submit", function (e) {
+        // ✅ Only proceed if one of the real submit buttons was clicked
+        if (
+            lastClickedSubmitButton === "draft" ||
+            lastClickedSubmitButton === "fbr"
+        ) {
+            sessionStorage.setItem("justSubmittedForm", "1");
+            window.formIsSubmitting = true;
 
-        submitBtn.disabled = true;
-        submitBtn.innerHTML =
-            '<span class="spinner-border spinner-border-sm me-1"></span> Saving...';
-    });
-}
+            form.querySelectorAll('input[type="text"], textarea').forEach(
+                (input) => {
+                    input.value = input.value.trim();
+                }
+            );
 
-function initToastMessage() {
-    const toastDiv = document.getElementById("toast-data");
-    if (!toastDiv) return;
+            const clickedBtn =
+                lastClickedSubmitButton === "draft"
+                    ? document.getElementById("draftBtn")
+                    : document.getElementById("submitBtn");
 
-    Toastify({
-        text:
-            (toastDiv.dataset.toastError === "true" ? "❌ " : "✅ ") +
-            toastDiv.dataset.toastMessage,
-        duration: 3000,
-        gravity: "top",
-        position: "right",
-        close: true,
-        style: {
-            background:
-                toastDiv.dataset.toastError === "true" ? "#dc3545" : "#28a745",
-        },
-    }).showToast();
-}
-
-function initPasswordToggle() {
-    const togglePassword = document.getElementById("togglePassword");
-    const passwordInput = document.getElementById("password");
-    if (!togglePassword || !passwordInput) return;
-
-    const icon = togglePassword.querySelector("i");
-    togglePassword.addEventListener("click", function () {
-        const type =
-            passwordInput.getAttribute("type") === "password"
-                ? "text"
-                : "password";
-        passwordInput.setAttribute("type", type);
-        if (icon) {
-            icon.classList.toggle("fa-eye");
-            icon.classList.toggle("fa-eye-slash");
+            clickedBtn.disabled = true;
+            clickedBtn.innerHTML =
+                '<span class="spinner-border spinner-border-sm me-1"></span> Saving...';
+        } else {
+            e.preventDefault(); // block unwanted submits
         }
     });
 }
@@ -265,29 +239,17 @@ function initInvoiceStatusButtons() {
     const submitBtn = document.getElementById("submitBtn");
     const invoiceStatus = document.getElementById("invoice_status");
 
-    draftBtn?.addEventListener("click", () => (invoiceStatus.value = 1));
-    submitBtn?.addEventListener("click", () => (invoiceStatus.value = 2));
-}
+    draftBtn?.addEventListener("click", () => {
+        invoiceStatus.value = 1;
+        lastClickedSubmitButton = "draft";
+    });
 
-function initDeleteConfirmation() {
-    document.querySelectorAll(".delete-button").forEach((button) => {
-        button.addEventListener("click", function () {
-            const form = this.closest("form");
-            Swal.fire({
-                title: "Are you sure?",
-                text: "This action cannot be undone!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#e3342f",
-                cancelButtonColor: "#6c757d",
-                confirmButtonText: "Yes, delete it!",
-                reverseButtons: true,
-            }).then((result) => {
-                if (result.isConfirmed) form.submit();
-            });
-        });
+    submitBtn?.addEventListener("click", () => {
+        invoiceStatus.value = 2;
+        lastClickedSubmitButton = "fbr";
     });
 }
+
 const raw = document.getElementById("invoice-data")?.textContent;
 if (raw) {
     const data = JSON.parse(raw);
@@ -297,7 +259,7 @@ if (raw) {
     window.isEdit = false;
     window.existingItems = [];
 }
-
+let itemIndex = window.existingItems.length || 0;
 function initEditInvoiceItems() {
     if (!window.isEdit) {
         addItem();
@@ -348,24 +310,4 @@ function initEditInvoiceItems() {
     }, 0);
 }
 
-// function toggleInvoiceRef() {
-//     const type = document.getElementById("invoiceType").value;
-//     const refWrapper = document.getElementById("invoiceRefWrapper");
-
-//     if (type === "Debit Note") {
-//         refWrapper.classList.remove("d-none");
-//     } else {
-//         refWrapper.classList.add("d-none");
-//         document.getElementById("invoiceRefNo").value = ""; // Optional: clear value
-//     }
-// }
-
-document.addEventListener("click", function (e) {
-    if (e.target.closest("#logout-link")) {
-        e.preventDefault();
-        const logoutForm = document.getElementById("logout-form");
-        if (logoutForm) logoutForm.submit();
-    }
-});
-
-let itemIndex = 0;
+// let itemIndex = 0;
