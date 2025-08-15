@@ -10,11 +10,32 @@ use App\Models\Item;
 
 class ItemController extends Controller
 {
+    // public function index()
+    // {
+    //     $items = Item::latest()->get();
+    //     return view('items.index', compact('items'));
+    // }
     public function index()
     {
         $items = Item::latest()->get();
+
+        // Check for tampering
+        foreach ($items as $item) {
+            $calculatedHash = md5(
+                $item->item_hs_code .
+                    $item->item_description .
+                    $item->item_price .
+                    $item->item_tax_rate .
+                    $item->item_uom
+            );
+
+            // Add a flag for frontend
+            $item->tampered = $calculatedHash !== $item->hash;
+        }
+
         return view('items.index', compact('items'));
     }
+
     public function create()
     {
         return view('items.create');

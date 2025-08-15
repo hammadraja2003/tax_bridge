@@ -39,6 +39,8 @@ class Invoice extends Model
         'discount_amount',
         'payment_status',
         'notes',
+        'qr_code',
+
     ];
 
     // 🧾 Relationships

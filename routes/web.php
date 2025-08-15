@@ -9,6 +9,8 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Crypt;
+
+// use SimpleSoftwareIO\QrCode\Facades\QrCode;
 /*
 |--------------------------------------------------------------------------
 | Public Routes
@@ -19,6 +21,25 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Route::get('/test-qr', function () {
+//     $qrData = 'This is my QR test text';
+//     $qrFileName = 'qr_test_' . time() . '.png';
+//     $qrPath = public_path('uploads/qr_codes/' . $qrFileName);
+
+//     // Ensure folder exists
+//     if (!file_exists(public_path('uploads/qr_codes'))) {
+//         mkdir(public_path('uploads/qr_codes'), 0755, true);
+//     }
+
+//     // Generate and save QR
+//     QrCode::format('png')
+//         ->size(200)
+//         ->generate($qrData, $qrPath);
+
+//     return "QR saved at: uploads/qr_codes/{$qrFileName}";
+// });
+
+
 /*
 |--------------------------------------------------------------------------
 | Authenticated Routes
@@ -27,8 +48,8 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified', 'security.headers'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/update-profile/{id}', [ProfileController::class, 'edit_profile'])->name('edit-profile');
     Route::post('/update-profile/{id}', [ProfileController::class, 'update_user_profile'])->name('update-profile');

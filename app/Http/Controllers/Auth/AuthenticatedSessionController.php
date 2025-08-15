@@ -21,11 +21,35 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
+    // public function store(LoginRequest $request): RedirectResponse
+    // {
+    //     $request->authenticate();
+    //     $request->session()->regenerate();
+    //     return redirect()->intended(route('dashboard', absolute: false))->with('message', 'Signed in successfully!');
+    // }
+    public function store(Request $request)
     {
-        $request->authenticate();
-        $request->session()->regenerate();
-        return redirect()->intended(route('dashboard', absolute: false))->with('message', 'Signed in successfully!');
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+
+            if ($user->twofa_enabled) {
+                // Temporarily log out until OTP is verified
+                Auth::logout();
+
+                // Keep which user is verifying in session
+                $request->session()->put('2fa:user:id', $user->id);
+
+                return redirect()->route('2fa.verify');
+            }
+
+            // No 2FA → normal login
+            $request->session()->regenerate();
+            return redirect()->intended('dashboard');
+        }
+
+        return back()->withErrors(['email' => 'Invalid credentials.']);
     }
     /**
      * Destroy an authenticated session.

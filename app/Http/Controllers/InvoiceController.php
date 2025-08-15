@@ -58,7 +58,6 @@ class InvoiceController extends Controller
             'is_posted_to_fbr' => $request->is_posted_to_fbr,
         ]);
     }
-
     public function storeOrUpdate(Request $request, $id = null)
     {
         // Allow script to run up to 120 seconds
@@ -233,6 +232,7 @@ class InvoiceController extends Controller
 
                 // Step 2: Post
                 $posting = $fbrService->postInvoice($fbrPayload);
+
                 if ($posting['success']) {
                     $invoice->update([
                         'fbr_invoice_number' => $posting['data']['invoiceNumber'] ?? null,
@@ -245,28 +245,22 @@ class InvoiceController extends Controller
                         'update',
                         'Posted invoice to FBR: ' . $invoice->invoice_no,
                         $invoice->toArray(),
-                        $invoice->id,
+                        $invoice->invoice_no,
                         'invoices'
                     );
                     // Generate QR code
                     $qrData = $posting['data']['invoiceNumber']; // Or full JSON if FBR requires
-                    $qrFileName = 'qr_' . $invoice->id . '_' . time() . '.png';
+                    $qrFileName = 'qr_' . $invoice->invoice_no . '_' . time() . '.png';
                     $qrPath = public_path('uploads/qr_codes/' . $qrFileName);
 
                     // Make sure the folder exists
                     if (!file_exists(public_path('uploads/qr_codes'))) {
                         mkdir(public_path('uploads/qr_codes'), 0755, true);
                     }
-
-                    // QrCode::format('png')
-                    //     ->size(100)        // ~1 inch x 1 inch
-                    //     ->generate($qrData, $qrPath);
+                    // Generate and save QR
                     QrCode::format('png')
-                        ->size(100)
-                        ->backend('gd') // Force GD backend
+                        ->size(200)
                         ->generate($qrData, $qrPath);
-
-
                     // Save QR code filename in invoice
                     $invoice->update([
                         'qr_code' => $qrFileName

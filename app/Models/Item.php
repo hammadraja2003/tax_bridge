@@ -15,9 +15,32 @@ class Item extends Model
         'item_price',
         'item_tax_rate',
         'item_uom',
+        'hash',
     ];
     public function invoiceDetails()
     {
         return $this->hasMany(InvoiceDetail::class, 'item_id', 'item_id');
+    }
+    protected static function booted()
+    {
+        static::creating(function ($item) {
+            $item->hash = md5(
+                $item->item_hs_code .
+                    $item->item_description .
+                    $item->item_price .
+                    $item->item_tax_rate .
+                    $item->item_uom
+            );
+        });
+
+        static::updating(function ($item) {
+            $item->hash = md5(
+                $item->item_hs_code .
+                    $item->item_description .
+                    $item->item_price .
+                    $item->item_tax_rate .
+                    $item->item_uom
+            );
+        });
     }
 }

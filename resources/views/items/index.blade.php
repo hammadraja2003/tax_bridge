@@ -29,17 +29,25 @@
                                             <th>Price</th>
                                             <th>Tax Rate</th>
                                             <th>UOM</th>
+                                            <th>Tempered</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody class="list" id="t-data">
                                         @foreach ($items as $item)
-                                            <tr>
+                                            <tr @if ($item->tampered) class="table-warning" @endif>
                                                 <td class="employee">{{ $item->item_description }}</td>
                                                 <td>{{ $item->item_hs_code }}</td>
                                                 <td>{{ $item->item_price }}</td>
                                                 <td>{{ $item->item_tax_rate }}</td>
                                                 <td>{{ $item->item_uom }}</td>
+                                                <td>
+                                                    @if ($item->tampered)
+                                                        <span class="text-danger fw-bold">⚠ Data may be tampered!</span>
+                                                    @else
+                                                        <span class="text-success">OK</span>
+                                                    @endif
+                                                </td>
                                                 <td>
                                                     <a href="{{ route('items.edit', Crypt::encryptString($item->item_id)) }}"
                                                         class="btn btn-outline-success btn-xs me-1">

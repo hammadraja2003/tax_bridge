@@ -7,7 +7,7 @@ if (sessionStorage.getItem("justSubmittedForm") === "1") {
 
 let lastClickedSubmitButton = null;
 document.addEventListener("DOMContentLoaded", function () {
-    // initBuyerChangeHandler();
+    initBuyerChangeHandler();
     initItemHandlers();
     initInvoiceStatusButtons();
     initEditInvoiceItems();
@@ -15,50 +15,50 @@ document.addEventListener("DOMContentLoaded", function () {
     initBuyerChangeDispatchIfNeeded(); // <-- add this here
 });
 
-// function initBuyerChangeHandler() {
-//     const buyerSelect = document.getElementById("byr_id");
-//     const loader = document.getElementById("buyerLoader");
-//     if (!buyerSelect) return;
+function initBuyerChangeHandler() {
+    const buyerSelect = document.getElementById("byr_id");
+    const loader = document.getElementById("buyerLoader");
+    if (!buyerSelect) return;
 
-//     buyerSelect.addEventListener("change", function () {
-//         if (window.formIsSubmitting || window.skipBuyerFetch) {
-//             console.log("⛔ Blocked buyer fetch during submit or after reload");
-//             return;
-//         }
+    buyerSelect.addEventListener("change", function () {
+        if (window.formIsSubmitting || window.skipBuyerFetch) {
+            console.log("⛔ Blocked buyer fetch during submit or after reload");
+            return;
+        }
 
-//         const id = this.value;
-//         if (!id) {
-//             [
-//                 "buyerNTNCNIC",
-//                 "buyerAddress",
-//                 "buyerProvince",
-//                 "buyerRegistrationType",
-//             ].forEach((field) => {
-//                 const input = document.querySelector(`[name=${field}]`);
-//                 if (input) input.value = "";
-//             });
-//             return;
-//         }
+        const id = this.value;
+        if (!id) {
+            [
+                "buyerNTNCNIC",
+                "buyerAddress",
+                "buyerProvince",
+                "buyerRegistrationType",
+            ].forEach((field) => {
+                const input = document.querySelector(`[name=${field}]`);
+                if (input) input.value = "";
+            });
+            return;
+        }
 
-//         if (loader) loader.classList.remove("d-none");
+        if (loader) loader.classList.remove("d-none");
 
-//         fetch(`/buyers/fetch/${id}`)
-//             .then((res) => res.json())
-//             .then((b) => {
-//                 if (!b) return;
-//                 document.querySelector("[name=buyerNTNCNIC]").value =
-//                     b.byr_ntn_cnic || "";
-//                 document.querySelector("[name=buyerAddress]").value =
-//                     b.byr_address || "";
-//                 document.querySelector("[name=buyerProvince]").value =
-//                     b.byr_province || "";
-//                 document.querySelector("[name=buyerRegistrationType]").value =
-//                     b.byr_type == 1 ? "Registered" : "Unregistered";
-//             })
-//             .catch(() => alert("Failed to fetch buyer details."))
-//             .finally(() => loader?.classList.add("d-none"));
-//     });
-// }
+        fetch(`/buyers/fetch/${id}`)
+            .then((res) => res.json())
+            .then((b) => {
+                if (!b) return;
+                document.querySelector("[name=buyerNTNCNIC]").value =
+                    b.byr_ntn_cnic || "";
+                document.querySelector("[name=buyerAddress]").value =
+                    b.byr_address || "";
+                document.querySelector("[name=buyerProvince]").value =
+                    b.byr_province || "";
+                document.querySelector("[name=buyerRegistrationType]").value =
+                    b.byr_type == 1 ? "Registered" : "Unregistered";
+            })
+            .catch(() => alert("Failed to fetch buyer details."))
+            .finally(() => loader?.classList.add("d-none"));
+    });
+}
 
 function initItemHandlers() {
     if (!document.getElementById("itemsContainer")) return;
@@ -96,7 +96,7 @@ function initItemHandlers() {
     );
     $("#itemsContainer").on(
         "input",
-        '[name$="[furtherTax]"], [name$="[extraTax]"]',
+        '[name$="[furtherTax]"], [name$="[extraTax]"], [name$="[fedPayable]"] , [name$="[discount]"]',
         updateTaxTotalsFromItems
     );
 }
@@ -156,7 +156,9 @@ function updateTotals() {
 
 function updateTaxTotalsFromItems() {
     let totalfurtherTax = 0,
-        totalextraTax = 0;
+        totalextraTax = 0,
+        totalFedTax = 0,
+        totalDiscount = 0;
     $(".item-group").each(function () {
         totalfurtherTax += parseFloatSafe(
             $(this).find('[name$="[furtherTax]"]').val()
@@ -164,9 +166,17 @@ function updateTaxTotalsFromItems() {
         totalextraTax += parseFloatSafe(
             $(this).find('[name$="[extraTax]"]').val()
         );
+        totalFedTax += parseFloatSafe(
+            $(this).find('[name$="[fedPayable]"]').val()
+        );
+        totalDiscount += parseFloatSafe(
+            $(this).find('[name$="[discount]"]').val()
+        );
     });
     $("#totalfurtherTax").val(totalfurtherTax.toFixed(2));
     $("#totalextraTax").val(totalextraTax.toFixed(2));
+    $("#totalFedTax").val(totalFedTax.toFixed(2));
+    $("#totalDiscount").val(totalDiscount.toFixed(2));
 }
 
 function parseFloatSafe(val) {
@@ -225,9 +235,14 @@ function initFormBehavior() {
                     ? document.getElementById("draftBtn")
                     : document.getElementById("submitBtn");
 
+            document.getElementById("draftBtn").disabled = true;
+            document.getElementById("submitBtn").disabled = true;
+
             clickedBtn.disabled = true;
             clickedBtn.innerHTML =
-                '<span class="spinner-border spinner-border-sm me-1"></span> Saving...';
+                lastClickedSubmitButton === "draft"
+                    ? '<span class="spinner-border spinner-border-sm me-1"></span> Saving to Draft...'
+                    : '<span class="spinner-border spinner-border-sm me-1"></span> Posting to FBR...';
         } else {
             e.preventDefault(); // block unwanted submits
         }

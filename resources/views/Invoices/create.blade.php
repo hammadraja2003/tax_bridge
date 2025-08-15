@@ -38,12 +38,12 @@
                     </div>
                     <div class="col-md-3">
                         <label class="form-label required">Invoice Date</label>
-                        <input type="date" name="invoiceDate" class="form-control" required
+                        <input type="date" name="invoiceDate" id="invoiceDate" class="form-control" required
                             value="{{ $isEdit ? \Carbon\Carbon::parse($invoice->invoice_date)->format('Y-m-d') : '' }}" />
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Due Date</label>
-                        <input type="date" name="due_date" class="form-control"
+                        <input type="date" name="due_date" id="dueDate" class="form-control"
                             value="{{ $isEdit && $invoice->due_date ? \Carbon\Carbon::parse($invoice->due_date)->format('Y-m-d') : '' }}" />
                     </div>
                     <div class="col-md-3" id="invoiceRefWrapper">
@@ -53,7 +53,15 @@
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Scenario ID (Optional)</label>
-                        <input type="text" name="scenarioId" class="form-control" />
+                        <select name="scenarioId" class="form-select" id="scenarioId">
+                            <option value="">Select Scenario</option>
+                            <option value="SN018" {{ $isEdit && $invoice->scenario_id === 'SN018' ? 'selected' : '' }}>
+                                SN018
+                            </option>
+                            <option value="SN019" {{ $isEdit && $invoice->scenario_id === 'SN019' ? 'selected' : '' }}>
+                                SN019
+                            </option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -178,6 +186,8 @@
                                 'totalSalesTax' => 'Total Sales Tax',
                                 'totalfurtherTax' => 'Total Further Tax',
                                 'totalextraTax' => 'Total Extra Tax',
+                                'totalFedTax' => 'Total FED Tax',
+                                'totalDiscount' => 'Total Discount',
                                 'shipping_charges' => 'Shipping Charges',
                                 'other_charges' => 'Other Charges',
                                 'discount_amount' => 'Discount Amount',
@@ -314,7 +324,7 @@
                 <div class="col-md-4">
                     <label class="form-label required">Sale Type <i class="bi bi-info-circle" data-bs-toggle="tooltip"
                             title=" Important: Describes the nature of sale.Could be: 'Goods at reduced rate', 'Exempt', 'Zero-rated', 'Services', etc."></i></label>
-                    <input type="text" name="items[][saleType]" class="form-control"
+                    <input type="text" name="items[][saleType]" id="saleTypeInput" class="form-control"
                         value="Services (FED in ST Mode)" placeholder="e.g. Goods at standard rate" required />
                 </div>
                 <div class="col-md-4">
@@ -359,76 +369,107 @@
         </div>
     </template>
     <script type="application/json" id="invoice-data">
-  {!! json_encode([
-      'isEdit' => $isEdit,
-      'existingItems' => $invoice->items ?? [],
-  ]) !!}
-</script>
-    <script nonce="{{ $nonce }}">
-        window.buyerId = "{{ $invoice->buyer_id ?? '' }}";
+    {!! json_encode([
+        'isEdit' => $isEdit,
+        'existingItems' => $invoice->items ?? [],
+    ]) !!}
     </script>
-
-
     <script nonce="{{ $nonce }}">
         (function() {
+            // ===== Buyer Selection Logic =====
+            window.buyerId = "{{ $invoice->buyer_id ?? '' }}";
+
             const buyerSelect = document.getElementById("byr_id");
             const loader = document.getElementById("buyerLoader");
 
-            if (!buyerSelect) return;
+            if (buyerSelect) {
+                buyerSelect.addEventListener("change", function(e) {
+                    // Only run when user manually changes dropdown
+                    if (!e.isTrusted) {
+                        console.log("⛔ Ignored programmatic buyer change");
+                        return;
+                    }
 
-            buyerSelect.addEventListener("change", function(e) {
-                // Only run when the user manually changes the dropdown
-                if (!e.isTrusted) {
-                    console.log("⛔ Ignored programmatic buyer change");
-                    return;
-                }
+                    if (window.formIsSubmitting || window.skipBuyerFetch) {
+                        console.log("⛔ Blocked buyer fetch during submit or reload");
+                        return;
+                    }
 
-                if (window.formIsSubmitting || window.skipBuyerFetch) {
-                    console.log("⛔ Blocked buyer fetch during submit or reload");
-                    return;
-                }
+                    const id = this.value;
 
-                const id = this.value;
+                    // If no buyer selected, clear fields
+                    if (!id) {
+                        ["buyerNTNCNIC", "buyerBusinessName", "buyerAddress", "buyerProvince",
+                            "buyerRegistrationType"
+                        ]
+                        .forEach((field) => {
+                            const input = document.querySelector(`[name=${field}]`);
+                            if (input) input.value = "";
+                        });
+                        return;
+                    }
 
-                // If no buyer selected, clear fields
-                if (!id) {
-                    ["buyerNTNCNIC", "buyerBusinessName", "buyerAddress", "buyerProvince",
-                        "buyerRegistrationType"
-                    ]
-                    .forEach((field) => {
-                        const input = document.querySelector(`[name=${field}]`);
-                        if (input) input.value = "";
+                    // Show loader
+                    loader?.classList.remove("d-none");
+
+                    // Fetch buyer data with jQuery AJAX
+                    $.ajax({
+                        url: `/buyers/fetch/${id}`,
+                        method: "GET",
+                        dataType: "json",
+                        success: function(b) {
+                            if (!b) return;
+                            $("[name=buyerNTNCNIC]").val(b.byr_ntn_cnic || "");
+                            $("[name=buyerBusinessName]").val(b.byr_name || "");
+                            $("[name=buyerAddress]").val(b.byr_address || "");
+                            $("[name=buyerProvince]").val(b.byr_province || "");
+                            $("[name=buyerRegistrationType]").val(b.byr_type == 1 ? "Registered" :
+                                "Unregistered");
+                        },
+                        error: function() {
+                            alert("Failed to fetch buyer details.");
+                        },
+                        complete: function() {
+                            loader?.classList.add("d-none");
+                        }
                     });
-                    return;
-                }
+                });
+            }
 
-                // Show loader
-                loader?.classList.remove("d-none");
-
-                // Fetch buyer data with jQuery AJAX
-                $.ajax({
-                    url: `/buyers/fetch/${id}`,
-                    method: "GET",
-                    dataType: "json",
-                    success: function(b) {
-                        if (!b) return;
-                        $("[name=buyerNTNCNIC]").val(b.byr_ntn_cnic || "");
-                        $("[name=buyerBusinessName]").val(b.byr_name || "");
-                        $("[name=buyerAddress]").val(b.byr_address || "");
-                        $("[name=buyerProvince]").val(b.byr_province || "");
-                        $("[name=buyerRegistrationType]").val(
-                            b.byr_type == 1 ? "Registered" : "Unregistered"
-                        );
-                    },
-                    error: function() {
-                        alert("Failed to fetch buyer details.");
-                    },
-                    complete: function() {
-                        loader?.classList.add("d-none");
+            // ===== Scenario ID to Sale Type Auto-fill =====
+            const scenarioSelect = document.getElementById('scenarioId');
+            if (scenarioSelect) {
+                scenarioSelect.addEventListener('change', function() {
+                    let saleTypeField = document.getElementById('saleTypeInput');
+                    if (this.value === 'SN018') {
+                        saleTypeField.value = 'Services (FED in ST Mode)';
+                    } else if (this.value === 'SN019') {
+                        saleTypeField.value = 'Services';
+                    } else {
+                        saleTypeField.value = '';
                     }
                 });
-            });
+            }
+
+            // ===== Invoice Date → Due Date Restriction =====
+            const invoiceDateInput = document.getElementById('invoiceDate');
+            const dueDateInput = document.getElementById('dueDate');
+
+            if (invoiceDateInput && dueDateInput) {
+                invoiceDateInput.addEventListener('change', function() {
+                    let invoiceDate = this.value;
+
+                    // Set minimum due date
+                    dueDateInput.min = invoiceDate;
+
+                    // If current due date is earlier than invoice date, reset it
+                    if (dueDateInput.value && dueDateInput.value < invoiceDate) {
+                        dueDateInput.value = invoiceDate;
+                    }
+                });
+            }
         })();
     </script>
+
     <script src="{{ asset('assets/js/customInvoice.js') }}"></script>
 @endsection

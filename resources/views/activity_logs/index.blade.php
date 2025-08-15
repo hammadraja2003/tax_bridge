@@ -46,7 +46,11 @@
                                                             @endforeach
                                                         </ul>
                                                     @else
-                                                        <pre class="mb-0">{{ json_encode($log->data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre>
+                                                        {{-- <pre class="mb-0">{{ json_encode($log->data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre> --}}
+                                                        <div class="json-container">
+                                                            <button class="btn btn-sm btn-light toggle-json mb-1">+</button>
+                                                            <pre class="json-content mb-0 d-none">{{ json_encode($log->data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre>
+                                                        </div>
                                                     @endif
 
                                                     @if ($log->hash_changed)
@@ -90,4 +94,23 @@
             </div>
         </div>
     </div>
+    @push('scripts')
+        <script nonce="{{ $nonce }}">
+            document.addEventListener('DOMContentLoaded', function() {
+                document.querySelectorAll('.toggle-json').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const pre = this.nextElementSibling;
+                        if (pre.classList.contains('d-none')) {
+                            pre.classList.remove('d-none');
+                            this.textContent = '-';
+                        } else {
+                            pre.classList.add('d-none');
+                            this.textContent = '+';
+                        }
+                    });
+                });
+            });
+        </script>
+    @endpush
+
 @endsection

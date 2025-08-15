@@ -9,6 +9,8 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Auth\TwoFactorController;
+use App\Http\Controllers\Auth\TwoFactorSetupController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -20,6 +22,11 @@ Route::middleware('guest')->group(function () {
     Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email')->middleware('throttle:3,1');
     Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
     Route::post('reset-password', [NewPasswordController::class, 'store'])->name('password.store');
+
+    Route::get('2fa', [TwoFactorController::class, 'showVerifyForm'])->name('2fa.verify');
+    Route::post('2fa', [TwoFactorController::class, 'verifyCode'])
+        ->name('2fa.check')
+        ->middleware('throttle:6,1');
 });
 Route::middleware('auth')->group(function () {
     Route::get('verify-email', EmailVerificationPromptController::class)
@@ -36,4 +43,8 @@ Route::middleware('auth')->group(function () {
     Route::put('password', [PasswordController::class, 'update'])->name('password.update');
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
+
+    Route::get('2fa/setup', [TwoFactorSetupController::class, 'showSetupForm'])->name('2fa.setup');
+    Route::post('2fa/enable', [TwoFactorSetupController::class, 'enable'])->name('2fa.enable');
+    Route::post('2fa/disable', [TwoFactorSetupController::class, 'disable'])->name('2fa.disable');
 });

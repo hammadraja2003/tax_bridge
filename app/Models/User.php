@@ -15,10 +15,15 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+    protected $casts = [
+        'twofa_enabled' => 'boolean',
+    ];
     protected $fillable = [
         'name',
         'email',
         'password',
+        'twofa_enabled',
+        'twofa_secret',
     ];
     /**
      * The attributes that should be hidden for serialization.
