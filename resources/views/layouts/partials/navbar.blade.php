@@ -50,11 +50,11 @@
                             href="{{ route('activity.logs') }}">Activity
                             Logs</a>
                     </li>
-                    <!-- <li>
+                    {{-- <li>
                         <a href="{{ route('invoices.import.form') }}">
                             Import Invoices
                         </a>
-                    </li> -->
+                    </li> --}}
                 </ul>
             </li>
             <!-- Hidden logout form -->

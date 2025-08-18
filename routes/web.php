@@ -21,25 +21,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('/test-qr', function () {
-//     $qrData = 'This is my QR test text';
-//     $qrFileName = 'qr_test_' . time() . '.png';
-//     $qrPath = public_path('uploads/qr_codes/' . $qrFileName);
-
-//     // Ensure folder exists
-//     if (!file_exists(public_path('uploads/qr_codes'))) {
-//         mkdir(public_path('uploads/qr_codes'), 0755, true);
-//     }
-
-//     // Generate and save QR
-//     QrCode::format('png')
-//         ->size(200)
-//         ->generate($qrData, $qrPath);
-
-//     return "QR saved at: uploads/qr_codes/{$qrFileName}";
-// });
-
-
 /*
 |--------------------------------------------------------------------------
 | Authenticated Routes
@@ -56,6 +37,7 @@ Route::middleware(['auth', 'verified', 'security.headers'])->group(function () {
     //Company OR Bussiness Configuration
     Route::get('/company/configuration', [CompanyController::class, 'index'])->name('company.configuration');
     Route::post('/company/configuration', [CompanyController::class, 'storeOrUpdate'])->name('company.configuration.save');
+
     //Invoices
     Route::get('/invoices', [InvoiceController::class, 'index'])->name('invoices.index');
     Route::post('/invoices/filter', [InvoiceController::class, 'filter'])->name('invoices.filter');
@@ -65,9 +47,8 @@ Route::middleware(['auth', 'verified', 'security.headers'])->group(function () {
     Route::get('/invoices/{invoice}/edit', [InvoiceController::class, 'edit'])->name('invoices.edit');
     Route::put('/invoice/{id}', [InvoiceController::class, 'storeOrUpdate'])->name('invoice.update');
     //Excel Import
-    Route::get('/invoices/import', [InvoiceController::class, 'showForm'])->name('invoices.import.form');
-    Route::post('/invoices/import', [InvoiceController::class, 'importInvoice'])->name('invoices.import.process');
-
+    // Route::get('/invoices/import', [InvoiceController::class, 'showForm'])->name('invoices.import.form');
+    // Route::post('/invoices/import', [InvoiceController::class, 'importInvoice'])->name('invoices.import.process');
 
     //Buyers
     Route::get('/buyers', [BuyerController::class, 'index'])->name('buyers.index');
@@ -77,7 +58,6 @@ Route::middleware(['auth', 'verified', 'security.headers'])->group(function () {
     Route::post('/buyers/update/{id}', [BuyerController::class, 'update'])->name('buyers.update');
     Route::delete('/buyers/delete/{id}', [BuyerController::class, 'delete'])->name('buyers.delete');
     Route::get('/buyers/fetch/{id}', [BuyerController::class, 'fetch'])->name('buyers.fetch');
-
 
     //Items
     Route::get('/items', [ItemController::class, 'index'])->name('items.index');
