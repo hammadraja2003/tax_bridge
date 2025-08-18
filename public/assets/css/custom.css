@@ -7,7 +7,11 @@
     background: #056464;
 }
 .app-logo {
-    background-color: #bc202e;
+    /* background-color: #bc202e; */
+    background-color: #ffffff;
+}
+nav .app-logo .logo img {
+    width: 190px !important;
 }
 .dark-logo {
     margin-bottom: 4px;

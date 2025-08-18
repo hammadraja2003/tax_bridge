@@ -166,14 +166,12 @@
                     style="height: 45px;">
             </div>
         </div>
-
         <div class="top-row">
             <div class="top-section">
                 <h1>SALE TAX INVOICE</h1>
                 <p><strong>{{ $invoice->buyer->byr_name }}</strong><br>
                     {{ $invoice->buyer->byr_address }}</p>
             </div>
-
             <div class="top-section">
                 <p><strong>Invoice
                         Date:</strong><br>{{ \Carbon\Carbon::parse($invoice->invoice_date)->format('d M Y') }}<br><br>
@@ -181,48 +179,38 @@
                     @if (!empty($invoice->invoice_ref_no))
                         <p><strong>Reference:</strong> <br>{{ $invoice->invoice_ref_no }}</p>
                     @endif
-
             </div>
-
             <div class="top-section text-right">
                 <p><strong>{{ $invoice->seller->bus_name }}</strong><br>
                     Innovation & Incubation<br>
                     {{ $invoice->seller->bus_address }}<br>
                     Reg No: {{ $invoice->seller->bus_reg_num }}<br>
                     NTN:{{ $invoice->seller->bus_ntn_cnic }}</p>
-
             </div>
         </div>
-
         <!-- Invoice Items Table -->
         @php
             $subTotal = 0;
             $totalTax = 0;
-
             foreach ($invoice->details as $detail) {
                 $price = floatval($detail->item->item_price ?? 0);
                 $qty = floatval($detail->quantity ?? 0);
                 $taxRate = floatval($detail->item->item_tax_rate ?? 0); // Should be 15 not 0.15
-
                 $lineTotal = $price * $qty;
                 $taxAmount = round($lineTotal * ($taxRate / 100), 2); // Correct calculation
                 $rowTotal = $lineTotal + $taxAmount;
-
                 // Store results
                 $detail->line_total = $lineTotal;
                 $detail->tax_amount = $taxAmount;
                 $detail->total_amount = $rowTotal;
-
                 // Aggregate
                 $subTotal += $lineTotal;
                 $totalTax += $taxAmount;
             }
-
             $invoice->sub_total = round($subTotal, 2);
             $invoice->total_tax = round($totalTax, 2);
             $invoice->total = round($subTotal + $totalTax, 2);
         @endphp
-
         <table class="invoice-table">
             <thead>
                 <tr>
@@ -245,8 +233,6 @@
                 @endforeach
             </tbody>
         </table>
-
-
         <div class="totals">
             <table>
                 <tr>
@@ -263,9 +249,7 @@
                 </tr>
             </table>
         </div>
-
         <div style="clear: both;"></div>
-
         <!-- Payment Details -->
         <div class="due-info">
             <p><strong>Due Date:</strong> {{ \Carbon\Carbon::parse($invoice->due_date)->format('d M Y') }}<br>
@@ -277,12 +261,10 @@
                 <strong>Branch CODE:</strong> {{ $invoice->seller->bus_acc_branch_code }}
             </p>
         </div>
-
         @php
             $qrCodePath = public_path('uploads/qr_codes/' . $invoice->qr_code);
             $logoPath = public_path('uploads/fbr-digital-invoicing-logo.png');
         @endphp
-
         <div style="text-align: right;">
             {{-- FBR Logo --}}
             @if (file_exists($logoPath))
@@ -292,7 +274,6 @@
             @else
                 <p>No FBR Logo available</p>
             @endif
-
             {{-- QR Code --}}
             @if (file_exists($qrCodePath))
                 <img src="{{ asset('uploads/qr_codes/' . $invoice->qr_code) }}" alt="QR Code"
@@ -300,7 +281,6 @@
             @else
                 <p>No QR Code available</p>
             @endif
-
             {{-- FBR Invoice Number --}}
             @if (!empty($invoice->fbr_invoice_number))
                 <p style="margin-top: 5px; font-weight: bold;">
@@ -308,9 +288,6 @@
                 </p>
             @endif
         </div>
-
-
-
         <!-- Payment Advice -->
         <div class="payment-advice">
             <h2>PAYMENT ADVICE</h2>

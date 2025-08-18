@@ -2,210 +2,11 @@
 @section('content')
     <div class="container-fluid">
         <h2 class="mb-4 text-center">Add New Client</h2>
-        {{-- <form class="app-form needs-validation" novalidate method="POST" action="{{ route('buyers.store') }}"
-            enctype="multipart/form-data">
-            @csrf
-            <div class="card mb-4">
-                <div class="card-body row g-3">
-                    <div class="col-md-6">
-                        <label class="form-label required">Client Name</label>
-                        <input type="text" name="byr_name" placeholder="Enter a Client Name"
-                            value="{{ old('byr_name') }}" class="form-control" required />
-                        <div class="invalid-feedback">
-                            Please Enter Client Name.
-                        </div>
-                        @error('byr_name')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label required">Client Type</label>
-                        <select name="byr_type" class="form-select @error('byr_type') is-invalid @enderror" required>
-                            <option value="">-- Select Client Type --</option>
-                            <option value="1" {{ old('byr_type') == '1' ? 'selected' : '' }}>Registered</option>
-                            <option value="0" {{ old('byr_type') == '0' ? 'selected' : '' }}>Unregistered</option>
-                        </select>
-                        <div class="invalid-feedback">
-                            Please select a Client Type.
-                        </div>
-                        @error('byr_type')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label" for="byr_id_type">Select Buyer NTN / CNIC</label>
-                        <select name="byr_id_type" id="byr_id_type" class="form-select">
-                            <option value="">
-                                Select NTN/CNIC
-                            </option>
-                            <option value="NTN"
-                                {{ (old('byr_id_type') ?? (isset($buyer) && strlen($buyer->byr_ntn_cnic) == 7 ? 'NTN' : 'CNIC')) == 'NTN' ? 'selected' : '' }}>
-                                NTN
-                            </option>
-                            <option value="CNIC"
-                                {{ (old('byr_id_type') ?? (isset($buyer) && strlen($buyer->byr_ntn_cnic) == 13 ? 'CNIC' : 'NTN')) == 'CNIC' ? 'selected' : '' }}>
-                                CNIC
-                            </option>
-                        </select>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label" for="byr_ntn_cnic">Client NTN / CNIC</label>
-                        <input type="text" name="byr_ntn_cnic" id="byr_ntn_cnic" placeholder="Enter a NTN/CNIC"
-                            value="{{ old('byr_ntn_cnic') }}" class="form-control" />
-                        <div class="invalid-feedback">
-                            Please Enter NTN/CNIC.
-                        </div>
-                        @error('byr_ntn_cnic')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label required">Registration Number</label>
-                        <input type="text" name="byr_reg_num" placeholder="Enter a Registration Number"
-                            value="{{ old('byr_reg_num') }}" class="form-control" required />
-                        <div class="invalid-feedback">
-                            Please Enter Registration Number.
-                        </div>
-                        @error('byr_reg_num')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label required">Contact Number</label>
-                        <input type="text" name="byr_contact_num" placeholder="Enter a Contact Number"
-                            value="{{ old('byr_contact_num') }}" class="form-control" required />
-                        <div class="invalid-feedback">
-                            Please Enter Contact Number.
-                        </div>
-                        @error('byr_contact_num')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label required">Contact Person</label>
-                        <input type="text" name="byr_contact_person" placeholder="Enter a Contact Person"
-                            value="{{ old('byr_contact_person') }}" class="form-control" required />
-                        <div class="invalid-feedback">
-                            Please Enter Contact Person.
-                        </div>
-                        @error('byr_contact_person')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label required">Province</label>
-                        <input type="text" name="byr_province" value="{{ old('byr_province') }}" class="form-control"
-                            placeholder="Enter Province" required>
-                        <div class="invalid-feedback">
-                            Please Enter Province.
-                        </div>
-                        @error('byr_province')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-md-12">
-                        <label class="form-label required">Address</label>
-                        <textarea name="byr_address" value="{{ old('byr_address') }}" class="form-control" placeholder="Enter a Address"
-                            required></textarea>
-                        <div class="invalid-feedback">
-                            Please Enter Address.
-                        </div>
-                        @error('byr_address')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label required">Bank Branch Name</label>
-                        <input type="text" name="byr_acc_branch_name" placeholder="Enter a Branch Name"
-                            value="{{ old('byr_acc_branch_name') }}" class="form-control" required />
-                        <div class="invalid-feedback">
-                            Please Enter Branch Name.
-                        </div>
-                        @error('byr_acc_branch_name')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label required">Bank Branch Code</label>
-                        <input type="text" name="byr_acc_branch_code" placeholder="Enter a Branch Code"
-                            value="{{ old('byr_acc_branch_code') }}" class="form-control" required />
-                        <div class="invalid-feedback">
-                            Please Enter Branch Code.
-                        </div>
-                        @error('byr_acc_branch_code')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label required">Account Title</label>
-                        <input type="text" name="byr_account_title" placeholder="Enter a Account Title"
-                            value="{{ old('byr_account_title') }}" class="form-control" required />
-                        <div class="invalid-feedback">
-                            Please Enter Account Title.
-                        </div>
-                        @error('byr_account_title')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label required">Account Number</label>
-                        <input type="text" name="byr_account_number" placeholder="Enter a Account Number"
-                            value="{{ old('byr_account_number') }}" class="form-control" required />
-                        <div class="invalid-feedback">
-                            Please Enter Account Number.
-                        </div>
-                        @error('byr_account_number')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label required">IBAN</label>
-                        <input type="text" name="byr_IBAN" placeholder="Enter a IBAN" value="{{ old('byr_IBAN') }}"
-                            class="form-control" required />
-                        <div class="invalid-feedback">
-                            Please Enter IBAN.
-                        </div>
-                        @error('byr_IBAN')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label">SWIFT Code</label>
-                        <input type="text" name="byr_swift_code" placeholder="Enter a SWIFT Code"
-                            value="{{ old('byr_swift_code') }}" class="form-control" />
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label required">Client Logo</label>
-                        <input type="file" name="byr_logo" value="{{ old('byr_logo') }}" class="form-control"
-                            required />
-                        @if (isset($buyer->byr_logo))
-                            <img src="{{ asset('storage/buyers/' . $buyer->byr_logo) }}" alt="Logo" width="100"
-                                class="mt-2">
-                        @endif
-                        <div class="invalid-feedback">
-                            Please Enter Client Logo.
-                        </div>
-                        @error('byr_logo')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-md-12 ">
-                        <div class="mb-3 col-2 mt-3 ms-auto text-end">
-                            <button type="submit" role="button" class="btn btn-primary w-100">
-                                Save Client
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form> --}}
         <form class="app-form needs-validation" novalidate action="{{ route('buyers.store') }}" method="POST"
             enctype="multipart/form-data">
             @csrf
-
             <div class="card mb-4">
                 <div class="card-body row g-3">
-
                     {{-- Client Name --}}
                     <div class="col-md-6">
                         <label for="byr_name" class="form-label required">Client Name</label>
@@ -215,7 +16,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
                     {{-- Client Type --}}
                     <div class="col-md-6">
                         <label for="byr_type" class="form-label required">Client Type</label>
@@ -229,7 +29,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
                     {{-- Client ID Type --}}
                     <div class="col-md-4">
                         <label for="byr_id_type" class="form-label">Client ID Type</label>
@@ -243,7 +42,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
                     {{-- Client NTN/CNIC --}}
                     <div class="col-md-4">
                         <label for="byr_ntn_cnic" class="form-label">Client NTN / CNIC</label>
@@ -253,18 +51,37 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
-
-                    {{-- Client Province --}}
                     <div class="col-md-4">
-                        <label for="byr_province " class="form-label required">Province</label>
-                        <input type="text" name="byr_province" id="byr_province" value="{{ old('byr_province') }}"
-                            class="form-control @error('byr_province') is-invalid @enderror" required>
+                        <label for="byr_province" class="form-label required">Province</label>
+                        <select name="byr_province" id="byr_province"
+                            class="form-select @error('byr_province') is-invalid @enderror" required>
+                            <option value="">-- Select Province --</option>
+                            <option value="Punjab"
+                                {{ old('byr_province', $buyer->byr_province ?? '') == 'Punjab' ? 'selected' : '' }}>Punjab
+                            </option>
+                            <option value="Sindh"
+                                {{ old('byr_province', $buyer->byr_province ?? '') == 'Sindh' ? 'selected' : '' }}>Sindh
+                            </option>
+                            <option value="Khyber Pakhtunkhwa"
+                                {{ old('byr_province', $buyer->byr_province ?? '') == 'Khyber Pakhtunkhwa' ? 'selected' : '' }}>
+                                Khyber Pakhtunkhwa</option>
+                            <option value="Balochistan"
+                                {{ old('byr_province', $buyer->byr_province ?? '') == 'Balochistan' ? 'selected' : '' }}>
+                                Balochistan</option>
+                            {{-- <option value="Gilgit-Baltistan"
+                                {{ old('byr_province', $buyer->byr_province ?? '') == 'Gilgit-Baltistan' ? 'selected' : '' }}>
+                                Gilgit-Baltistan</option>
+                            <option value="Islamabad Capital Territory"
+                                {{ old('byr_province', $buyer->byr_province ?? '') == 'Islamabad Capital Territory' ? 'selected' : '' }}>
+                                Islamabad Capital Territory</option>
+                            <option value="Azad Jammu and Kashmir"
+                                {{ old('byr_province', $buyer->byr_province ?? '') == 'Azad Jammu and Kashmir' ? 'selected' : '' }}>
+                                Azad Jammu and Kashmir</option> --}}
+                        </select>
                         @error('byr_province')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
                     {{-- Client Address --}}
                     <div class="col-md-12">
                         <label for="byr_address" class="form-label required">Client Address</label>
@@ -274,8 +91,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
-
                     {{-- Account Title --}}
                     <div class="col-md-4">
                         <label for="byr_account_title" class="form-label required">Account Title</label>
@@ -286,7 +101,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
                     {{-- Account Number --}}
                     <div class="col-md-4">
                         <label for="byr_account_number" class="form-label required">Account Number</label>
@@ -297,7 +111,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
                     {{-- Registration Number --}}
                     <div class="col-md-4">
                         <label for="byr_reg_num" class="form-label required">Registration Number</label>
@@ -307,7 +120,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
                     {{-- Contact Number --}}
                     <div class="col-md-4">
                         <label for="byr_contact_num" class="form-label required">Contact Number</label>
@@ -318,7 +130,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
                     {{-- Contact Person --}}
                     <div class="col-md-4">
                         <label for="byr_contact_person" class="form-label required">Contact Person</label>
@@ -329,7 +140,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
                     {{-- IBAN --}}
                     <div class="col-md-4">
                         <label for="byr_IBAN" class="form-label required">IBAN</label>
@@ -339,7 +149,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
                     {{-- Branch Name --}}
                     <div class="col-md-4">
                         <label for="byr_acc_branch_name" class="form-label required">Branch Name</label>
@@ -350,7 +159,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
                     {{-- Branch Code --}}
                     <div class="col-md-4">
                         <label for="byr_acc_branch_code" class="form-label required">Branch Code</label>
@@ -371,7 +179,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
                     {{-- Buyer Logo --}}
                     <div class="col-md-4">
                         <label for="byr_logo" class="form-label required">Buyer Logo</label>
@@ -382,7 +189,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
                     {{-- Submit Button --}}
                     <div class="col-md-12 ">
                         <div class="mb-3 col-2 mt-3 ms-auto text-end">
@@ -391,11 +197,9 @@
                             </button>
                         </div>
                     </div>
-
                 </div>
             </div>
         </form>
-
     </div>
     @push('scripts')
         <script nonce="{{ $nonce }}">

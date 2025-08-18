@@ -25,9 +25,40 @@ class Buyer extends Model
         'byr_swift_code',
         'byr_acc_branch_name',
         'byr_acc_branch_code',
+        'hash',
     ];
     public function invoices()
     {
         return $this->hasMany(\App\Models\Invoice::class, 'buyer_id', 'byr_id');
+    }
+    // 🔑 Hash generation
+    protected static function booted()
+    {
+        static::creating(function ($buyer) {
+            $buyer->hash = $buyer->generateHash();
+        });
+        static::updating(function ($buyer) {
+            $buyer->hash = $buyer->generateHash();
+        });
+    }
+    // ✅ Function to generate hash based on critical fields
+    public function generateHash()
+    {
+        return md5(
+            $this->byr_name .
+                $this->byr_type .
+                $this->byr_ntn_cnic .
+                $this->byr_address .
+                $this->byr_province .
+                $this->byr_account_title .
+                $this->byr_account_number .
+                $this->byr_reg_num .
+                $this->byr_contact_num .
+                $this->byr_contact_person .
+                $this->byr_IBAN .
+                $this->byr_swift_code .
+                $this->byr_acc_branch_name .
+                $this->byr_acc_branch_code
+        );
     }
 }

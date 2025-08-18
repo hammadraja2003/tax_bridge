@@ -13,12 +13,10 @@
     <div class="container-fluid">
         <form class="app-form needs-validation" id="invoiceForm" method="POST"
             action="{{ $isEdit ? route('invoice.update', $invoice->invoice_id) : route('create-new-invoice') }}">
-
             @csrf
             @if ($isEdit)
                 @method('PUT')
             @endif
-
             <input type="hidden" name="invoice_status" id="invoice_status" value="1">
             <!-- Invoice Info -->
             <div class="card mb-4">
@@ -105,7 +103,6 @@
                             except <strong>Registration Type</strong> are optional.
                         </div>
                     </div>
-
                     <div class="col-md-4">
                         <label class="form-label required">Select Client</label>
                         <select id="byr_id" class="form-select" name="byr_id">
@@ -121,7 +118,6 @@
                             <i class="spinner-border spinner-border-sm text-primary" role="status" aria-hidden="true"></i>
                         </span>
                     </div>
-
                     <div class="col-md-4">
                         <label class="form-label">NTN / CNIC</label>
                         <input type="text" name="buyerNTNCNIC" class="form-control optional-field" readonly />
@@ -130,12 +126,10 @@
                         <label class="form-label">Business Name</label>
                         <input type="text" name="buyerBusinessName" class="form-control optional-field" readonly />
                     </div>
-
                     <div class="col-md-4">
                         <label class="form-label">Province</label>
                         <input type="text" name="buyerProvince" class="form-control optional-field" readonly />
                     </div>
-
                     <div class="col-md-4">
                         <label class="form-label required">Registration Type</label>
                         <select name="buyerRegistrationType" id="buyerRegistrationType" class="form-select" required
@@ -145,7 +139,6 @@
                             <option value="Unregistered">Unregistered</option>
                         </select>
                     </div>
-
                     <div class="col-md-12">
                         <label class="form-label">Address</label>
                         <textarea name="buyerAddress" class="form-control optional-field" readonly></textarea>
@@ -165,18 +158,14 @@
             <div class="card mb-4">
                 <div class="card-header">Invoice Summary</div>
                 <div class="card-body row">
-
                     <!-- Left Side: Notes -->
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="notes" class="form-label">Notes</label>
                             <textarea id="notes" name="notes" rows="12" class="form-control"
                                 placeholder="Additional comments or special instructions...">{{ $isEdit ? $invoice->notes : '' }}</textarea>
-
                         </div>
                     </div>
-
-
                     <!-- Right Side: Summary Fields with Label + Input in Same Row -->
                     <div class="col-md-6">
                         @php
@@ -193,12 +182,9 @@
                                 'discount_amount' => 'Discount Amount',
                                 'payment_status' => 'Payment Status',
                             ];
-
                             $requiredFields = ['totalAmountExcludingTax', 'totalAmountIncludingTax', 'totalSalesTax'];
-
                             $paymentStatusOptions = ['Pending', 'Partially Paid', 'Fully Paid'];
                         @endphp
-
                         @foreach ($fields as $id => $label)
                             @php
                                 $isRequired = in_array($id, $requiredFields);
@@ -304,7 +290,6 @@
                     <input type="number" min="0" step="0.01" name="items[][totalValues]"
                         class="form-control" required />
                 </div>
-
                 <div class="col-md-4">
                     <label class="form-label">Retail Price <i class="bi bi-info-circle" data-bs-toggle="tooltip"
                             title="If the item is price-controlled (e.g., FMCG), the notified retail price goes here. For services or custom billing, leave as 0."></i></label>
@@ -378,10 +363,8 @@
         (function() {
             // ===== Buyer Selection Logic =====
             window.buyerId = "{{ $invoice->buyer_id ?? '' }}";
-
             const buyerSelect = document.getElementById("byr_id");
             const loader = document.getElementById("buyerLoader");
-
             if (buyerSelect) {
                 buyerSelect.addEventListener("change", function(e) {
                     // Only run when user manually changes dropdown
@@ -389,14 +372,11 @@
                         console.log("⛔ Ignored programmatic buyer change");
                         return;
                     }
-
                     if (window.formIsSubmitting || window.skipBuyerFetch) {
                         console.log("⛔ Blocked buyer fetch during submit or reload");
                         return;
                     }
-
                     const id = this.value;
-
                     // If no buyer selected, clear fields
                     if (!id) {
                         ["buyerNTNCNIC", "buyerBusinessName", "buyerAddress", "buyerProvince",
@@ -408,10 +388,8 @@
                         });
                         return;
                     }
-
                     // Show loader
                     loader?.classList.remove("d-none");
-
                     // Fetch buyer data with jQuery AJAX
                     $.ajax({
                         url: `/buyers/fetch/${id}`,
@@ -435,7 +413,6 @@
                     });
                 });
             }
-
             // ===== Scenario ID to Sale Type Auto-fill =====
             const scenarioSelect = document.getElementById('scenarioId');
             if (scenarioSelect) {
@@ -450,18 +427,14 @@
                     }
                 });
             }
-
             // ===== Invoice Date → Due Date Restriction =====
             const invoiceDateInput = document.getElementById('invoiceDate');
             const dueDateInput = document.getElementById('dueDate');
-
             if (invoiceDateInput && dueDateInput) {
                 invoiceDateInput.addEventListener('change', function() {
                     let invoiceDate = this.value;
-
                     // Set minimum due date
                     dueDateInput.min = invoiceDate;
-
                     // If current due date is earlier than invoice date, reset it
                     if (dueDateInput.value && dueDateInput.value < invoiceDate) {
                         dueDateInput.value = invoiceDate;
@@ -470,6 +443,5 @@
             }
         })();
     </script>
-
     <script src="{{ asset('assets/js/customInvoice.js') }}"></script>
 @endsection

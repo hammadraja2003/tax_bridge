@@ -8,10 +8,8 @@
         @endif
         <form class="app-form needs-validation" method="POST" action="{{ route('items.update', $item->item_id) }}">
             @csrf
-
             <div class="card mb-4">
                 <div class="card-body row g-3">
-
                     {{-- Item Description --}}
                     <div class="col-md-6">
                         <label class="form-label required">Item Description</label>
@@ -22,7 +20,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
                     {{-- HS Code --}}
                     <div class="col-md-6">
                         <label class="form-label required">
@@ -36,7 +33,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
                     {{-- Price --}}
                     <div class="col-md-6">
                         <label class="form-label required">Price</label>
@@ -47,7 +43,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
                     {{-- Tax Rate --}}
                     <div class="col-md-6">
                         <label class="form-label required">Tax Rate in % (e.g. 18)</label>
@@ -57,7 +52,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
                     {{-- Unit of Measure --}}
                     <div class="col-md-6">
                         <label class="form-label required">
@@ -71,7 +65,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
                     {{-- Global Error (if needed) --}}
                     @if ($errors->has('error'))
                         <div class="col-12">
@@ -80,15 +73,12 @@
                             </div>
                         </div>
                     @endif
-
                     {{-- Submit Button --}}
                     <div class="text-end">
                         <button type="submit" class="btn btn-primary">Update Item</button>
                     </div>
-
                 </div>
             </div>
         </form>
-
     </div>
 @endsection

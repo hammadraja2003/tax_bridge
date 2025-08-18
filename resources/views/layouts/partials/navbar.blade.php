@@ -1,7 +1,7 @@
 <nav class="dark-sidebar">
     <div class="app-logo">
         <a class="logo d-inline-block" href="#">
-            <img src="{{ asset('assets/images/logo/secureism_logo_admin.png') }}" alt="#" class="dark-logo">
+            <img src="{{ asset('assets/images/logo/secureism_logo.svg') }}" alt="#" class="dark-logo">
             <img src="{{ asset('assets/images/logo/1.png') }}" alt="#" class="light-logo">
         </a>
         <span class="bg-light-light toggle-semi-nav">
@@ -37,7 +37,6 @@
                         <a class="{{ $isCompanyeRoute ? 'activeTab' : '' }}"
                             href="{{ route('company.configuration') }}">Configuration</a>
                     </li>
-
                     <li>
                         <a class="{{ $isBuyersRoute ? 'activeTab' : '' }}"
                             href="{{ route('buyers.index') }}">Clients</a>
@@ -56,7 +55,6 @@
                             Import Invoices
                         </a>
                     </li> -->
-
                 </ul>
             </li>
             <!-- Hidden logout form -->
@@ -64,13 +62,10 @@
                 <form id="logout-form" action="{{ route('logout') }}" method="POST">
                     @csrf
                 </form>
-
                 <a href="#" id="logout-link">
                     <i class="ti ti-logout pe-1 f-s-20"></i> Logout
                 </a>
             </li>
-
-
         </ul>
     </div>
     <div class="menu-navs">

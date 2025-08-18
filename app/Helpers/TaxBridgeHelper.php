@@ -29,11 +29,9 @@ if (!function_exists('logActivity')) {
         $userName = $user ? $user->name : 'guest';
         $ip = Request::ip();
         $deviceId = Request::header('device-id') ?? 'unknown';
-
         // 🔹 Normalize JSON for consistent hashing
         $dataJson = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
         $newHash = hash('sha256', $dataJson);
-
         // On update, compare hash with old hash
         $hashChanged = ($action !== 'update'); // default: add/delete = true
         $oldHash = null;
@@ -43,13 +41,11 @@ if (!function_exists('logActivity')) {
                 ->where('table_name', $tableName)
                 ->orderBy('created_at', 'desc')
                 ->first();
-
             if ($oldLog) {
                 $oldHash = $oldLog->data_hash;
                 $hashChanged = $oldHash !== $newHash;
             }
         }
-
         // Save log entry
         DB::table('activity_logs')->insert([
             'user_id' => $userId,
@@ -65,7 +61,6 @@ if (!function_exists('logActivity')) {
             'data' => $dataJson,
             'created_at' => now(),
         ]);
-
         return true;
     }
 }

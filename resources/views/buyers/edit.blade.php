@@ -6,10 +6,8 @@
         <form class="app-form needs-validation" novalidate method="POST" action="{{ route('buyers.update', $buyer->byr_id) }}"
             enctype="multipart/form-data">
             @csrf
-
             <div class="card mb-4">
                 <div class="card-body row g-3">
-
                     {{-- Client Name --}}
                     <div class="col-md-6">
                         <label class="form-label required">Client Name</label>
@@ -20,7 +18,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
                     {{-- Client Type --}}
                     <div class="col-md-6">
                         <label class="form-label required">Client Type</label>
@@ -36,7 +33,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
                     {{-- Buyer NTN / CNIC --}}
                     <div class="col-md-4">
                         <label class="form-label">Select Client NTN / CNIC</label>
@@ -56,8 +52,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
-
                     <div class="col-md-4">
                         <label class="form-label">Client NTN / CNIC</label>
                         <input type="text" name="byr_ntn_cnic" id="byr_ntn_cnic" placeholder="Enter a NTN/CNIC"
@@ -67,7 +61,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
                     <div class="col-md-4">
                         <label class="form-label required">Registration Number</label>
                         <input type="text" name="byr_reg_num" placeholder="Enter a Registration Number"
@@ -77,7 +70,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
                     {{-- Contact --}}
                     <div class="col-md-4">
                         <label class="form-label required">Contact Number</label>
@@ -88,7 +80,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
                     <div class="col-md-4">
                         <label class="form-label required">Contact Person</label>
                         <input type="text" name="byr_contact_person" placeholder="Enter a Contact Person"
@@ -99,17 +90,30 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
                     <div class="col-md-4">
-                        <label class="form-label required">Province</label>
-                        <input type="text" name="byr_province" class="form-control" placeholder="Enter Province"
-                            value="{{ old('byr_province', $buyer->byr_province) }}" required>
-                        <div class="invalid-feedback">Please enter Province.</div>
+                        <label for="byr_province" class="form-label required">Province</label>
+                        <select name="byr_province" id="byr_province"
+                            class="form-select @error('byr_province') is-invalid @enderror" required>
+                            <option value="">-- Select Province --</option>
+                            <option value="Punjab"
+                                {{ old('byr_province', $buyer->byr_province) == 'Punjab' ? 'selected' : '' }}>Punjab
+                            </option>
+                            <option value="Sindh"
+                                {{ old('byr_province', $buyer->byr_province) == 'Sindh' ? 'selected' : '' }}>Sindh</option>
+                            <option value="Khyber Pakhtunkhwa"
+                                {{ old('byr_province', $buyer->byr_province) == 'Khyber Pakhtunkhwa' ? 'selected' : '' }}>
+                                Khyber Pakhtunkhwa</option>
+                            <option value="Balochistan"
+                                {{ old('byr_province', $buyer->byr_province) == 'Balochistan' ? 'selected' : '' }}>
+                                Balochistan</option>
+                            {{-- <option value="Gilgit-Baltistan" {{ old('byr_province', $buyer->byr_province) == 'Gilgit-Baltistan' ? 'selected' : '' }}>Gilgit-Baltistan</option>
+        <option value="Islamabad Capital Territory" {{ old('byr_province', $buyer->byr_province) == 'Islamabad Capital Territory' ? 'selected' : '' }}>Islamabad Capital Territory</option>
+        <option value="Azad Jammu and Kashmir" {{ old('byr_province', $buyer->byr_province) == 'Azad Jammu and Kashmir' ? 'selected' : '' }}>Azad Jammu and Kashmir</option> --}}
+                        </select>
                         @error('byr_province')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
                     {{-- Address --}}
                     <div class="col-md-12">
                         <label class="form-label required">Address</label>
@@ -119,7 +123,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
                     {{-- Bank Details --}}
                     <div class="col-md-6">
                         <label class="form-label required">Bank Branch Name</label>
@@ -131,7 +134,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
                     <div class="col-md-6">
                         <label class="form-label required">Bank Branch Code</label>
                         <input type="text" name="byr_acc_branch_code" placeholder="Enter a Branch Code"
@@ -142,7 +144,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
                     <div class="col-md-4">
                         <label class="form-label required">Account Number</label>
                         <input type="text" name="byr_account_title" placeholder="Enter a Account Number"
@@ -153,7 +154,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
                     <div class="col-md-4">
                         <label class="form-label required">Account Title </label>
                         <input type="text" name="byr_account_number" placeholder="Enter a Account Title"
@@ -164,7 +164,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
                     <div class="col-md-4">
                         <label class="form-label required">IBAN</label>
                         <input type="text" name="byr_IBAN" placeholder="Enter a IBAN" class="form-control"
@@ -174,13 +173,11 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
                     <div class="col-md-4">
                         <label class="form-label">SWIFT Code</label>
                         <input type="text" name="byr_swift_code" placeholder="Enter a SWIFT Code"
                             value="{{ old('byr_swift_code', $buyer->byr_swift_code) }}" class="form-control" />
                     </div>
-
                     {{-- Logo --}}
                     <div class="col-md-6">
                         <label class="form-label required">Client Logo</label>
@@ -195,7 +192,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
                     {{-- Submit --}}
                     <div class="col-md-12">
                         <div class="mb-3 col-2 mt-3 ms-auto text-end">
@@ -204,11 +200,9 @@
                             </button>
                         </div>
                     </div>
-
                 </div>
             </div>
         </form>
-
     </div>
     @push('scripts')
         <script nonce="{{ $nonce }}">
@@ -220,15 +214,12 @@
                 function applyBuyerValidation() {
                     const val = buyerInput.value.trim();
                     const isNTN = buyerTypeSelect.value === 'NTN';
-
                     const patternNTN = /^[0-9]{7}$/;
                     const patternCNIC = /^[0-9]{13}$/;
-
                     // Only clear if value doesn't match the new pattern
                     if ((isNTN && !patternNTN.test(val)) || (!isNTN && !patternCNIC.test(val))) {
                         buyerInput.value = "";
                     }
-
                     if (isNTN) {
                         buyerInput.setAttribute('pattern', '[0-9]{7}');
                         buyerInput.setAttribute('maxlength', '7');
@@ -241,12 +232,10 @@
                         buyerInput.placeholder = 'Enter 13-digit CNIC';
                     }
                 }
-
                 buyerTypeSelect.addEventListener('change', applyBuyerValidation);
                 applyBuyerValidation(); // Initialize on page load
             });
         </script>
-
         <script nonce="{{ $nonce }}">
             document.addEventListener('DOMContentLoaded', function() {
                 const clientTypeSelect = document.querySelector('select[name="byr_type"]');

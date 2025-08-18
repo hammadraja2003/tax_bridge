@@ -11,14 +11,11 @@ use App\Models\Buyer;
 use App\Models\BusinessConfiguration;
 use App\Models\Item;
 use Illuminate\Support\Facades\Crypt;
-
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
 use App\Services\FbrInvoiceService;
 use Illuminate\Support\Facades\Log;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
-
-
 
 class InvoiceController extends Controller
 {
@@ -29,24 +26,58 @@ class InvoiceController extends Controller
         $items = Item::all();
         return view('invoices.create', compact('seller', 'buyers', 'items'));
     }
+    // public function index(Request $request)
+    // {
+    //     $query = Invoice::with(['buyer', 'seller', 'details.item']);
+    //     // Filter by invoice type
+    //     if ($request->filled('invoice_type')) {
+    //         $query->where('invoice_type', $request->invoice_type);
+    //     }
+    //     // Filter by date range
+    //     if ($request->filled('date_from') && $request->filled('date_to')) {
+    //         $query->whereBetween('invoice_date', [$request->date_from, $request->date_to]);
+    //     }
+    //     // Filter by fbr status
+    //     if ($request->has('is_posted_to_fbr') && $request->is_posted_to_fbr !== '') {
+    //         $query->where('is_posted_to_fbr', $request->is_posted_to_fbr);
+    //     }
+    //     $invoices = $query->orderByDesc('invoice_date')->get();
+    //     return view('invoices.index', compact('invoices'));
+    // }
     public function index(Request $request)
     {
         $query = Invoice::with(['buyer', 'seller', 'details.item']);
-
-        // Filter by invoice type
+        // 🔎 Filter by invoice type
         if ($request->filled('invoice_type')) {
-            $query->where('invoice_type', $request->invoice_type);
+            $query->where('invoice_type', trim($request->invoice_type));
         }
-
-        // Filter by date range
+        // 📅 Filter by date range
         if ($request->filled('date_from') && $request->filled('date_to')) {
-            $query->whereBetween('invoice_date', [$request->date_from, $request->date_to]);
+            $query->whereBetween('invoice_date', [
+                $request->date_from,
+                $request->date_to
+            ]);
+        } elseif ($request->filled('date_from')) {
+            $query->whereDate('invoice_date', '>=', $request->date_from);
+        } elseif ($request->filled('date_to')) {
+            $query->whereDate('invoice_date', '<=', $request->date_to);
         }
-        // Filter by fbr status
+        // ✅ Filter by FBR posting status
         if ($request->has('is_posted_to_fbr') && $request->is_posted_to_fbr !== '') {
             $query->where('is_posted_to_fbr', $request->is_posted_to_fbr);
         }
+        // Fetch with latest invoice_date
         $invoices = $query->orderByDesc('invoice_date')->get();
+        foreach ($invoices as $invoice) {
+            // Header tampering
+            $invoice->tampered = $invoice->isTampered();
+            // Details tampering
+            $tamperedLines = false;
+            foreach ($invoice->details as $detail) {
+                $recalculated = $detail->generateHash();
+            }
+            $invoice->tampered_lines = $tamperedLines;
+        }
         return view('invoices.index', compact('invoices'));
     }
     public function filter(Request $request)
@@ -93,14 +124,12 @@ class InvoiceController extends Controller
             'items',
             'invoice_status'
         ]);
-
         // Filter out invalid items
         $filteredItems = array_filter($data['items'] ?? [], function ($item) {
             return isset($item['item_id'], $item['quantity'], $item['totalValues']);
         });
         $data['items'] = array_values($filteredItems);
         $request->merge(['items' => $data['items']]);
-
         // Validation
         $request->validate([
             'invoiceType' => 'required|string',
@@ -119,16 +148,13 @@ class InvoiceController extends Controller
             'items.*.rate' => 'required|string',
             'items.*.uoM' => 'required|string',
         ]);
-
         DB::beginTransaction();
         try {
             $isDraft = $data['invoice_status'] == 1;
             $invoice = $id ? Invoice::findOrFail($id) : new Invoice();
-
             if ($id && $invoice->is_posted_to_fbr) {
                 return back()->with('error', 'You cannot update an invoice that is already posted to FBR.');
             }
-
             // Save main invoice
             $invoice->fill([
                 'invoice_type' => $data['invoiceType'],
@@ -152,13 +178,11 @@ class InvoiceController extends Controller
                 'notes' => $data['notes'] ?? null,
             ]);
             $invoice->save();
-
             if (!$isDraft && !$invoice->invoice_no) {
                 $invoice->update([
                     'invoice_no' => 'INV-' . str_pad($invoice->invoice_id, 6, '0', STR_PAD_LEFT)
                 ]);
             }
-
             // Save invoice items
             if ($id) {
                 InvoiceDetail::where('invoice_id', $invoice->invoice_id)->delete();
@@ -182,7 +206,6 @@ class InvoiceController extends Controller
                     'sro_item_serial_no' => $item['sroItemSerialNo'] ?? '',
                 ]);
             }
-
             // FBR posting if not draft
             if (!$isDraft) {
                 $fbrPayload = [
@@ -221,18 +244,20 @@ class InvoiceController extends Controller
                         ];
                     }, $data['items']),
                 ];
-
-
                 $fbrService = new FbrInvoiceService(env('FBR_ENV', 'sandbox'));
                 // Step 1: Validate
                 $validation = $fbrService->validateInvoice($fbrPayload);
                 if (!$validation['success']) {
-                    throw new \Exception('FBR Validation Failed: ' . $validation['error']);
+                    $errorMessage = $validation['error']
+                        ?? ($validation['data']['validationResponse']['error'] ?? null);
+                    // If still empty, check invoiceStatuses errors
+                    if (!$errorMessage && !empty($validation['invoiceStatuses'][0]['error'])) {
+                        $errorMessage = $validation['invoiceStatuses'][0]['error'];
+                    }
+                    throw new \Exception('FBR Validation Failed: ' . ($errorMessage ?: 'Unknown validation error'));
                 }
-
                 // Step 2: Post
                 $posting = $fbrService->postInvoice($fbrPayload);
-
                 if ($posting['success']) {
                     $invoice->update([
                         'fbr_invoice_number' => $posting['data']['invoiceNumber'] ?? null,
@@ -252,7 +277,6 @@ class InvoiceController extends Controller
                     $qrData = $posting['data']['invoiceNumber']; // Or full JSON if FBR requires
                     $qrFileName = 'qr_' . $invoice->invoice_no . '_' . time() . '.png';
                     $qrPath = public_path('uploads/qr_codes/' . $qrFileName);
-
                     // Make sure the folder exists
                     if (!file_exists(public_path('uploads/qr_codes'))) {
                         mkdir(public_path('uploads/qr_codes'), 0755, true);
@@ -270,7 +294,6 @@ class InvoiceController extends Controller
                     throw new \Exception('FBR Posting Failed: ' . $posting['error']);
                 }
             }
-
             DB::commit();
             return redirect()->route('invoices.index')->with('message', $id ? 'Invoice updated successfully.' : 'Invoice created and posted to FBR.');
         } catch (\Exception $e) {
@@ -285,7 +308,6 @@ class InvoiceController extends Controller
         $buyers = Buyer::all();
         $items = Item::all();
         $seller = BusinessConfiguration::first();
-
         return view('invoices.create', compact('invoice', 'buyers', 'items', 'seller'));
     }
     public function print($id)
@@ -296,7 +318,6 @@ class InvoiceController extends Controller
             'seller',
             'details.item'
         ])->findOrFail($invoiceId);
-
         return view('invoices.print', compact('invoice'));
     }
     // public function showForm()
@@ -308,21 +329,16 @@ class InvoiceController extends Controller
     //     $request->validate([
     //         'excel_file' => 'required|file|mimes:xlsx,xls',
     //     ]);
-
     //     $rows = Excel::toCollection(null, $request->file('excel_file'))->first();
-
     //     if ($rows->isEmpty()) {
     //         return back()->with('error', 'Excel file is empty.');
     //     }
-
     //     // Group by invoiceRefNo (one invoice, many items)
     //     $grouped = $rows->groupBy('invoiceRefNo');
     //     $successCount = 0;
     //     $failures = [];
-
     //     foreach ($grouped as $invoiceRef => $invoiceRows) {
     //         $first = $invoiceRows->first();
-
     //         // Validate required invoice-level fields
     //         $validator = Validator::make($first->toArray(), [
     //             'invoiceType' => 'required',
@@ -333,12 +349,10 @@ class InvoiceController extends Controller
     //             'sellerAddress' => 'required',
     //             'scenarioId' => 'required',
     //         ]);
-
     //         if ($validator->fails()) {
     //             $failures[] = "InvoiceRef: {$invoiceRef} validation failed: " . implode(", ", $validator->errors()->all());
     //             continue;
     //         }
-
     //         $invoice = FbrInvoice::create([
     //             'invoice_ref_no' => $invoiceRef,
     //             'invoice_type' => $first['invoiceType'],
@@ -355,7 +369,6 @@ class InvoiceController extends Controller
     //             'scenario_id' => $first['scenarioId'],
     //             'status' => 'draft',
     //         ]);
-
     //         foreach ($invoiceRows as $row) {
     //             FbrInvoiceItem::create([
     //                 'fbr_invoice_id' => $invoice->id,
@@ -378,15 +391,12 @@ class InvoiceController extends Controller
     //                 'sro_item_serial_no' => $row['sroItemSerialNo'],
     //             ]);
     //         }
-
     //         // Optional: Send to FBR here
     //         $sendNow = true; // Set to false if saving drafts only
     //         if ($sendNow) {
     //             $payload = $invoice->toFbrPayload();
-
     //             $response = Http::withToken('YOUR_ACCESS_TOKEN')
     //                 ->post('https://sandbox.fbr.gov.pk/api/invoice', $payload);
-
     //             if ($response->successful()) {
     //                 $invoice->update(['status' => 'sent']);
     //                 $successCount++;
@@ -396,11 +406,9 @@ class InvoiceController extends Controller
     //             }
     //         }
     //     }
-
     //     if ($failures) {
     //         return back()->with('error', "Sent: $successCount, Failed: " . count($failures) . "<br>" . implode("<br>", $failures));
     //     }
-
     //     return back()->with('success', "$successCount invoice(s) processed and sent.");
     // }
 }

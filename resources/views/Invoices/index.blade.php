@@ -40,14 +40,12 @@
                                         </option>
                                     </select>
                                 </div>
-
                                 {{-- Date From --}}
                                 <div class="col-md-3">
                                     <label for="date_from" class="form-label">Date From</label>
                                     <input type="date" name="date_from" id="date_from" class="form-control"
                                         value="{{ request('date_from') }}">
                                 </div>
-
                                 {{-- Date To --}}
                                 <div class="col-md-3">
                                     <label for="date_to" class="form-label">Date To</label>
@@ -57,7 +55,6 @@
                                 <div class="col-2 d-flex justify-content-end gap-2">
                                     {{-- Filter Button --}}
                                     <button type="submit" class="btn btn-primary">Filter</button>
-
                                     {{-- Clear Filter Button (only if any filter is applied) --}}
                                     @if (request()->filled('invoice_type') ||
                                             request()->filled('date_from') ||
@@ -99,12 +96,13 @@
                                             <th>Total Sales Tax</th>
                                             <th>Total Further Tax</th>
                                             <th>Total Extra Tax</th>
+                                            <th>Tempered</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody class="list" id="t-data">
                                         @forelse($invoices as $inv)
-                                            <tr>
+                                            <tr @if ($inv->tampered) class="table-warning" @endif>
                                                 <td>{{ \Carbon\Carbon::parse($inv->invoice_date)->format('d M Y') }}</td>
                                                 <td class="employee">{{ $inv->invoice_no }}</td>
                                                 <td class="contact">
@@ -137,6 +135,26 @@
                                                 <td>{{ number_format($inv->totalfurtherTax, 2) }}</td>
                                                 <td>{{ number_format($inv->totalextraTax, 2) }}</td>
                                                 <td>
+                                                    @if ($inv->tampered)
+                                                        <span class="badge bg-danger">Tampered</span>
+                                                    @else
+                                                        <span class="badge bg-success">OK</span>
+                                                    @endif
+                                                    @if ($inv->tampered_lines)
+                                                        <details>
+                                                            <summary class="text-danger">Tampered Lines</summary>
+                                                            <ul class="mb-0">
+                                                                @foreach ($inv->details as $d)
+                                                                    @if ($d->tampered)
+                                                                        <li>Detail #{{ $d->invoice_detail_id }} (Item:
+                                                                            {{ $d->item_id }})</li>
+                                                                    @endif
+                                                                @endforeach
+                                                            </ul>
+                                                        </details>
+                                                    @endif
+                                                </td>
+                                                <td>
                                                     @if ($inv->invoice_status === 1)
                                                         <a href="{{ route('invoices.edit', Crypt::encryptString($inv->invoice_id)) }}"
                                                             class="btn btn-xs btn-outline-warning" data-bs-toggle="tooltip"
@@ -147,7 +165,8 @@
                                                     <button type="button" class="btn btn-xs btn-outline-primary"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#itemsModal{{ $inv->invoice_id }}"
-                                                        data-bs-toggle="tooltip" data-bs-placement="top" title="View Item">
+                                                        data-bs-toggle="tooltip" data-bs-placement="top"
+                                                        title="View Item">
                                                         <i class="fa-solid fa-eye fa-fw"></i>
                                                     </button>
                                                     <a href="{{ route('xero.print', Crypt::encryptString($inv->invoice_id)) }}"
@@ -160,7 +179,7 @@
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="10" class="text-center">No Invoice found.</td>
+                                                <td colspan="15" class="text-center">No Invoice found.</td>
                                             </tr>
                                         @endforelse
                                     </tbody>
@@ -174,7 +193,6 @@
                                     <ul class="pagination mb-2"></ul>
                                 </div>
                             </div>
-
                             @foreach ($invoices as $invoice)
                                 <div class="modal fade" id="itemsModal{{ $invoice->invoice_id }}" tabindex="-1"
                                     aria-labelledby="itemsModalLabel{{ $invoice->invoice_id }}" aria-hidden="true">
@@ -230,7 +248,6 @@
                                                                 @endforeach
                                                             </tbody>
                                                         </table>
-
                                                     </div>
                                                 @else
                                                     <p>No items found for this invoice.</p>
@@ -240,7 +257,6 @@
                                     </div>
                                 </div>
                             @endforeach
-
                         </div>
                     </div>
                 </div>

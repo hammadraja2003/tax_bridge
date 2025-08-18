@@ -32,7 +32,6 @@ class Item extends Model
                     $item->item_uom
             );
         });
-
         static::updating(function ($item) {
             $item->hash = md5(
                 $item->item_hs_code .

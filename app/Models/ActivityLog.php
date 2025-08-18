@@ -7,14 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class ActivityLog extends Model
 {
     protected $table = 'activity_logs';
-
     protected $casts = [
         'data' => 'array', // ensures $log->data is automatically decoded from JSON
     ];
-
     // This will allow us to access $log->diff in Blade
     protected $appends = ['diff'];
-
     public function getDiffAttribute()
     {
         if ($this->action === 'update' && isset($this->data['old']) && isset($this->data['new'])) {
@@ -30,7 +27,6 @@ class ActivityLog extends Model
             }
             return $diff;
         }
-
         return null;
     }
 }

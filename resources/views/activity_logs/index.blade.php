@@ -52,7 +52,6 @@
                                                             <pre class="json-content mb-0 d-none">{{ json_encode($log->data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre>
                                                         </div>
                                                     @endif
-
                                                     @if ($log->hash_changed)
                                                         <div class="text-danger fw-bold mt-1">
                                                             ⚠ Data hash mismatch — possible tampering detected!
@@ -62,34 +61,30 @@
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="7" class="text-center">No activity found</td>
+                                                <td colspan="8" class="text-center">No activity found</td>
                                             </tr>
                                         @endforelse
                                     </tbody>
                                 </table>
-
                                 <div class="mt-3">
                                     {{ $logs->links() }}
                                 </div>
-
-
                                 {{-- Pagination --}}
                                 <div class="mt-3">
                                     {{ $logs->links() }}
                                 </div>
-
                             </div>
                             <div class="d-flex justify-content-between align-items-center px-3 py-2 small text-muted">
                                 <div id="table-count-info">
-                                    Showing 0 to 0 of 0 entries
+                                    Showing {{ $logs->firstItem() ?? 0 }} to {{ $logs->lastItem() ?? 0 }} of
+                                    {{ $logs->total() }} entries
                                 </div>
                                 <div class="list-pagination">
-                                    <ul class="pagination mb-2"></ul>
+                                    {{ $logs->links() }}
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -112,5 +107,4 @@
             });
         </script>
     @endpush
-
 @endsection

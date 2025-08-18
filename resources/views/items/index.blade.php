@@ -34,7 +34,7 @@
                                         </tr>
                                     </thead>
                                     <tbody class="list" id="t-data">
-                                        @foreach ($items as $item)
+                                        @forelse  ($items as $item)
                                             <tr @if ($item->tampered) class="table-warning" @endif>
                                                 <td class="employee">{{ $item->item_description }}</td>
                                                 <td>{{ $item->item_hs_code }}</td>
@@ -64,21 +64,25 @@
                                                     </form>
                                                 </td>
                                             </tr>
-                                        @endforeach
+                                        @empty
+                                            <tr>
+                                                <td colspan="7" class="text-center">No Items found.</td>
+                                            </tr>
+                                        @endforelse
                                     </tbody>
                                 </table>
                             </div>
                             <div class="d-flex justify-content-between align-items-center px-3 py-2 small text-muted">
                                 <div id="table-count-info">
-                                    Showing 0 to 0 of 0 entries
+                                    Showing {{ $items->firstItem() ?? 0 }} to {{ $items->lastItem() ?? 0 }} of
+                                    {{ $items->total() }} entries
                                 </div>
                                 <div class="list-pagination">
-                                    <ul class="pagination mb-2"></ul>
+                                    {{ $items->links() }} {{-- Laravel built-in pagination UI --}}
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

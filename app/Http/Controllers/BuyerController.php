@@ -10,27 +10,15 @@ use Illuminate\Support\Facades\DB;
 
 class BuyerController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $query = Buyer::query();
-        // Filter by buyer type
-        if ($request->has('byr_type') && !empty($request->byr_type)) {
-            $query->where('byr_type', $request->byr_type);
+        $buyers = Buyer::latest()->paginate(10);
+        foreach ($buyers as $buyer) {
+            $calculatedHash = $buyer->generateHash();
+            $buyer->tampered = $calculatedHash !== $buyer->hash;
         }
-        // Text search on multiple columns
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('byr_name', 'like', "%$search%")
-                    ->orWhere('byr_ntn_cnic', 'like', "%$search%")
-                    ->orWhere('byr_address', 'like', "%$search%");
-            });
-        }
-        $buyers = $query->latest()->get();
-
         return view('buyers.index', compact('buyers'));
     }
-
     public function filter(Request $request)
     {
         session([
@@ -39,7 +27,6 @@ class BuyerController extends Controller
                 'search' => $request->search,
             ]
         ]);
-
         return redirect()->route('buyers.index');
     }
     public function fetch($id)
@@ -86,7 +73,6 @@ class BuyerController extends Controller
                 'byr_acc_branch_code' => 'required|string|max:255',
                 'byr_logo' => 'required|mimes:jpg,jpeg,png,svg|max:2048',
             ]);
-
             if ($request->hasFile('byr_logo')) {
                 $file = $request->file('byr_logo');
                 $extension = $file->getClientOriginalExtension();
@@ -94,7 +80,6 @@ class BuyerController extends Controller
                 $file->move(public_path('uploads/buyer_images'), $filename);
                 $validated['byr_logo'] = $filename;
             }
-
             $buyer = Buyer::create($validated);
             // ✅ Log activity
             logActivity(
@@ -104,9 +89,7 @@ class BuyerController extends Controller
                 $buyer->id,
                 'buyers'
             );
-
             DB::commit();
-
             return redirect()->route('buyers.index')
                 ->with('message', 'Client created successfully.');
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -117,7 +100,6 @@ class BuyerController extends Controller
             dd($e->getMessage(), $e->getFile(), $e->getLine());
         }
     }
-
     public function edit($id)
     {
         $decryptedId = Crypt::decryptString($id);
@@ -127,7 +109,6 @@ class BuyerController extends Controller
     public function update(Request $request, $id)
     {
         DB::beginTransaction();
-
         try {
             $validated = $request->validate([
                 'byr_name' => 'required|string|max:255',
@@ -161,28 +142,22 @@ class BuyerController extends Controller
                 'byr_acc_branch_code' => 'required|string|max:255',
                 'byr_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
-
             $buyer = Buyer::findOrFail($id);
-
             // Keep old data for hash comparison
             $oldData = $buyer->toArray();
-
             // Handle logo update
             if ($request->hasFile('byr_logo')) {
                 // Delete old logo if exists
                 if ($buyer->byr_logo && file_exists(public_path('uploads/buyer_images/' . $buyer->byr_logo))) {
                     unlink(public_path('uploads/buyer_images/' . $buyer->byr_logo));
                 }
-
                 $file = $request->file('byr_logo');
                 $extension = $file->getClientOriginalExtension();
                 $filename = time() . '.' . $extension;
                 $file->move(public_path('uploads/buyer_images/'), $filename);
                 $validated['byr_logo'] = $filename;
             }
-
             $buyer->update($validated);
-
             // ✅ Log activity with old and new data
             logActivity(
                 'update',
@@ -191,9 +166,7 @@ class BuyerController extends Controller
                 $buyer->id,
                 'buyers'
             );
-
             DB::commit();
-
             return redirect()->route('buyers.index')
                 ->with('message', 'Client updated successfully.');
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -204,7 +177,6 @@ class BuyerController extends Controller
             dd($e->getMessage(), $e->getFile(), $e->getLine());
         }
     }
-
     public function delete($id)
     {
         $buyer = Buyer::findOrFail($id);

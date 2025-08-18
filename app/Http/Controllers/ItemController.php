@@ -7,18 +7,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use App\Models\Item;
 
-
 class ItemController extends Controller
 {
-    // public function index()
-    // {
-    //     $items = Item::latest()->get();
-    //     return view('items.index', compact('items'));
-    // }
     public function index()
     {
-        $items = Item::latest()->get();
-
+        $items = Item::latest()->paginate(10); // 10 items per page
         // Check for tampering
         foreach ($items as $item) {
             $calculatedHash = md5(
@@ -28,14 +21,10 @@ class ItemController extends Controller
                     $item->item_tax_rate .
                     $item->item_uom
             );
-
-            // Add a flag for frontend
             $item->tampered = $calculatedHash !== $item->hash;
         }
-
         return view('items.index', compact('items'));
     }
-
     public function create()
     {
         return view('items.create');
@@ -48,7 +37,6 @@ class ItemController extends Controller
             'item_tax_rate'    => 'required|numeric',
             'item_uom'         => 'required|string|max:50',
         ]);
-
         DB::beginTransaction();
         try {
             $item = Item::create($request->all());
@@ -59,9 +47,7 @@ class ItemController extends Controller
                 $item->id,
                 'items'
             );
-
             DB::commit();
-
             return redirect()
                 ->route('items.index')
                 ->with('message', 'Item created successfully.');
@@ -87,7 +73,6 @@ class ItemController extends Controller
             'item_uom'         => 'required|string|max:50',
             'item_hs_code'     => 'nullable|string|max:20',
         ]);
-
         DB::beginTransaction();
         try {
             $item = Item::findOrFail($id);
@@ -104,9 +89,7 @@ class ItemController extends Controller
                 $item->id,
                 'items'
             );
-
             DB::commit();
-
             return redirect()
                 ->route('items.index')
                 ->with('message', 'Item updated successfully.');

@@ -42,21 +42,42 @@ function initBuyerChangeHandler() {
 
         if (loader) loader.classList.remove("d-none");
 
-        fetch(`/buyers/fetch/${id}`)
-            .then((res) => res.json())
-            .then((b) => {
+        // fetch(`/buyers/fetch/${id}`)
+        //     .then((res) => res.json())
+        //     .then((b) => {
+        //         if (!b) return;
+        //         document.querySelector("[name=buyerNTNCNIC]").value =
+        //             b.byr_ntn_cnic || "";
+        //         document.querySelector("[name=buyerAddress]").value =
+        //             b.byr_address || "";
+        //         document.querySelector("[name=buyerProvince]").value =
+        //             b.byr_province || "";
+        //         document.querySelector("[name=buyerRegistrationType]").value =
+        //             b.byr_type == 1 ? "Registered" : "Unregistered";
+        //     })
+        //     .catch(() => alert("Failed to fetch buyer details."))
+        //     .finally(() => loader?.classList.add("d-none"));
+
+        $.ajax({
+            url: `/buyers/fetch/${id}`,
+            method: "GET",
+            dataType: "json",
+            success: function (b) {
                 if (!b) return;
-                document.querySelector("[name=buyerNTNCNIC]").value =
-                    b.byr_ntn_cnic || "";
-                document.querySelector("[name=buyerAddress]").value =
-                    b.byr_address || "";
-                document.querySelector("[name=buyerProvince]").value =
-                    b.byr_province || "";
-                document.querySelector("[name=buyerRegistrationType]").value =
-                    b.byr_type == 1 ? "Registered" : "Unregistered";
-            })
-            .catch(() => alert("Failed to fetch buyer details."))
-            .finally(() => loader?.classList.add("d-none"));
+                $("[name=buyerNTNCNIC]").val(b.byr_ntn_cnic || "");
+                $("[name=buyerAddress]").val(b.byr_address || "");
+                $("[name=buyerProvince]").val(b.byr_province || "");
+                $("[name=buyerRegistrationType]").val(
+                    b.byr_type == 1 ? "Registered" : "Unregistered"
+                );
+            },
+            error: function () {
+                alert("Failed to fetch buyer details.");
+            },
+            complete: function () {
+                if (loader) loader.classList.add("d-none");
+            },
+        });
     });
 }
 

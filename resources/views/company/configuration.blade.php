@@ -2,6 +2,12 @@
 @section('content')
     <div class="container-fluid">
         <h2 class="mb-4 text-center">Configuration</h2>
+        {{-- Tampering check notice (at page end) --}}
+        <div class="mt-4 text-end">
+            @if ($config && $config->tampered)
+                <span class="text-danger fw-bold">⚠ Data may be tampered!</span>
+            @endif
+        </div>
         <form class="app-form needs-validation" novalidate method="POST" action="{{ route('company.configuration.save') }}"
             enctype="multipart/form-data">
             @csrf
@@ -54,7 +60,6 @@
                             @enderror
                         </div>
                     </div>
-
                     <div class="row mb-3">
                         <div class="col-md-4">
                             <label class="form-label required">Contact Number</label>
@@ -84,22 +89,33 @@
                                 </div>
                             @enderror
                         </div>
-
                         <div class="col-md-4">
-                            <label class="form-label required">Province</label>
-                            <input type="text" name="bus_province" class="form-control" required
-                                value="{{ old('bus_province', $config->bus_province ?? '') }}">
-                            <div class="invalid-feedback">
-                                Please Enter Province.
-                            </div>
+                            <label for="bus_province" class="form-label required">Province</label>
+                            <select name="bus_province" id="bus_province"
+                                class="form-select @error('bus_province') is-invalid @enderror" required>
+                                <option value="">-- Select Province --</option>
+                                <option value="Punjab"
+                                    {{ old('bus_province', $config->bus_province ?? '') == 'Punjab' ? 'selected' : '' }}>
+                                    Punjab</option>
+                                <option value="Sindh"
+                                    {{ old('bus_province', $config->bus_province ?? '') == 'Sindh' ? 'selected' : '' }}>
+                                    Sindh</option>
+                                <option value="Khyber Pakhtunkhwa"
+                                    {{ old('bus_province', $config->bus_province ?? '') == 'Khyber Pakhtunkhwa' ? 'selected' : '' }}>
+                                    Khyber Pakhtunkhwa</option>
+                                <option value="Balochistan"
+                                    {{ old('bus_province', $config->bus_province ?? '') == 'Balochistan' ? 'selected' : '' }}>
+                                    Balochistan</option>
+                                {{-- <option value="Gilgit-Baltistan" {{ old('bus_province', $config->bus_province ?? '') == 'Gilgit-Baltistan' ? 'selected' : '' }}>Gilgit-Baltistan</option>
+        <option value="Islamabad Capital Territory" {{ old('bus_province', $config->bus_province ?? '') == 'Islamabad Capital Territory' ? 'selected' : '' }}>Islamabad Capital Territory</option>
+        <option value="Azad Jammu and Kashmir" {{ old('bus_province', $config->bus_province ?? '') == 'Azad Jammu and Kashmir' ? 'selected' : '' }}>Azad Jammu and Kashmir</option> --}}
+                            </select>
+                            <div class="invalid-feedback">Please select Province.</div>
                             @error('bus_province')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
-
                     <div class="mb-3">
                         <label class="form-label required">Address</label>
                         <textarea name="bus_address" class="form-control" placeholder="Enter a Addres" required>{{ old('bus_address', $config->bus_address ?? '') }}</textarea>
@@ -112,7 +128,6 @@
                             </div>
                         @enderror
                     </div>
-
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label class="form-label required">Bank Branch Name</label>
@@ -143,7 +158,6 @@
                             @enderror
                         </div>
                     </div>
-
                     <div class="row mb-3">
                         <div class="col-md-3">
                             <label class="form-label required">Bank Account Number</label>
@@ -153,7 +167,6 @@
                             <div class="invalid-feedback">
                                 Please Enter Account Number.
                             </div>
-
                             @error('bus_account_number')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -168,7 +181,6 @@
                             <div class="invalid-feedback">
                                 Please Enter Account Title.
                             </div>
-
                             @error('bus_account_title')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -194,25 +206,21 @@
                                 class="form-control" value="{{ old('bus_swift_code', $config->bus_swift_code ?? '') }}">
                         </div>
                     </div>
-
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label class="form-label {{ empty($config->bus_logo) ? 'required' : '' }}">Company
                                 Logo</label>
                             <input type="file" name="bus_logo" class="form-control"
                                 {{ empty($config->bus_logo) ? 'required' : '' }}>
-
                             @if (!empty($config->bus_logo))
                                 <div class="mt-3">
                                     <img src="{{ asset('uploads/company/' . $config->bus_logo) }}" alt="Company Logo"
                                         style="max-width: 200px; height: auto; border: 1px solid #ddd; padding: 5px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
                                 </div>
                             @endif
-
                             <div class="invalid-feedback">
                                 Please Enter Company Logo.
                             </div>
-
                             @error('bus_logo')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -220,7 +228,6 @@
                             @enderror
                         </div>
                     </div>
-
                     <div class="text-end">
                         <button type="submit" class="btn btn-primary">Save Configuration</button>
                     </div>
@@ -228,30 +235,22 @@
             </div>
         </form>
     </div>
-
-
-
     @push('scripts')
         <script nonce="{{ $nonce }}">
             document.addEventListener('DOMContentLoaded', function() {
                 const typeSelect = document.getElementById('id_type');
                 const input = document.getElementById('bus_ntn_cnic');
-
                 if (!typeSelect || !input) return; // Prevent error if elements don't exist
-
                 function applyValidation() {
                     const val = input.value.trim();
                     const isNTN = typeSelect.value === 'NTN';
-
                     // Define regex patterns
                     const patternNTN = /^[0-9]{7}$/;
                     const patternCNIC = /^[0-9]{13}$/;
-
                     // Clear input only if current value does NOT match the new pattern
                     if ((isNTN && !patternNTN.test(val)) || (!isNTN && !patternCNIC.test(val))) {
                         input.value = "";
                     }
-
                     // Apply attributes
                     if (isNTN) {
                         input.setAttribute('pattern', '[0-9]{7}');
@@ -265,7 +264,6 @@
                         input.placeholder = 'Enter 13-digit CNIC';
                     }
                 }
-
                 typeSelect.addEventListener('change', applyValidation);
                 applyValidation();
             });
