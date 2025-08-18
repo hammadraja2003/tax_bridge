@@ -73,10 +73,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 //  **------pie_charts 2**
 
+
 document.addEventListener("DOMContentLoaded", function () {
-    if (typeof window.topClientsRevenueData !== "undefined") {
-        const names = window.topClientsRevenueData.names || [];
-        const totals = window.topClientsRevenueData.totals || [];
+    if (typeof window.topServicesRevenueData !== "undefined") {
+        const names = window.topServicesRevenueData.names || [];
+        const totals = window.topServicesRevenueData.totals || [];
 
         const options = {
             series: totals,
@@ -95,16 +96,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 },
             },
             colors: [
-                "#3C91F3",
-                "#ACB8C8",
-                "#231928",
+                "#F59E0B",
+                "#10B981",
+                "#8B5CF6",
                 getLocalStorageItem("color-primary", "#056464"),
                 getLocalStorageItem("color-secondary", "#74788D"),
             ],
             tooltip: {
                 y: {
                     formatter: function (val) {
-                        return new Intl.NumberFormat().format(val) + " PKR";
+                        return new Intl.NumberFormat().format(val);
                     },
                 },
             },
@@ -128,6 +129,7 @@ document.addEventListener("DOMContentLoaded", function () {
         chart.render();
     }
 });
+
 
 //
 

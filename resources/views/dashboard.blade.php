@@ -134,8 +134,9 @@
             var monthLabels = @json($monthlyLabels ?? []);
         </script>
         <script nonce="{{ $nonce }}">
-            const topClientsSalesTaxMonthly = @json($topClientsSalesTaxMonthly);
+            const invoiceMonthlyStats = @json($invoiceMonthlyStats);
         </script>
+
         <script nonce="{{ $nonce }}">
             window.topClientData = {
                 names: @json($topClientNames),
@@ -143,10 +144,10 @@
             };
         </script>
         <script nonce="{{ $nonce }}">
-            window.topClientsRevenueData = {
-                names: @json($topClientNamesRevenue),
-                totals: @json($topClientTotalsRevenue),
-                percentages: @json($topClientPercentagesRevenue),
+            window.topServicesRevenueData = {
+                names: @json($topServiceNamesRevenue),
+                totals: @json($topServiceTotalsRevenue),
+                percentages: @json($topServicePercentagesRevenue),
             };
         </script>
         <!-- js-->
