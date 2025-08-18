@@ -61,57 +61,47 @@ var options = {
 var chart = new ApexCharts(document.querySelector("#column1"), options);
 chart.render();
 
+
 document.addEventListener("DOMContentLoaded", function () {
-    const data = topClientsSalesTaxMonthly;
+    const data = invoiceMonthlyStats;
+
     if (data.series.length === 0) {
         data.series = [
-            {
-                name: "No Data",
-                data: Array(12).fill(0),
-            },
+            { name: "No Data", data: Array(12).fill(0) }
         ];
     }
+
     var options = {
         series: data.series,
         chart: {
             type: "bar",
             height: 400,
-            stacked: true,
-            stackType: "100%",
         },
         plotOptions: {
             bar: {
                 horizontal: false,
-                columnWidth: "95%",
+                columnWidth: "50%",
             },
         },
         xaxis: {
             categories: data.months,
         },
-
-        colors: ["#00E396", "#0090FF", "#775DD0", "#FFA000", "#F44336"],
+        colors: ["#0090FF", "#00E396"], // blue for created, green for posted
         legend: {
             position: "bottom",
             offsetY: 10,
         },
-        fill: {
-            opacity: 1,
-        },
         dataLabels: {
             enabled: true,
-            formatter: function (val, opts) {
-                return val.toFixed(2) + "%";
-            },
             style: {
                 fontSize: "10px",
                 fontWeight: "bold",
-                colors: ["#fff"],
             },
         },
         tooltip: {
             y: {
                 formatter: function (val) {
-                    return val.toFixed(2) + " of month total Sale Tax";
+                    return val + " invoices";
                 },
             },
         },
@@ -120,7 +110,6 @@ document.addEventListener("DOMContentLoaded", function () {
     var chart = new ApexCharts(document.querySelector("#column4"), options);
     chart.render();
 });
-
 //  **------column_chart 10**
 Apex = {
     chart: {
