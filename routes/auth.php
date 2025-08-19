@@ -12,6 +12,9 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Auth\TwoFactorController;
 use App\Http\Controllers\Auth\TwoFactorSetupController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+
 
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
@@ -44,7 +47,26 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
 
+  
+
     Route::get('2fa/setup', [TwoFactorSetupController::class, 'showSetupForm'])->name('2fa.setup');
     Route::post('2fa/enable', [TwoFactorSetupController::class, 'enable'])->name('2fa.enable');
     Route::post('2fa/disable', [TwoFactorSetupController::class, 'disable'])->name('2fa.disable');
 });
+
+  
+// Show forgot password form
+Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+
+// Send reset email
+Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+
+// 1. Show reset form (GET)
+Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])
+    ->name('password.reset');
+
+// 2. Handle reset password (POST or PUT)
+Route::put('/reset-password', [ResetPasswordController::class, 'reset'])
+    ->name('password.update');
+
+

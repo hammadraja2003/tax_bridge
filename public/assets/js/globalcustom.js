@@ -73,3 +73,5 @@ document.addEventListener("click", function (e) {
         if (logoutForm) logoutForm.submit();
     }
 });
+
+

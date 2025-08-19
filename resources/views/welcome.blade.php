@@ -33,7 +33,7 @@
             <div class="col-12 mt-2">
               <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <a href="#" class="link-primary float-end">Forgot Password?</a>
+                <!-- <a href="{{route('password.request')}}" class="link-primary float-end">Forgot Password?</a> -->
                 <div class="input-group">
                   <input type="password" name="password" required class="form-control" placeholder="Enter Your Password"
                     id="password">

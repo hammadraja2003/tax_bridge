@@ -318,8 +318,16 @@ class InvoiceController extends Controller
             'seller',
             'details.item'
         ])->findOrFail($invoiceId);
-        return view('invoices.print', compact('invoice'));
+
+        $nonce = bin2hex(random_bytes(16));
+
+        return view('invoices.print', [
+            'invoice' => $invoice,
+            'nonce'   => $nonce,
+        ]);
     }
+
+ 
     // public function showForm()
     // {
     //     return view('invoices.import');

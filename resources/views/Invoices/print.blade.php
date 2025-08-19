@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <title>{{ config('app.name', 'Secureism | Invoicing Management System') }}</title>
@@ -51,7 +50,7 @@
         .payment-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            /* margin-top: 20px; */
         }
 
         .invoice-table th,
@@ -70,7 +69,7 @@
         }
 
         .totals {
-            margin-top: 20px;
+            margin-top: 4px;
             float: right;
             width: 300px;
         }
@@ -89,11 +88,12 @@
         }
 
         .due-info {
-            margin-top: 40px;
+            /* margin-top: 40px; */
         }
 
         .payment-advice {
-            margin-top: 50px;
+            /* margin-top: 50px; */
+            margin-top: 10px;
             border-top: 2px dashed #000;
             padding-top: 20px;
             position: relative;
@@ -110,7 +110,7 @@
         }
 
         .footer {
-            margin-top: 30px;
+            /* margin-top: 10px; */
             font-size: 12px;
             text-align: center;
         }
@@ -123,41 +123,17 @@
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
-
 <body>
-    <script>
-        window.onload = function() {
-            const element = document.querySelector('.container');
-            // Optional: force full width on screen to avoid cut-off
-            element.style.width = '100%';
-            const opt = {
-                margin: [0.3, 0.3, 0.3, 0.3], // top, left, bottom, right (in inches)
-                filename: 'invoice-{{ $invoice->invoice_number }}.pdf',
-                image: {
-                    type: 'jpeg',
-                    quality: 0.98
-                },
-                html2canvas: {
-                    scale: 2, // Increase to get higher-res rendering
-                    useCORS: true // In case you're loading remote images
-                },
-                jsPDF: {
-                    unit: 'in',
-                    format: 'a4',
-                    orientation: 'portrait',
-                    putOnlyUsedFonts: true
-                },
-                pagebreak: {
-                    mode: ['avoid-all', 'css', 'legacy']
-                } // Try to avoid breaking sections
-            };
-            html2pdf().set(opt).from(element).save().then(() => {
-                setTimeout(() => {
-                    window.print();
-                }, 500);
-            });
-        };
+    
+@push('scripts')
+    {{-- Pass PHP → JS --}}
+    <?php echo  $nonce; ?>
+    <script nonce="{{ $nonce }}">
+        const invoiceNumber = @json($invoice->invoice_number);
     </script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" nonce="{{ $nonce }}"></script>
+    <script src="{{ asset('js/print.js') }}" nonce="{{ $nonce }}"></script>
+@endpush
     <!-- Printable Area -->
     <div class="container" id="invoiceArea">
         <div class="header">
@@ -329,6 +305,7 @@
                 </div>
             </div>
         </div>
+        </br>
         <!-- Footer -->
         <div class="footer" style="text-align: justify;">
             Company Registration No: 0119999 | Registered Office: SECUREISM (PRIVATE) LIMITED, Innovation & Incubation,
@@ -337,3 +314,5 @@
             Pakistan.
         </div>
     </div>
+</body>
+</html>
