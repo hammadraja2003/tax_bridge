@@ -33,7 +33,7 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-top: 20px;
+            /* margin-top: 10px; */
             gap: 20px;
         }
 
@@ -95,7 +95,7 @@
             /* margin-top: 50px; */
             margin-top: 10px;
             border-top: 2px dashed #000;
-            padding-top: 20px;
+            /* padding-top: 20px; */
             position: relative;
         }
 
