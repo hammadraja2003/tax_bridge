@@ -18,6 +18,18 @@
                 </ul>
             </div>
         @endif
+
+        <div class="mt-4 text-right" style="text-align: right;">
+            <p>
+                <strong style="color: red;">
+                    <i class="fa fa-download" aria-hidden="true"></i> Download Sample Template
+                </strong>
+                <a href="{{ asset('assets/fbr_invoice_template.xlsx') }}" target="_blank"
+                    style="color: red; text-decoration: none; margin-left: 5px;">
+                    Click Here
+                </a>
+            </p>
+        </div>
         <form action="{{ route('invoices.import.process') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="mb-3">
@@ -33,11 +45,5 @@
             </div>
             <button type="submit" class="btn btn-primary">Import Invoices</button>
         </form>
-        <div class="mt-4">
-            <p>
-                <strong>Sample Template:</strong>
-                <a href="{{ asset('assets/fbr_invoice_template.xlsx') }}" target="_blank">Download Excel Format</a>
-            </p>
-        </div>
     </div>
 @endsection

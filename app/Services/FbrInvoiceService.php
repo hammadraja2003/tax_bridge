@@ -16,16 +16,23 @@ class FbrInvoiceService
         $this->env = $env;
         $this->baseUrl = 'https://gw.fbr.gov.pk/di_data/v1/di/';
 
-        if ($env === 'sandbox') {
-            $this->token = env('FBR_API_TOKEN_SANDBOX');
-        } else {
+        // if ($env === 'sandbox') {
+        //     $this->token = env('FBR_API_TOKEN_SANDBOX');
+        // } else {
+        //     $this->token = env('FBR_API_TOKEN_PROD');
+        // }
+        if ($this->env === 'production') {
             $this->token = env('FBR_API_TOKEN_PROD');
+        } else {
+            $this->token = env('FBR_API_TOKEN_SANDBOX');
+            $this->env = 'sandbox';
         }
     }
     public function validateInvoice(array $payload): array
     {
         try {
-            $url = $this->baseUrl . ($this->env === 'sandbox' ? 'validateinvoicedata_sb' : 'validateinvoicedata');
+            $url = $this->baseUrl . ($this->env === 'production' ? 'validateinvoicedata' : 'validateinvoicedata_sb');
+
             $jsonData = json_encode($payload);
 
             $curl = curl_init();
@@ -76,8 +83,7 @@ class FbrInvoiceService
     public function postInvoice(array $payload): array
     {
         try {
-            $url = $this->baseUrl . ($this->env === 'sandbox' ? 'postinvoicedata_sb' : 'postinvoicedata');
-
+            $url = $this->baseUrl . ($this->env === 'production' ? 'postinvoicedata' : 'postinvoicedata_sb');
             $jsonData = json_encode($payload);
 
             $curl = curl_init();

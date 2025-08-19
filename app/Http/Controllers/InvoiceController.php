@@ -26,24 +26,6 @@ class InvoiceController extends Controller
         $items = Item::all();
         return view('invoices.create', compact('seller', 'buyers', 'items'));
     }
-    // public function index(Request $request)
-    // {
-    //     $query = Invoice::with(['buyer', 'seller', 'details.item']);
-    //     // Filter by invoice type
-    //     if ($request->filled('invoice_type')) {
-    //         $query->where('invoice_type', $request->invoice_type);
-    //     }
-    //     // Filter by date range
-    //     if ($request->filled('date_from') && $request->filled('date_to')) {
-    //         $query->whereBetween('invoice_date', [$request->date_from, $request->date_to]);
-    //     }
-    //     // Filter by fbr status
-    //     if ($request->has('is_posted_to_fbr') && $request->is_posted_to_fbr !== '') {
-    //         $query->where('is_posted_to_fbr', $request->is_posted_to_fbr);
-    //     }
-    //     $invoices = $query->orderByDesc('invoice_date')->get();
-    //     return view('invoices.index', compact('invoices'));
-    // }
     public function index(Request $request)
     {
         $query = Invoice::with(['buyer', 'seller', 'details.item']);
@@ -67,7 +49,7 @@ class InvoiceController extends Controller
             $query->where('is_posted_to_fbr', $request->is_posted_to_fbr);
         }
         // Fetch with latest invoice_date
-        $invoices = $query->orderByDesc('invoice_date')->get();
+        $invoices = $query->orderByDesc('invoice_date')->paginate(10);
         foreach ($invoices as $invoice) {
             // Header tampering
             $invoice->tampered = $invoice->isTampered();
