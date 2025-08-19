@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>{{ config('app.name', 'Secureism | Invoicing Management System') }}</title>
@@ -123,17 +124,18 @@
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
+
 <body>
-    
-@push('scripts')
-    {{-- Pass PHP → JS --}}
-    <?php echo  $nonce; ?>
-    <script nonce="{{ $nonce }}">
-        const invoiceNumber = @json($invoice->invoice_number);
-    </script>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" nonce="{{ $nonce }}"></script>
-    <script src="{{ asset('js/print.js') }}" nonce="{{ $nonce }}"></script>
-@endpush
+
+    @push('scripts')
+        {{-- Pass PHP → JS --}}
+        <script nonce="{{ $nonce }}">
+            const invoiceNumber = @json($invoice->invoice_number);
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+            nonce="{{ $nonce }}"></script>
+        <script src="{{ asset('assets/js/print.js') }}" nonce="{{ $nonce }}"></script>
+    @endpush
     <!-- Printable Area -->
     <div class="container" id="invoiceArea">
         <div class="header">
@@ -315,4 +317,5 @@
         </div>
     </div>
 </body>
+
 </html>

@@ -104,7 +104,6 @@ function initItemHandlers() {
         // $row.find('[name$="[SalesTaxApplicable]"]').val(opt.data("tax") || "");
 
         calculateRow($row);
-        // updateTotals();
     });
     $(document).on(
         "input",
@@ -115,10 +114,119 @@ function initItemHandlers() {
             updateTotals();
         }
     );
-    $("#itemsContainer").on(
+    // $("#itemsContainer").on(
+    //     "input",
+    //     '[name$="[furtherTax]"], [name$="[extraTax]"], [name$="[fedPayable]"] , [name$="[discount]"]',
+    //     updateTaxTotalsFromItems
+    // );
+    // Safety parser
+    function parseFloatSafe(v) {
+        const n = parseFloat((v ?? "").toString().replace(/,/g, ""));
+        return isNaN(n) ? 0 : n;
+    }
+
+    // Recalculate ONE row (called when % or base changes)
+    function updateLineItemRow($row) {
+        const base = parseFloatSafe(
+            $row.find('[name$="[valueSalesExcludingST]"]').val()
+        );
+
+        // Helper: update from % unless user manually typed a value
+        function maybeFromPercent(pctSelector, valSelector) {
+            const $pct = $row.find(pctSelector);
+            const $val = $row.find(valSelector);
+
+            const pct = parseFloatSafe($pct.val());
+            const manual = $val.data("manual") === true; // user typed value
+
+            if (pct > 0 && !manual) {
+                const computed = (base * pct) / 100;
+                $val.val(computed.toFixed(2));
+                $val.data("auto", true);
+            }
+        }
+
+        // Further Tax
+        maybeFromPercent(
+            '[name$="[furtherTax_percentage]"]',
+            '[name$="[furtherTax]"]'
+        );
+
+        // Extra Tax
+        maybeFromPercent(
+            '[name$="[extraTax_percentage]"]',
+            '[name$="[extraTax]"]'
+        );
+
+        // FED Payable
+        maybeFromPercent(
+            '[name$="[fedPayable_percentage]"]',
+            '[name$="[fedPayable]"]'
+        );
+    }
+
+    // Sum all rows into footer totals
+    function updateTaxTotalsFromItems() {
+        let totalfurtherTax = 0,
+            totalextraTax = 0,
+            totalFedTax = 0,
+            totalDiscount = 0;
+
+        $(".item-group").each(function () {
+            totalfurtherTax += parseFloatSafe(
+                $(this).find('[name$="[furtherTax]"]').val()
+            );
+            totalextraTax += parseFloatSafe(
+                $(this).find('[name$="[extraTax]"]').val()
+            );
+            totalFedTax += parseFloatSafe(
+                $(this).find('[name$="[fedPayable]"]').val()
+            );
+            totalDiscount += parseFloatSafe(
+                $(this).find('[name$="[discount]"]').val()
+            );
+        });
+
+        $("#totalfurtherTax").val(totalfurtherTax.toFixed(2));
+        $("#totalextraTax").val(totalextraTax.toFixed(2));
+        $("#totalFedTax").val(totalFedTax.toFixed(2));
+        $("#totalDiscount").val(totalDiscount.toFixed(2));
+    }
+
+    /* ------------------ Event delegation ------------------ */
+    const container = $("#itemsContainer");
+
+    // When % fields OR base changes → recalc that specific row, then totals
+    container.on(
+        "input change",
+        '[name$="[furtherTax_percentage]"], [name$="[extraTax_percentage]"], [name$="[fedPayable_percentage]"], [name$="[valueSalesExcludingST]"]',
+        function () {
+            const $row = $(this).closest(".item-group");
+            updateLineItemRow($row);
+            updateTaxTotalsFromItems();
+        }
+    );
+
+    // When user types direct values → mark as manual and just update totals
+    container.on(
         "input",
-        '[name$="[furtherTax]"], [name$="[extraTax]"], [name$="[fedPayable]"] , [name$="[discount]"]',
-        updateTaxTotalsFromItems
+        '[name$="[furtherTax]"], [name$="[extraTax]"], [name$="[fedPayable]"], [name$="[discount]"]',
+        function () {
+            // user is overriding; don't auto-recompute this field from %
+            $(this).data("manual", true);
+            updateTaxTotalsFromItems();
+        }
+    );
+
+    // If user clears a value field, allow auto again on next %/base change
+    container.on(
+        "change blur",
+        '[name$="[furtherTax]"], [name$="[extraTax]"], [name$="[fedPayable]"]',
+        function () {
+            if (!$(this).val()) {
+                $(this).data("manual", false);
+            }
+        }
     );
 }
 
@@ -175,25 +283,90 @@ function updateTotals() {
     $("#totalSalesTax").val((incl - excl).toFixed(2));
 }
 
+// function updateTaxTotalsFromItems() {
+//     let totalfurtherTax = 0,
+//         totalextraTax = 0,
+//         totalFedTax = 0,
+//         totalDiscount = 0;
+//     $(".item-group").each(function () {
+//         totalfurtherTax += parseFloatSafe(
+//             $(this).find('[name$="[furtherTax]"]').val()
+//         );
+//         totalextraTax += parseFloatSafe(
+//             $(this).find('[name$="[extraTax]"]').val()
+//         );
+//         totalFedTax += parseFloatSafe(
+//             $(this).find('[name$="[fedPayable]"]').val()
+//         );
+//         totalDiscount += parseFloatSafe(
+//             $(this).find('[name$="[discount]"]').val()
+//         );
+//     });
+//     $("#totalfurtherTax").val(totalfurtherTax.toFixed(2));
+//     $("#totalextraTax").val(totalextraTax.toFixed(2));
+//     $("#totalFedTax").val(totalFedTax.toFixed(2));
+//     $("#totalDiscount").val(totalDiscount.toFixed(2));
+// }
+
 function updateTaxTotalsFromItems() {
     let totalfurtherTax = 0,
         totalextraTax = 0,
         totalFedTax = 0,
         totalDiscount = 0;
+
     $(".item-group").each(function () {
-        totalfurtherTax += parseFloatSafe(
+        let base = parseFloatSafe(
+            $(this).find('[name$="[valueSalesExcludingST]"]').val()
+        );
+
+        // Further Tax
+        let furtherTaxVal = parseFloatSafe(
             $(this).find('[name$="[furtherTax]"]').val()
         );
-        totalextraTax += parseFloatSafe(
+        let furtherTaxPct = parseFloatSafe(
+            $(this).find('[name$="[furtherTax_percentage]"]').val()
+        );
+        if (furtherTaxPct > 0 && furtherTaxVal === 0) {
+            furtherTaxVal = (base * furtherTaxPct) / 100;
+            $(this)
+                .find('[name$="[furtherTax]"]')
+                .val(furtherTaxVal.toFixed(2)); // auto fill
+        }
+        totalfurtherTax += furtherTaxVal;
+
+        // Extra Tax
+        let extraTaxVal = parseFloatSafe(
             $(this).find('[name$="[extraTax]"]').val()
         );
-        totalFedTax += parseFloatSafe(
+        let extraTaxPct = parseFloatSafe(
+            $(this).find('[name$="[extraTax_percentage]"]').val()
+        );
+        if (extraTaxPct > 0 && extraTaxVal === 0) {
+            extraTaxVal = (base * extraTaxPct) / 100;
+            $(this).find('[name$="[extraTax]"]').val(extraTaxVal.toFixed(2));
+        }
+        totalextraTax += extraTaxVal;
+
+        // FED Payable
+        let fedTaxVal = parseFloatSafe(
             $(this).find('[name$="[fedPayable]"]').val()
         );
+        let fedTaxPct = parseFloatSafe(
+            $(this).find('[name$="[fedPayable_percentage]"]').val()
+        );
+        if (fedTaxPct > 0 && fedTaxVal === 0) {
+            fedTaxVal = (base * fedTaxPct) / 100;
+            $(this).find('[name$="[fedPayable]"]').val(fedTaxVal.toFixed(2));
+        }
+        totalFedTax += fedTaxVal;
+
+        // Discount (value only, no % here unless you want to extend)
         totalDiscount += parseFloatSafe(
             $(this).find('[name$="[discount]"]').val()
         );
     });
+
+    // Totals
     $("#totalfurtherTax").val(totalfurtherTax.toFixed(2));
     $("#totalextraTax").val(totalextraTax.toFixed(2));
     $("#totalFedTax").val(totalFedTax.toFixed(2));

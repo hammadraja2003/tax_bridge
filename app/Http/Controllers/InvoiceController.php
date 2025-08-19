@@ -49,17 +49,22 @@ class InvoiceController extends Controller
             $query->where('is_posted_to_fbr', $request->is_posted_to_fbr);
         }
         // Fetch with latest invoice_date
-        $invoices = $query->orderByDesc('invoice_date')->paginate(10);
+        $invoices = $query->orderByDesc('invoice_id')->paginate(10);
         foreach ($invoices as $invoice) {
             // Header tampering
             $invoice->tampered = $invoice->isTampered();
+
             // Details tampering
             $tamperedLines = false;
             foreach ($invoice->details as $detail) {
-                $recalculated = $detail->generateHash();
+                if ($detail->isTampered()) {
+                    $tamperedLines = true;
+                    break;
+                }
             }
             $invoice->tampered_lines = $tamperedLines;
         }
+
         return view('invoices.index', compact('invoices'));
     }
     public function filter(Request $request)
@@ -309,7 +314,7 @@ class InvoiceController extends Controller
         ]);
     }
 
- 
+
     // public function showForm()
     // {
     //     return view('invoices.import');

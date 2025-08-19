@@ -10,14 +10,14 @@
                                     <i class="ti ti-category"></i>
                                 </span>
                                 <div class="header-searchbar">
-                                    {{-- <form class="me-3 app-form app-icon-form " action="#">
-                    <div class="position-relative">
-                      <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
-                      <i class="ti ti-search text-dark"></i>
-                    </div>
-                  </form> --}}
+                                    @if (env('FBR_ENV') === 'sandbox')
+                                        <span class="badge bg-warning me-2">Sandbox Environment</span>
+                                    @else
+                                        <span class="badge bg-success me-2">Production Environment</span>
+                                    @endif
                                 </div>
                             </div>
+
                             <div class="col-6 d-flex align-items-center justify-content-end header-right">
                                 <ul class="d-flex align-items-center">
                                     <li class="header-search">

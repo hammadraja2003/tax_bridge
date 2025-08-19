@@ -306,28 +306,41 @@
                             title="If you're withholding tax on behalf of the seller (as a withholding agent), mention here Else 0."></i></label>
                     <input type="number" name="items[][SalesTaxWithheldAtSource]" class="form-control" required />
                 </div>
-                <div class="col-md-4">
-                    <label class="form-label required">Sale Type <i class="bi bi-info-circle" data-bs-toggle="tooltip"
-                            title=" Important: Describes the nature of sale.Could be: 'Goods at reduced rate', 'Exempt', 'Zero-rated', 'Services', etc."></i></label>
-                    <input type="text" name="items[][saleType]" id="saleTypeInput" class="form-control"
-                        value="Services (FED in ST Mode)" placeholder="e.g. Goods at standard rate" required />
+                <div class="col-md-2">
+                    <label class="form-label">Further Tax % (Optional)</label>
+                    <input type="number" name="items[][furtherTax_percentage]" class="form-control" />
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <label class="form-label">Further Tax (Optional) <i class="bi bi-info-circle"
                             data-bs-toggle="tooltip"
                             title="If buyer is **unregistered**, FBR may require Further Tax (typically 3% or more). Optional but calculated if applicabl"></i></label>
                     <input type="number" name="items[][furtherTax]" class="form-control" />
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-2">
+                    <label class="form-label">Extra Tax % (Optional)</label>
+                    <input type="number" name="items[][extraTax_percentage]" class="form-control" />
+                </div>
+                <div class="col-md-2">
                     <label class="form-label">Extra Tax (Optional) <i class="bi bi-info-circle" data-bs-toggle="tooltip"
                             title=" Only applies to specific industries — e.g., sugar, cement. Leave blank if not applicable."></i></label>
-                    <input type="text" name="items[][extraTax]" class="form-control" />
+                    <input type="number" name="items[][extraTax]" class="form-control" />
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-2">
+                    <label class="form-label">FED Payable % (Optional)</label>
+                    <input type="number" name="items[][fedPayable_percentage]" class="form-control" />
+                </div>
+                <div class="col-md-2">
                     <label class="form-label">FED Payable (Optional) <i class="bi bi-info-circle"
                             data-bs-toggle="tooltip"
                             title="Federal Excise Duty — applicable in certain services/goods (e.g., telecom, beverages). 0 if not applicable."></i></label>
                     <input type="number" name="items[][fedPayable]" class="form-control" />
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label required">Sale Type <i class="bi bi-info-circle" data-bs-toggle="tooltip"
+                            title=" Important: Describes the nature of sale.Could be: 'Goods at reduced rate', 'Exempt', 'Zero-rated', 'Services', etc."></i></label>
+                    <input type="text" name="items[][saleType]" id="saleTypeInput" class="form-control"
+                        value="Services (FED in ST Mode)" placeholder="e.g. Goods at standard rate" required />
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Discount (Optional) <i class="bi bi-info-circle" data-bs-toggle="tooltip"

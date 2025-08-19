@@ -56,49 +56,76 @@ class Invoice extends Model
     {
         return $this->hasMany(\App\Models\InvoiceDetail::class, 'invoice_id', 'invoice_id');
     }
-    // 🔐 Generate hash (header-level integrity check)
     public function generateHash(): string
     {
-        $v = fn($val) => (string)($val ?? ''); // normalize nulls
-        return hash('sha256', implode('|', [
-            $v($this->invoice_no),
-            $v($this->invoice_type),
-            $v($this->invoice_date),
-            $v($this->due_date),
-            $v($this->scenario_id),
-            $v($this->invoice_ref_no),
-            $v($this->seller_id),
-            $v($this->buyer_id),
-            $v($this->fbr_invoice_number),
-            $v($this->is_posted_to_fbr),
-            $v($this->invoice_status),
-            $v($this->response_status),
-            $v($this->response_message),
-            $v($this->totalAmountExcludingTax),
-            $v($this->totalAmountIncludingTax),
-            $v($this->totalSalesTax),
-            $v($this->totalfurtherTax),
-            $v($this->totalextraTax),
-            $v($this->shipping_charges),
-            $v($this->other_charges),
-            $v($this->discount_amount),
-            $v($this->payment_status),
-            $v($this->notes),
-            $v($this->qr_code),
-        ]));
+        $fields = [
+            'invoice_no',
+            'invoice_type',
+            'invoice_date',
+            'due_date',
+            'scenario_id',
+            'invoice_ref_no',
+            'seller_id',
+            'buyer_id',
+            'fbr_invoice_number',
+            'is_posted_to_fbr',
+            'invoice_status',
+            'response_status',
+            'response_message',
+            'totalAmountExcludingTax',
+            'totalAmountIncludingTax',
+            'totalSalesTax',
+            'totalfurtherTax',
+            'totalextraTax',
+            'shipping_charges',
+            'other_charges',
+            'discount_amount',
+            'payment_status',
+            'notes',
+            'qr_code',
+        ];
+
+        $data = [];
+        foreach ($fields as $field) {
+            $val = $this->$field;
+
+            // Normalize null → ''
+            if (is_null($val)) {
+                $val = '';
+            }
+
+            // Normalize dates
+            if ($val instanceof \Carbon\Carbon) {
+                $val = $val->format('Y-m-d');
+            }
+
+            // Normalize numbers
+            if (is_numeric($val)) {
+                $val = number_format((float)$val, 2, '.', '');
+            }
+
+            $data[$field] = (string) $val;
+        }
+
+        return hash(
+            'sha256',
+            json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
+        );
     }
+    // 🚨 Check if tampered
     public function isTampered(): bool
     {
         return $this->generateHash() !== $this->hash;
     }
+
     // 🔄 Automatically update hash on create/update
     protected static function booted()
     {
-        static::creating(function (self $invoice) {
-            $invoice->hash = $invoice->generateHash();
-        });
-        static::updating(function (self $invoice) {
-            $invoice->hash = $invoice->generateHash();
+        static::saving(function (self $invoice) {
+            $newHash = $invoice->generateHash();
+            if ($invoice->hash !== $newHash) {
+                $invoice->hash = $newHash;
+            }
         });
     }
 }

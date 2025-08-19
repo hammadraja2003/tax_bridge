@@ -36,42 +36,71 @@ class InvoiceDetail extends Model
     {
         return $this->belongsTo(Item::class, 'item_id', 'item_id');
     }
+    // 🔐 Generate hash for detail-level integrity check
     public function generateHash(): string
     {
-        $v = function ($val) {
-            if (is_null($val)) return '';
-            if (is_numeric($val)) return number_format((float)$val, 2, '.', '');
-            return trim((string)$val);
-        };
-        return hash('sha256', implode('|', [
-            $v($this->invoice_id),
-            $v($this->item_id),
-            $v($this->quantity),
-            $v($this->total_value),
-            $v($this->value_excl_tax),
-            $v($this->retail_price),
-            $v($this->sales_tax_applicable),
-            $v($this->sales_tax_withheld),
-            $v($this->extra_tax),
-            $v($this->further_tax),
-            $v($this->fed_payable),
-            $v($this->discount),
-            $v($this->sale_type),
-            $v($this->sro_schedule_no),
-            $v($this->sro_item_serial_no),
-        ]));
+        $fields = [
+            'invoice_id',
+            'item_id',
+            'description',
+            'quantity',
+            'unit_price',
+            'tax_rate',
+            'tax_amount',
+            'total_amount',
+        ];
+
+        $data = [];
+        foreach ($fields as $field) {
+            $val = $this->$field ?? '';
+
+            // Normalize dates
+            if ($val instanceof \Carbon\Carbon) {
+                $val = $val->format('Y-m-d');
+            }
+
+            // Normalize numbers
+            if (is_numeric($val)) {
+                $val = number_format((float)$val, 2, '.', '');
+            }
+
+            // Normalize booleans
+            if (is_bool($val)) {
+                $val = $val ? '1' : '0';
+            }
+
+            $data[$field] = (string) $val;
+        }
+
+        return hash(
+            'sha256',
+            json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
+        );
     }
+
+    // 🚨 Check if tampered
     public function isTampered(): bool
     {
-        return $this->generateHash() !== $this->hash;
+        $current = $this->generateHash();
+        if ($current !== $this->hash) {
+            \Log::warning('Invoice Detail tampered', [
+                'id'            => $this->id ?? null,
+                'invoice_id'    => $this->invoice_id,
+                'stored_hash'   => $this->hash,
+                'calculated_hash' => $current,
+            ]);
+        }
+        return $current !== $this->hash;
     }
+
+    // 🔄 Automatically update hash on create/update
     protected static function booted()
     {
-        static::creating(function (self $detail) {
-            $detail->hash = $detail->generateHash();
-        });
-        static::updating(function (self $detail) {
-            $detail->hash = $detail->generateHash();
+        static::saving(function (self $detail) {
+            $newHash = $detail->generateHash();
+            if ($detail->hash !== $newHash) {
+                $detail->hash = $newHash;
+            }
         });
     }
 }

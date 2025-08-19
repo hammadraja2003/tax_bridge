@@ -102,7 +102,7 @@
                                     </thead>
                                     <tbody class="list" id="t-data">
                                         @forelse($invoices as $inv)
-                                            <tr @if ($inv->tampered) class="table-warning" @endif>
+                                            <tr @if ($inv->tampered || $inv->tampered_lines) class="table-warning" @endif>
                                                 <td>{{ \Carbon\Carbon::parse($inv->invoice_date)->format('d M Y') }}</td>
                                                 <td class="employee">{{ $inv->invoice_no }}</td>
                                                 <td class="contact">
@@ -136,22 +136,10 @@
                                                 <td>{{ number_format($inv->totalextraTax, 2) }}</td>
                                                 <td>
                                                     @if ($inv->tampered)
-                                                        <span class="badge bg-danger">Tampered</span>
-                                                    @else
-                                                        <span class="badge bg-success">OK</span>
+                                                        <span class="badge bg-danger">Header Tampered</span>
                                                     @endif
                                                     @if ($inv->tampered_lines)
-                                                        <details>
-                                                            <summary class="text-danger">Tampered Lines</summary>
-                                                            <ul class="mb-0">
-                                                                @foreach ($inv->details as $d)
-                                                                    @if ($d->tampered)
-                                                                        <li>Detail #{{ $d->invoice_detail_id }} (Item:
-                                                                            {{ $d->item_id }})</li>
-                                                                    @endif
-                                                                @endforeach
-                                                            </ul>
-                                                        </details>
+                                                        <span class="badge bg-warning text-dark">Line Item Tampered</span>
                                                     @endif
                                                 </td>
                                                 <td>
@@ -165,8 +153,7 @@
                                                     <button type="button" class="btn btn-xs btn-outline-primary"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#itemsModal{{ $inv->invoice_id }}"
-                                                        data-bs-toggle="tooltip" data-bs-placement="top"
-                                                        title="View Item">
+                                                        data-bs-toggle="tooltip" data-bs-placement="top" title="View Item">
                                                         <i class="fa-solid fa-eye fa-fw"></i>
                                                     </button>
                                                     <a href="{{ route('xero.print', Crypt::encryptString($inv->invoice_id)) }}"
