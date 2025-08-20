@@ -111,7 +111,7 @@
         }
 
         .footer {
-            /* margin-top: 10px; */
+            margin-top: 30px;
             font-size: 12px;
             text-align: center;
         }
@@ -170,6 +170,10 @@
         @php
             $subTotal = 0;
             $totalTax = 0;
+            $totalExtraTax = 0;
+            $totalFurtherTax = 0;
+            $totalFed = 0;
+
             foreach ($invoice->details as $detail) {
                 $price = floatval($detail->item->item_price ?? 0);
                 $qty = floatval($detail->quantity ?? 0);
@@ -184,6 +188,9 @@
                 // Aggregate
                 $subTotal += $lineTotal;
                 $totalTax += $taxAmount;
+                $totalExtraTax += $detail->extra_tax;
+                $totalFurtherTax += $detail->further_tax;
+                $totalFed += $detail->fed_payable;
             }
             $invoice->sub_total = round($subTotal, 2);
             $invoice->total_tax = round($totalTax, 2);
@@ -211,39 +218,61 @@
                 @endforeach
             </tbody>
         </table>
-        <div class="totals">
-            <table>
-                <tr>
-                    <td class="label">Subtotal</td>
-                    <td class="text-right">{{ number_format($invoice->sub_total, 2) }}</td>
-                </tr>
-                <tr>
-                    <td class="label">Sales Tax</td>
-                    <td class="text-right">{{ number_format($invoice->total_tax, 2) }}</td>
-                </tr>
-                <tr style="border-top: 2px solid #000;">
-                    <td class="label"><strong>Grand Total</strong></td>
-                    <td class="text-right"><strong>{{ number_format($invoice->total, 2) }}</strong></td>
-                </tr>
-            </table>
-        </div>
-        <div style="clear: both;"></div>
-        <!-- Payment Details -->
-        <div class="due-info">
-            <p><strong>Due Date:</strong> {{ \Carbon\Carbon::parse($invoice->due_date)->format('d M Y') }}<br>
-                <strong>Bank Details:</strong><br>
-                <strong>Title:</strong> {{ $invoice->seller->bus_acc_branch_name }}<br>
-                <strong>Account No:</strong> {{ $invoice->seller->bus_account_number }}<br>
-                <strong>IBAN:</strong> {{ $invoice->seller->bus_IBAN }}<br>
-                <strong>SWIFT CODE:</strong> {{ $invoice->seller->bus_swift_code }}<br>
-                <strong>Branch CODE:</strong> {{ $invoice->seller->bus_acc_branch_code }}
-            </p>
+        <div style="display: flex; justify-content: space-between; margin-top:20px;">
+            <!-- Due Info Section (Left Side) -->
+            <div class="due-info" style="flex: 1; max-width: 45%; text-align: left;">
+                <p>
+                    <strong>Due Date:</strong> {{ \Carbon\Carbon::parse($invoice->due_date)->format('d M Y') }}<br>
+                    <strong>Bank Details:</strong><br>
+                    <strong>Title:</strong> {{ $invoice->seller->bus_acc_branch_name }}<br>
+                    <strong>Account No:</strong> {{ $invoice->seller->bus_account_number }}<br>
+                    <strong>IBAN:</strong> {{ $invoice->seller->bus_IBAN }}<br>
+                    <strong>SWIFT CODE:</strong> {{ $invoice->seller->bus_swift_code }}<br>
+                    <strong>Branch CODE:</strong> {{ $invoice->seller->bus_acc_branch_code }}
+                </p>
+            </div>
+
+            <!-- Totals Section (Right Side) -->
+            <div class="totals" style="flex: 1; max-width: 45%; text-align: right;">
+                <table>
+                    <tr>
+                        <td class="label">Subtotal</td>
+                        <td class="text-right">{{ number_format($invoice->sub_total, 2) }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Sales Tax</td>
+                        <td class="text-right">{{ number_format($invoice->total_tax, 2) }}</td>
+                    </tr>
+                     @if($totalExtraTax > 0)
+                    <tr>
+                        <td class="label">Extra Tax</td>
+                        <td class="text-right">{{ number_format($totalExtraTax, 2) }}</td>
+                    </tr>
+                     @endif
+                     @if($totalFurtherTax > 0)
+                    <tr>
+                        <td class="label">Further Tax</td>
+                        <td class="text-right">{{ number_format($totalFurtherTax, 2) }}</td>
+                    </tr>
+                    @endif
+                    @if($totalFed > 0)
+                    <tr>
+                        <td class="label">FED </td>
+                        <td class="text-right">{{ number_format($totalFed, 2) }}</td>
+                    </tr>
+                    @endif
+                    <tr style="border-top: 2px solid #000;">
+                        <td class="label"><strong>Grand Total</strong></td>
+                        <td class="text-right"><strong>{{ number_format($invoice->total, 2) }}</strong></td>
+                    </tr>
+                </table>
+            </div>
         </div>
         @php
             $qrCodePath = public_path('uploads/qr_codes/' . $invoice->qr_code);
             $logoPath = public_path('uploads/fbr-digital-invoicing-logo.png');
         @endphp
-        <div style="text-align: right;">
+        <div style="margin-top: 30px;text-align: right;">
             {{-- FBR Logo --}}
             @if (file_exists($logoPath))
                 <img src="{{ asset('uploads/fbr-digital-invoicing-logo.png') }}"
