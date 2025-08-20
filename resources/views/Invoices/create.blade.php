@@ -308,7 +308,7 @@
                 </div>
                 <div class="col-md-2">
                     <label class="form-label">Further Tax % (Optional)</label>
-                    <input type="number" name="items[][furtherTax_percentage]" class="form-control" />
+                    <input type="number" step="0.01" name="items[][furtherTax_percentage]" class="form-control" />
                 </div>
                 <div class="col-md-2">
                     <label class="form-label">Further Tax (Optional) <i class="bi bi-info-circle"
@@ -318,7 +318,7 @@
                 </div>
                 <div class="col-md-2">
                     <label class="form-label">Extra Tax % (Optional)</label>
-                    <input type="number" name="items[][extraTax_percentage]" class="form-control" />
+                    <input type="number" step="0.01" name="items[][extraTax_percentage]" class="form-control" />
                 </div>
                 <div class="col-md-2">
                     <label class="form-label">Extra Tax (Optional) <i class="bi bi-info-circle" data-bs-toggle="tooltip"
@@ -327,7 +327,7 @@
                 </div>
                 <div class="col-md-2">
                     <label class="form-label">FED Payable % (Optional)</label>
-                    <input type="number" name="items[][fedPayable_percentage]" class="form-control" />
+                    <input type="number" step="0.01" name="items[][fedPayable_percentage]" class="form-control" />
                 </div>
                 <div class="col-md-2">
                     <label class="form-label">FED Payable (Optional) <i class="bi bi-info-circle"
