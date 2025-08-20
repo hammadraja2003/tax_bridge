@@ -11,51 +11,49 @@
                     </div>
                     <div class="card-body p-0">
                         <div class="p-3 border-bottom">
-                            <form method="POST" action="{{ route('invoices.filter') }}" class="row g-2 align-items-end">
-                                @csrf
-                                {{-- Invoice Type Dropdown --}}
+                            <form method="GET" action="{{ route('invoices.index') }}" class="row g-2 align-items-end">
+                                {{-- Invoice Type --}}
                                 <div class="col-md-2">
                                     <label for="invoice_type" class="form-label">Invoice Type</label>
                                     <select name="invoice_type" id="invoice_type" class="form-select">
                                         <option value="">All Types</option>
                                         <option value="Sale Invoice"
-                                            {{ request('invoice_type') == 'Sale Invoice' ? 'selected' : '' }}>
-                                            Sale Invoice</option>
+                                            {{ request('invoice_type') == 'Sale Invoice' ? 'selected' : '' }}>Sale Invoice
+                                        </option>
                                         <option value="Debit Note"
-                                            {{ request('invoice_type') == 'Debit Note' ? 'selected' : '' }}>
-                                            Debit Note</option>
-                                        <!-- Add other types if needed -->
+                                            {{ request('invoice_type') == 'Debit Note' ? 'selected' : '' }}>Debit Note
+                                        </option>
                                     </select>
                                 </div>
-                                {{-- Invoice Status Dropdown --}}
+
+                                {{-- Posted to FBR --}}
                                 <div class="col-md-2">
                                     <label for="is_posted_to_fbr" class="form-label">Posted to FBR?</label>
                                     <select name="is_posted_to_fbr" id="is_posted_to_fbr" class="form-select">
                                         <option value="">All</option>
                                         <option value="1" {{ request('is_posted_to_fbr') === '1' ? 'selected' : '' }}>
-                                            Yes
-                                        </option>
+                                            Yes</option>
                                         <option value="0" {{ request('is_posted_to_fbr') === '0' ? 'selected' : '' }}>
-                                            No
-                                        </option>
+                                            No</option>
                                     </select>
                                 </div>
+
                                 {{-- Date From --}}
                                 <div class="col-md-3">
                                     <label for="date_from" class="form-label">Date From</label>
                                     <input type="date" name="date_from" id="date_from" class="form-control"
                                         value="{{ request('date_from') }}">
                                 </div>
+
                                 {{-- Date To --}}
                                 <div class="col-md-3">
                                     <label for="date_to" class="form-label">Date To</label>
                                     <input type="date" name="date_to" id="date_to" class="form-control"
                                         value="{{ request('date_to') }}">
                                 </div>
+
                                 <div class="col-2 d-flex justify-content-end gap-2">
-                                    {{-- Filter Button --}}
                                     <button type="submit" class="btn btn-primary">Filter</button>
-                                    {{-- Clear Filter Button (only if any filter is applied) --}}
                                     @if (request()->filled('invoice_type') ||
                                             request()->filled('date_from') ||
                                             request()->filled('date_to') ||
@@ -64,6 +62,7 @@
                                     @endif
                                 </div>
                             </form>
+
                         </div>
                         <div id="myTable">
                             <div class="list-table-header d-flex justify-content-sm-between">

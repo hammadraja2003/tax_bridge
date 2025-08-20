@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Validator;
 use App\Services\FbrInvoiceService;
 use Illuminate\Support\Facades\Log;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class InvoiceController extends Controller
 {
@@ -36,16 +38,17 @@ class InvoiceController extends Controller
         // 📅 Filter by date range
         if ($request->filled('date_from') && $request->filled('date_to')) {
             $query->whereBetween('invoice_date', [
-                $request->date_from,
-                $request->date_to
+                Carbon::parse($request->date_from)->toDateString(),
+                Carbon::parse($request->date_to)->toDateString(),
             ]);
         } elseif ($request->filled('date_from')) {
-            $query->whereDate('invoice_date', '>=', $request->date_from);
+            $query->whereDate('invoice_date', '>=', Carbon::parse($request->date_from)->toDateString());
         } elseif ($request->filled('date_to')) {
-            $query->whereDate('invoice_date', '<=', $request->date_to);
+            $query->whereDate('invoice_date', '<=', Carbon::parse($request->date_to)->toDateString());
         }
+
         // ✅ Filter by FBR posting status
-        if ($request->has('is_posted_to_fbr') && $request->is_posted_to_fbr !== '') {
+        if ($request->has('is_posted_to_fbr') && $request->is_posted_to_fbr !== '' && $request->is_posted_to_fbr !== null) {
             $query->where('is_posted_to_fbr', $request->is_posted_to_fbr);
         }
         // Fetch with latest invoice_date

@@ -80,20 +80,25 @@
                                                 @endphp
                                                 @if (auth()->check())
                                                     <li>
-                                                        <a class="dropdown-item"
+                                                        <a class="dropdown-item d-flex align-items-center"
                                                             href="{{ route('edit-profile', ['id' => $encryptedId]) }}">
                                                             <i class="ti ti-user-circle pe-1 f-s-18"></i> Profile
                                                         </a>
                                                     </li>
                                                 @endif
                                                 <li class="app-divider-v dotted py-1"></li>
-                                                <form method="POST" action="{{ route('logout') }}" id="logout-form">
-                                                    @csrf
-                                                    <button type="submit"
-                                                        class="dropdown-item text-danger btn btn-link p-0 m-0">
-                                                        <i class="ti ti-logout pe-1 f-s-18"></i> Log Out
-                                                    </button>
-                                                </form>
+
+                                                <li>
+                                                    <form method="POST" action="{{ route('logout') }}"
+                                                        id="logout-form">
+                                                        @csrf
+                                                        <button type="submit"
+                                                            class="dropdown-item d-flex align-items-center text-danger border-0 bg-transparent w-100 text-start">
+                                                            <i class="ti ti-logout pe-1 f-s-18"></i> Log Out
+                                                        </button>
+                                                    </form>
+                                                </li>
+
                                             </ul>
                                         </div>
                                     </li>

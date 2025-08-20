@@ -27,31 +27,30 @@ class RegisteredUserController extends Controller
      * @throws \Illuminate\Validation\ValidationException
      */
 
-     public function store(Request $request): RedirectResponse
-     {
-         $request->validate([
-             'name' => ['required', 'string', 'max:255'],
-             'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
-             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-         ], [
-             'name.required' => 'Name is required.',
-             'email.required' => 'Email is required.',
-             'email.email' => 'Please enter a valid email address.',
-             'email.unique' => 'This email is already registered.',
-             'password.required' => 'Password is required.',
-             'password.confirmed' => 'Passwords do not match.',
-         ]);
-     
-         $user = User::create([
-             'name' => $request->name,
-             'email' => $request->email,
-             'password' => Hash::make($request->password),
-         ]);
-     
-         event(new Registered($user));
-         Auth::login($user);
-     
-         return redirect(route('dashboard', absolute: false));
-     }
+    public function store(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ], [
+            'name.required' => 'Name is required.',
+            'email.required' => 'Email is required.',
+            'email.email' => 'Please enter a valid email address.',
+            'email.unique' => 'This email is already registered.',
+            'password.required' => 'Password is required.',
+            'password.confirmed' => 'Passwords do not match.',
+        ]);
 
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        event(new Registered($user));
+        Auth::login($user);
+
+        return redirect(route('dashboard', absolute: false));
+    }
 }

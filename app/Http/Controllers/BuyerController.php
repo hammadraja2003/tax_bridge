@@ -10,25 +10,47 @@ use Illuminate\Support\Facades\DB;
 
 class BuyerController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $buyers = Buyer::latest()->paginate(10);
+        $query = Buyer::query();
+
+        // 🔎 Filter by Client Type
+        if ($request->filled('byr_type')) {
+            $query->where('byr_type', $request->byr_type);
+        }
+
+        // 🔎 Search filter (name, CNIC, address, etc.)
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('byr_name', 'like', "%{$search}%")
+                    ->orWhere('byr_ntn_cnic', 'like', "%{$search}%")
+                    ->orWhere('byr_address', 'like', "%{$search}%");
+            });
+        }
+
+        // ✅ Now apply filters
+        $buyers = $query->latest()->paginate(10);
+
+        // 🔐 Tampering check
         foreach ($buyers as $buyer) {
             $calculatedHash = $buyer->generateHash();
             $buyer->tampered = $calculatedHash !== $buyer->hash;
         }
+
         return view('buyers.index', compact('buyers'));
     }
-    public function filter(Request $request)
-    {
-        session([
-            'buyers_filters' => [
-                'byr_type' => $request->byr_type,
-                'search' => $request->search,
-            ]
-        ]);
-        return redirect()->route('buyers.index');
-    }
+
+    // public function filter(Request $request)
+    // {
+    //     session([
+    //         'buyers_filters' => [
+    //             'byr_type' => $request->byr_type,
+    //             'search' => $request->search,
+    //         ]
+    //     ]);
+    //     return redirect()->route('buyers.index');
+    // }
     public function fetch($id)
     {
         return response()->json(Buyer::findOrFail($id));
