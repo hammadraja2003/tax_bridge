@@ -20,3 +20,8 @@ nav .app-logo .logo img {
 table td {
     white-space: nowrap;
 }
+@media (max-width: 767px) {
+    .logo {
+        display: none !important;
+    }
+}
