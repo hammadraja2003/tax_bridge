@@ -194,7 +194,7 @@
             }
             $invoice->sub_total = round($subTotal, 2);
             $invoice->total_tax = round($totalTax, 2);
-            $invoice->total = round($subTotal + $totalTax, 2);
+            $invoice->total = round($subTotal + $totalTax + $totalExtraTax + $totalFurtherTax + $totalFed,2);
         @endphp
         <table class="invoice-table">
             <thead>
