@@ -49,7 +49,7 @@ class AuthenticatedSessionController extends Controller
             return redirect()->intended('dashboard');
         }
 
-        return back()->withErrors(['email' => 'Invalid credentials.']);
+        return redirect()->back()->withErrors(['email' => 'Invalid credentials.']);
     }
     /**
      * Destroy an authenticated session.

@@ -7,6 +7,7 @@ use App\Http\Controllers\BuyerController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ActivityLogController;
+use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Crypt;
 
@@ -67,10 +68,14 @@ Route::middleware(['auth', 'verified', 'security.headers'])->group(function () {
     Route::post('/items/update/{id}', [ItemController::class, 'update'])->name('items.update');
     Route::delete('/items/delete/{id}', [ItemController::class, 'delete'])->name('items.delete');
 
-
+    //ActivityLog
     Route::get('/activity-logs', [ActivityLogController::class, 'index'])
         ->name('activity.logs')
         ->middleware('auth');
+
+    // /AuditLog
+    Route::get('/audit-logs', [AuditLogController::class, 'index'])->name('audit_logs.index');
+    Route::get('/audit-logs/{id}', [AuditLogController::class, 'show'])->name('audit_logs.show');
 });
 /*
 |--------------------------------------------------------------------------

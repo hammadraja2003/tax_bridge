@@ -193,35 +193,36 @@
                                             <div class="modal-body">
                                                 @if ($invoice->details->count())
                                                     <div class="table-responsive">
-                                                        <table class="table table-sm table-bordered text-nowrap">
-                                                            <thead class="table-secondary">
-                                                                <tr>
+                                                        <table class="table table-hover align-middle">
+                                                            <thead class="table-light">
+                                                                <tr class="text-uppercase small text-muted">
                                                                     <th>Description</th>
+                                                                    <th>Qty</th>
                                                                     <th>Price</th>
-                                                                    <th>Tax Rate</th>
-                                                                    <th>Quantity</th>
-                                                                    <th>Val Inc Tax</th>
-                                                                    <th>Val Exc Tax</th>
-                                                                    <th>Sales Tax WithHeld</th>
-                                                                    <th>Extra Tax</th>
-                                                                    <th>Further Tax</th>
-                                                                    <th>Fed Payable</th>
-                                                                    <th>SRO Schedule #</th>
-                                                                    <th>SRO Item Serial #</th>
+                                                                    <th>Tax</th>
+                                                                    <th>Total (Inc)</th>
+                                                                    <th>Total (Exc)</th>
+                                                                    <th>Sales Tax</th>
+                                                                    <th>Extra</th>
+                                                                    <th>Further</th>
+                                                                    <th>Fed</th>
+                                                                    <th>SRO #</th>
+                                                                    <th>Serial #</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 @foreach ($invoice->details as $item)
                                                                     <tr>
-                                                                        <td>
+                                                                        <td class="fw-medium">
                                                                             {{ $item->item->item_description ?? 'N/A' }}
                                                                         </td>
+                                                                        <td>{{ $item->quantity }}</td>
                                                                         <td>{{ number_format($item->item->item_price, 2) }}
                                                                         </td>
                                                                         <td>{{ number_format($item->item->item_tax_rate, 2) }}
                                                                         </td>
-                                                                        <td>{{ $item->quantity }}</td>
-                                                                        <td>{{ number_format($item->total_value, 2) }}</td>
+                                                                        <td class="text-success">
+                                                                            {{ number_format($item->total_value, 2) }}</td>
                                                                         <td>{{ number_format($item->value_excl_tax, 2) }}
                                                                         </td>
                                                                         <td>{{ number_format($item->sales_tax_withheld, 2) }}
@@ -237,7 +238,7 @@
                                                         </table>
                                                     </div>
                                                 @else
-                                                    <p>No items found for this invoice.</p>
+                                                    <p class="text-muted">No items found for this invoice.</p>
                                                 @endif
                                             </div>
                                         </div>

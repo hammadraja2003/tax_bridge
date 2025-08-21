@@ -5,7 +5,7 @@
         {{-- Tampering check notice (at page end) --}}
         <div class="mt-4 text-end">
             @if ($config && $config->tampered)
-                <span class="text-danger fw-bold">⚠ Data may be tampered!</span>
+                <span class="text-danger fw-bold">⚠ Data tampered!</span>
             @endif
         </div>
         <form class="app-form needs-validation" novalidate method="POST" action="{{ route('company.configuration.save') }}"

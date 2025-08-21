@@ -125,17 +125,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 
-<body>
+<body onload="window.print()">
 
-    @push('scripts')
-        {{-- Pass PHP → JS --}}
+    {{-- @push('scripts')
         <script nonce="{{ $nonce }}">
             const invoiceNumber = @json($invoice->invoice_number);
         </script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
             nonce="{{ $nonce }}"></script>
         <script src="{{ asset('assets/js/print.js') }}" nonce="{{ $nonce }}"></script>
-    @endpush
+    @endpush --}}
     <!-- Printable Area -->
     <div class="container" id="invoiceArea">
         <div class="header">
@@ -194,7 +193,7 @@
             }
             $invoice->sub_total = round($subTotal, 2);
             $invoice->total_tax = round($totalTax, 2);
-            $invoice->total = round($subTotal + $totalTax + $totalExtraTax + $totalFurtherTax + $totalFed,2);
+            $invoice->total = round($subTotal + $totalTax + $totalExtraTax + $totalFurtherTax + $totalFed, 2);
         @endphp
         <table class="invoice-table">
             <thead>
@@ -243,23 +242,23 @@
                         <td class="label">Sales Tax</td>
                         <td class="text-right">{{ number_format($invoice->total_tax, 2) }}</td>
                     </tr>
-                     @if($totalExtraTax > 0)
-                    <tr>
-                        <td class="label">Extra Tax</td>
-                        <td class="text-right">{{ number_format($totalExtraTax, 2) }}</td>
-                    </tr>
-                     @endif
-                     @if($totalFurtherTax > 0)
-                    <tr>
-                        <td class="label">Further Tax</td>
-                        <td class="text-right">{{ number_format($totalFurtherTax, 2) }}</td>
-                    </tr>
+                    @if ($totalExtraTax > 0)
+                        <tr>
+                            <td class="label">Extra Tax</td>
+                            <td class="text-right">{{ number_format($totalExtraTax, 2) }}</td>
+                        </tr>
                     @endif
-                    @if($totalFed > 0)
-                    <tr>
-                        <td class="label">FED </td>
-                        <td class="text-right">{{ number_format($totalFed, 2) }}</td>
-                    </tr>
+                    @if ($totalFurtherTax > 0)
+                        <tr>
+                            <td class="label">Further Tax</td>
+                            <td class="text-right">{{ number_format($totalFurtherTax, 2) }}</td>
+                        </tr>
+                    @endif
+                    @if ($totalFed > 0)
+                        <tr>
+                            <td class="label">FED </td>
+                            <td class="text-right">{{ number_format($totalFed, 2) }}</td>
+                        </tr>
                     @endif
                     <tr style="border-top: 2px solid #000;">
                         <td class="label"><strong>Grand Total</strong></td>
@@ -272,29 +271,31 @@
             $qrCodePath = public_path('uploads/qr_codes/' . $invoice->qr_code);
             $logoPath = public_path('uploads/fbr-digital-invoicing-logo.png');
         @endphp
-        <div style="margin-top: 30px;text-align: right;">
-            {{-- FBR Logo --}}
-            @if (file_exists($logoPath))
-                <img src="{{ asset('uploads/fbr-digital-invoicing-logo.png') }}"
-                    alt="FBR Digital Invoicing System Logo"
-                    style="width:1in; height:1in; object-fit:contain; margin-left:10px;">
-            @else
-                <p>No FBR Logo available</p>
-            @endif
-            {{-- QR Code --}}
-            @if (file_exists($qrCodePath))
-                <img src="{{ asset('uploads/qr_codes/' . $invoice->qr_code) }}" alt="QR Code"
-                    style="width:1in; height:1in; object-fit:contain; margin-left:10px;">
-            @else
-                <p>No QR Code available</p>
-            @endif
-            {{-- FBR Invoice Number --}}
-            @if (!empty($invoice->fbr_invoice_number))
-                <p style="margin-top: 5px; font-weight: bold;">
-                    FBR Invoice #: {{ $invoice->fbr_invoice_number }}
-                </p>
-            @endif
-        </div>
+        @if ($invoice->is_posted_to_fbr == 1)
+            <div style="margin-top: 30px;text-align: right;">
+                {{-- FBR Logo --}}
+                @if (file_exists($logoPath))
+                    <img src="{{ asset('uploads/fbr-digital-invoicing-logo.png') }}"
+                        alt="FBR Digital Invoicing System Logo"
+                        style="width:1in; height:1in; object-fit:contain; margin-left:10px;">
+                @else
+                    <p>No FBR Logo available</p>
+                @endif
+                {{-- QR Code --}}
+                @if (file_exists($qrCodePath))
+                    <img src="{{ asset('uploads/qr_codes/' . $invoice->qr_code) }}" alt="QR Code"
+                        style="width:1in; height:1in; object-fit:contain; margin-left:10px;">
+                @else
+                    <p>No QR Code available</p>
+                @endif
+                {{-- FBR Invoice Number --}}
+                @if (!empty($invoice->fbr_invoice_number))
+                    <p style="margin-top: 5px; font-weight: bold;">
+                        FBR Invoice #: {{ $invoice->fbr_invoice_number }}
+                    </p>
+                @endif
+            </div>
+        @endif
         <!-- Payment Advice -->
         <div class="payment-advice">
             <h2>PAYMENT ADVICE</h2>

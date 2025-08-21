@@ -98,7 +98,7 @@
                                                 <td class="contact">{{ $buyer->byr_address }}</td>
                                                 <td>
                                                     @if ($buyer->tampered)
-                                                        <span class="text-danger fw-bold">⚠ Data may be tampered!</span>
+                                                        <span class="text-danger fw-bold">⚠ Data tampered!</span>
                                                     @else
                                                         <span class="text-success">OK</span>
                                                     @endif

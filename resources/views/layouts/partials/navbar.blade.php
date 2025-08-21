@@ -23,6 +23,7 @@
                     $isBuyersRoute = request()->routeIs('buyers.*');
                     $isItemsRoute = request()->routeIs('items.*');
                     $isActivityRoute = request()->routeIs('activity.*');
+                    $isAuditRoute = request()->routeIs('audit_logs.*');
                 @endphp
                 <a class="{{ $isInvoiceRoute ? 'activeTab' : '' }}" href="{{ route('invoices.index') }}">
                     <i class="ti ti-chart-treemap"></i>Invoices
@@ -48,6 +49,10 @@
                     <li>
                         <a class="{{ $isActivityRoute ? 'activeTab' : '' }}"
                             href="{{ route('activity.logs') }}">Activity
+                            Logs</a>
+                    </li>
+                    <li>
+                        <a class="{{ $isAuditRoute ? 'activeTab' : '' }}" href="{{ route('audit_logs.index') }}">Audit
                             Logs</a>
                     </li>
                     {{-- <li>
