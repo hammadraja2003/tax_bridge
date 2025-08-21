@@ -154,3 +154,7 @@ function componentToHex(c) {
     var hex = c.toString(16);
     return hex.length === 1 ? "0" + hex : hex;
 }
+
+  document.querySelector('.header-toggle').addEventListener('click', function () {
+        document.querySelector('.dark-sidebar').classList.toggle('open');
+    });
