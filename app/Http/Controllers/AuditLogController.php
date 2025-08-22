@@ -27,7 +27,7 @@ class AuditLogController extends Controller
                 'users.name as user_name'
             )
             ->orderBy('changed_at', 'desc')
-            ->get();
+            ->paginate(10);
 
         // 🔎 Check tampering (row_hash_old vs calculated hash)
         foreach ($logs as $log) {

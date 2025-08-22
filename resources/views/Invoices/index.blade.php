@@ -172,12 +172,14 @@
                                 </table>
                             </div>
                             <div class="d-flex justify-content-between align-items-center px-3 py-2 small text-muted">
-                                <div id="table-count-info">
+                                <!-- <div id="table-count-info">
                                     Showing {{ $invoices->firstItem() ?? 0 }} to {{ $invoices->lastItem() ?? 0 }} of
                                     {{ $invoices->total() }} entries
-                                </div>
-                                <div class="list-pagination">
-                                    {{ $invoices->links() }} {{-- Laravel built-in pagination UI --}}
+                                </div> -->
+                                 <div class="list-pagination">
+                                    <div class="custom_pagination">
+                                        {{ $invoices->links() }}
+                                    </div>
                                 </div>
                             </div>
                             @foreach ($invoices as $invoice)

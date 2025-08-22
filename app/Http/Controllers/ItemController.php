@@ -11,7 +11,7 @@ class ItemController extends Controller
 {
     public function index()
     {
-        $items = Item::latest()->paginate(10); // 10 items per page
+        $items = Item::latest()->paginate(2); // 10 items per page
         // Check for tampering
         foreach ($items as $item) {
             $calculatedHash = md5(

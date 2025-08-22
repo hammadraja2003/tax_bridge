@@ -81,7 +81,7 @@ class InvoiceController extends Controller
             $query->where('is_posted_to_fbr', $request->is_posted_to_fbr);
         }
         // Fetch with latest invoice_date
-        $invoices = $query->orderByDesc('invoice_id')->paginate(10);
+        $invoices = $query->orderByDesc('invoice_id')->paginate(7);
         foreach ($invoices as $invoice) {
             // Header tampering
             $invoice->tampered = $invoice->isTampered();

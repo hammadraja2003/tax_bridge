@@ -1,4 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `tax_bridge` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `tax_bridge`;
 -- MySQL dump 10.13  Distrib 8.0.42, for Win64 (x86_64)
 --
@@ -21,9 +20,7 @@ USE `tax_bridge`;
 -- Table structure for table `activity_logs`
 --
 
-DROP TABLE IF EXISTS `activity_logs`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+
 CREATE TABLE `activity_logs` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `user_id` bigint unsigned DEFAULT NULL,
@@ -41,7 +38,6 @@ CREATE TABLE `activity_logs` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `activity_logs`
@@ -57,9 +53,7 @@ UNLOCK TABLES;
 -- Table structure for table `audit_logs`
 --
 
-DROP TABLE IF EXISTS `audit_logs`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+
 CREATE TABLE `audit_logs` (
   `audit_id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `table_name` varchar(100) NOT NULL,
@@ -75,8 +69,7 @@ CREATE TABLE `audit_logs` (
   `device_info` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`audit_id`),
   KEY `idx_table_row` (`table_name`,`row_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=153 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=InnoDB AUTO_INCREMENT=153 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ;
 
 --
 -- Dumping data for table `audit_logs`
@@ -97,26 +90,25 @@ DROP TABLE IF EXISTS `business_configurations`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `business_configurations` (
   `bus_config_id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `bus_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `bus_ntn_cnic` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `bus_address` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `bus_province` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `bus_logo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `bus_account_title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `bus_account_number` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `bus_reg_num` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `bus_contact_num` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `bus_contact_person` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `bus_IBAN` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `bus_swift_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `bus_acc_branch_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `bus_acc_branch_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `hash` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `bus_name` varchar(255) COLLATE utf8mb4_unicode_ci  NOT NULL,
+  `bus_ntn_cnic` varchar(255) COLLATE utf8mb4_unicode_ci  NOT NULL,
+  `bus_address` text COLLATE utf8mb4_unicode_ci  NOT NULL,
+  `bus_province` varchar(255) COLLATE utf8mb4_unicode_ci  NOT NULL,
+  `bus_logo` varchar(255) COLLATE utf8mb4_unicode_ci  NOT NULL,
+  `bus_account_title` varchar(255) COLLATE utf8mb4_unicode_ci  NOT NULL,
+  `bus_account_number` varchar(255) COLLATE utf8mb4_unicode_ci  NOT NULL,
+  `bus_reg_num` varchar(255) COLLATE utf8mb4_unicode_ci  NOT NULL,
+  `bus_contact_num` varchar(20) COLLATE utf8mb4_unicode_ci  NOT NULL,
+  `bus_contact_person` varchar(255) COLLATE utf8mb4_unicode_ci  NOT NULL,
+  `bus_IBAN` varchar(255) COLLATE utf8mb4_unicode_ci  NOT NULL,
+  `bus_swift_code` varchar(255) COLLATE utf8mb4_unicode_ci  DEFAULT NULL,
+  `bus_acc_branch_name` varchar(255) COLLATE utf8mb4_unicode_ci  NOT NULL,
+  `bus_acc_branch_code` varchar(255) COLLATE utf8mb4_unicode_ci  DEFAULT NULL,
+  `hash` varchar(255) COLLATE utf8mb4_unicode_ci  DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`bus_config_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ;
 
 --
 -- Dumping data for table `business_configurations`
@@ -132,7 +124,7 @@ UNLOCK TABLES;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci  */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -203,7 +195,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci  */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -308,7 +300,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci  */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -384,27 +376,27 @@ DROP TABLE IF EXISTS `buyers`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `buyers` (
   `byr_id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `byr_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `byr_name` varchar(255) COLLATE utf8mb4_unicode_ci  NOT NULL,
   `byr_type` tinyint unsigned NOT NULL DEFAULT '0',
-  `byr_ntn_cnic` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `byr_address` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `byr_province` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `byr_logo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `byr_account_title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `byr_account_number` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `byr_reg_num` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `byr_contact_num` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `byr_contact_person` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `byr_IBAN` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `byr_swift_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `byr_acc_branch_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `byr_acc_branch_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `hash` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `byr_ntn_cnic` varchar(50) COLLATE utf8mb4_unicode_ci  DEFAULT NULL,
+  `byr_address` varchar(255) COLLATE utf8mb4_unicode_ci  DEFAULT NULL,
+  `byr_province` varchar(255) COLLATE utf8mb4_unicode_ci  DEFAULT NULL,
+  `byr_logo` varchar(255) COLLATE utf8mb4_unicode_ci  NOT NULL,
+  `byr_account_title` varchar(255) COLLATE utf8mb4_unicode_ci  NOT NULL,
+  `byr_account_number` varchar(255) COLLATE utf8mb4_unicode_ci  NOT NULL,
+  `byr_reg_num` varchar(255) COLLATE utf8mb4_unicode_ci  NOT NULL,
+  `byr_contact_num` varchar(20) COLLATE utf8mb4_unicode_ci  NOT NULL,
+  `byr_contact_person` varchar(255) COLLATE utf8mb4_unicode_ci  NOT NULL,
+  `byr_IBAN` varchar(255) COLLATE utf8mb4_unicode_ci  NOT NULL,
+  `byr_swift_code` varchar(255) COLLATE utf8mb4_unicode_ci  DEFAULT NULL,
+  `byr_acc_branch_name` varchar(255) COLLATE utf8mb4_unicode_ci  NOT NULL,
+  `byr_acc_branch_code` varchar(255) COLLATE utf8mb4_unicode_ci  DEFAULT NULL,
+  `hash` varchar(255) COLLATE utf8mb4_unicode_ci  DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`byr_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ;
+
 
 --
 -- Dumping data for table `buyers`
@@ -420,7 +412,7 @@ UNLOCK TABLES;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci  */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -493,7 +485,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci  */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -602,7 +594,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci  */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -679,12 +671,12 @@ DROP TABLE IF EXISTS `cache`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cache` (
-  `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `value` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `key` varchar(255) COLLATE utf8mb4_unicode_ci  NOT NULL,
+  `value` mediumtext COLLATE utf8mb4_unicode_ci  NOT NULL,
   `expiration` int NOT NULL,
   PRIMARY KEY (`key`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ;
+
 
 --
 -- Dumping data for table `cache`
@@ -704,12 +696,12 @@ DROP TABLE IF EXISTS `cache_locks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cache_locks` (
-  `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `owner` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `key` varchar(255) COLLATE utf8mb4_unicode_ci  NOT NULL,
+  `owner` varchar(255) COLLATE utf8mb4_unicode_ci  NOT NULL,
   `expiration` int NOT NULL,
   PRIMARY KEY (`key`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ;
+
 
 --
 -- Dumping data for table `cache_locks`
@@ -729,16 +721,16 @@ DROP TABLE IF EXISTS `failed_jobs`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `failed_jobs` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci  NOT NULL,
+  `connection` text COLLATE utf8mb4_unicode_ci  NOT NULL,
+  `queue` text COLLATE utf8mb4_unicode_ci  NOT NULL,
+  `payload` longtext COLLATE utf8mb4_unicode_ci  NOT NULL,
+  `exception` longtext COLLATE utf8mb4_unicode_ci  NOT NULL,
   `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ;
+
 
 --
 -- Dumping data for table `failed_jobs`
@@ -770,10 +762,10 @@ CREATE TABLE `invoice_details` (
   `further_tax` decimal(12,2) DEFAULT '0.00',
   `fed_payable` decimal(12,2) DEFAULT '0.00',
   `discount` decimal(12,2) DEFAULT '0.00',
-  `sale_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `sro_schedule_no` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `sro_item_serial_no` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `hash` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `sale_type` varchar(255) COLLATE utf8mb4_unicode_ci  NOT NULL,
+  `sro_schedule_no` varchar(50) COLLATE utf8mb4_unicode_ci  DEFAULT NULL,
+  `sro_item_serial_no` varchar(50) COLLATE utf8mb4_unicode_ci  DEFAULT NULL,
+  `hash` varchar(64) COLLATE utf8mb4_unicode_ci  DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`invoice_detail_id`),
@@ -782,8 +774,8 @@ CREATE TABLE `invoice_details` (
   KEY `invoice_details_hash_index` (`hash`),
   CONSTRAINT `invoice_details_invoice_id_foreign` FOREIGN KEY (`invoice_id`) REFERENCES `invoices` (`invoice_id`) ON DELETE CASCADE,
   CONSTRAINT `invoice_details_item_id_foreign` FOREIGN KEY (`item_id`) REFERENCES `items` (`item_id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ;
+
 
 --
 -- Dumping data for table `invoice_details`
@@ -799,7 +791,7 @@ UNLOCK TABLES;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci  */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -866,7 +858,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci  */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -969,7 +961,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci  */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -1041,20 +1033,20 @@ DROP TABLE IF EXISTS `invoices`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `invoices` (
   `invoice_id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `invoice_no` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `invoice_type` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `invoice_no` varchar(255) COLLATE utf8mb4_unicode_ci  DEFAULT NULL,
+  `invoice_type` varchar(50) COLLATE utf8mb4_unicode_ci  NOT NULL,
   `invoice_date` date NOT NULL,
   `due_date` date DEFAULT NULL,
-  `scenario_id` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `invoice_ref_no` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `scenario_id` varchar(50) COLLATE utf8mb4_unicode_ci  DEFAULT NULL,
+  `invoice_ref_no` varchar(100) COLLATE utf8mb4_unicode_ci  DEFAULT NULL,
   `seller_id` bigint unsigned NOT NULL,
   `buyer_id` bigint unsigned NOT NULL,
-  `fbr_invoice_number` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `qr_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `fbr_invoice_number` varchar(255) COLLATE utf8mb4_unicode_ci  DEFAULT NULL,
+  `qr_code` varchar(255) COLLATE utf8mb4_unicode_ci  DEFAULT NULL,
   `is_posted_to_fbr` tinyint NOT NULL DEFAULT '0',
   `invoice_status` tinyint NOT NULL DEFAULT '1',
-  `response_status` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `response_message` text COLLATE utf8mb4_unicode_ci,
+  `response_status` varchar(50) COLLATE utf8mb4_unicode_ci  DEFAULT NULL,
+  `response_message` text COLLATE utf8mb4_unicode_ci ,
   `totalAmountExcludingTax` double DEFAULT NULL,
   `totalAmountIncludingTax` double DEFAULT NULL,
   `totalSalesTax` double DEFAULT NULL,
@@ -1063,9 +1055,9 @@ CREATE TABLE `invoices` (
   `shipping_charges` double DEFAULT NULL,
   `other_charges` double DEFAULT NULL,
   `discount_amount` double DEFAULT NULL,
-  `payment_status` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `notes` text COLLATE utf8mb4_unicode_ci,
-  `hash` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `payment_status` varchar(50) COLLATE utf8mb4_unicode_ci  DEFAULT NULL,
+  `notes` text COLLATE utf8mb4_unicode_ci ,
+  `hash` varchar(64) COLLATE utf8mb4_unicode_ci  DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`invoice_id`),
@@ -1074,8 +1066,8 @@ CREATE TABLE `invoices` (
   KEY `invoices_hash_index` (`hash`),
   CONSTRAINT `invoices_buyer_id_foreign` FOREIGN KEY (`buyer_id`) REFERENCES `buyers` (`byr_id`) ON DELETE CASCADE,
   CONSTRAINT `invoices_seller_id_foreign` FOREIGN KEY (`seller_id`) REFERENCES `business_configurations` (`bus_config_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ;
+
 
 --
 -- Dumping data for table `invoices`
@@ -1091,7 +1083,7 @@ UNLOCK TABLES;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci  */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -1148,7 +1140,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci  */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -1231,7 +1223,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci  */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -1293,17 +1285,17 @@ DROP TABLE IF EXISTS `items`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `items` (
   `item_id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `item_hs_code` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `item_description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `item_hs_code` varchar(20) COLLATE utf8mb4_unicode_ci  DEFAULT NULL,
+  `item_description` varchar(255) COLLATE utf8mb4_unicode_ci  NOT NULL,
   `item_price` double NOT NULL,
-  `item_tax_rate` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `item_uom` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `hash` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'MD5 hash to detect tampering',
+  `item_tax_rate` varchar(10) COLLATE utf8mb4_unicode_ci  NOT NULL,
+  `item_uom` varchar(50) COLLATE utf8mb4_unicode_ci  NOT NULL,
+  `hash` varchar(64) COLLATE utf8mb4_unicode_ci  DEFAULT NULL COMMENT 'MD5 hash to detect tampering',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`item_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ;
+
 
 --
 -- Dumping data for table `items`
@@ -1319,7 +1311,7 @@ UNLOCK TABLES;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci  */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -1372,7 +1364,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci  */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -1441,7 +1433,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci  */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -1498,19 +1490,19 @@ DROP TABLE IF EXISTS `job_batches`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `job_batches` (
-  `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` varchar(255) COLLATE utf8mb4_unicode_ci  NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci  NOT NULL,
   `total_jobs` int NOT NULL,
   `pending_jobs` int NOT NULL,
   `failed_jobs` int NOT NULL,
-  `failed_job_ids` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `options` mediumtext COLLATE utf8mb4_unicode_ci,
+  `failed_job_ids` longtext COLLATE utf8mb4_unicode_ci  NOT NULL,
+  `options` mediumtext COLLATE utf8mb4_unicode_ci ,
   `cancelled_at` int DEFAULT NULL,
   `created_at` int NOT NULL,
   `finished_at` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ;
+
 
 --
 -- Dumping data for table `job_batches`
@@ -1530,16 +1522,16 @@ DROP TABLE IF EXISTS `jobs`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `jobs` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `queue` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` varchar(255) COLLATE utf8mb4_unicode_ci  NOT NULL,
+  `payload` longtext COLLATE utf8mb4_unicode_ci  NOT NULL,
   `attempts` tinyint unsigned NOT NULL,
   `reserved_at` int unsigned DEFAULT NULL,
   `available_at` int unsigned NOT NULL,
   `created_at` int unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `jobs_queue_index` (`queue`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ;
+
 
 --
 -- Dumping data for table `jobs`
@@ -1559,11 +1551,11 @@ DROP TABLE IF EXISTS `migrations`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `migrations` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci  NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ;
+
 
 --
 -- Dumping data for table `migrations`
@@ -1583,12 +1575,12 @@ DROP TABLE IF EXISTS `password_reset_tokens`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `password_reset_tokens` (
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci  NOT NULL,
+  `token` varchar(255) COLLATE utf8mb4_unicode_ci  NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ;
+
 
 --
 -- Dumping data for table `password_reset_tokens`
@@ -1607,17 +1599,17 @@ DROP TABLE IF EXISTS `sessions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sessions` (
-  `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` varchar(255) COLLATE utf8mb4_unicode_ci  NOT NULL,
   `user_id` bigint unsigned DEFAULT NULL,
-  `ip_address` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `user_agent` text COLLATE utf8mb4_unicode_ci,
-  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ip_address` varchar(45) COLLATE utf8mb4_unicode_ci  DEFAULT NULL,
+  `user_agent` text COLLATE utf8mb4_unicode_ci ,
+  `payload` longtext COLLATE utf8mb4_unicode_ci  NOT NULL,
   `last_activity` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `sessions_user_id_index` (`user_id`),
   KEY `sessions_last_activity_index` (`last_activity`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ;
+
 
 --
 -- Dumping data for table `sessions`
@@ -1638,19 +1630,19 @@ DROP TABLE IF EXISTS `users`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci  NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci  NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci  NOT NULL,
   `twofa_enabled` tinyint(1) NOT NULL DEFAULT '0',
-  `twofa_secret` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `twofa_secret` varchar(255) COLLATE utf8mb4_unicode_ci  DEFAULT NULL,
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci  DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ;
+
 
 --
 -- Dumping data for table `users`
@@ -1659,16 +1651,3 @@ CREATE TABLE `users` (
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` VALUES (2,'Hammad Ali','hammad.ali@f3technologies.eu',NULL,'$2y$12$pJSGUTTYxPO7RIRKganrT.d5Yd.M.qT5RR7DNjlDMWfj9t7UTD0kG',0,NULL,NULL,'2025-07-02 01:29:39','2025-08-18 02:27:49'),(3,'Hammad Naseer','hammad.naseer@f3technologies.eu',NULL,'$2y$12$uUtR1dE5s3FQOYUd/2DSmOhnR64Mo/SkDT.PZ.j4CA5H0JTJDpmti',0,NULL,NULL,'2025-07-04 02:20:40','2025-07-04 02:20:40'),(4,'PRAL','admin@pral.com',NULL,'$2y$12$L.S4Y73wLI.F5tF6sbUyf.mkrEGCMbU7oh789Ba2caicyUAlK1ApW',0,NULL,NULL,'2025-07-02 01:29:39','2025-07-02 01:29:39');
-/*!40000 ALTER TABLE `users` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
-
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2025-08-20 15:27:29
