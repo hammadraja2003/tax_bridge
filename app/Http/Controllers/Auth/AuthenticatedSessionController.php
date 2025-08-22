@@ -46,10 +46,10 @@ class AuthenticatedSessionController extends Controller
 
             // No 2FA → normal login
             $request->session()->regenerate();
-            return redirect()->intended('dashboard');
+            return redirect()->intended('dashboard')->with('message','User Login Successfull');
         }
 
-        return redirect()->back()->withErrors(['email' => 'Invalid credentials.']);
+        return redirect()->back()->withErrors(['toast_error' => 'Invalid credentials.']);
     }
     /**
      * Destroy an authenticated session.
