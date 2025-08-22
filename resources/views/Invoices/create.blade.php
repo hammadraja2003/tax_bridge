@@ -49,9 +49,9 @@
                         <input type="text" name="invoiceRefNo" id="invoiceRefNo" class="form-control"
                             value="{{ $isEdit ? $invoice->invoice_ref_no : '' }}" />
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-6">
                         <label class="form-label">Scenario ID (Optional)</label>
-                        <select name="scenarioId" class="form-select" id="scenarioId">
+                        {{-- <select name="scenarioId" class="form-select" id="scenarioId">
                             <option value="">Select Scenario</option>
                             <option value="SN018" {{ $isEdit && $invoice->scenario_id === 'SN018' ? 'selected' : '' }}>
                                 SN018
@@ -59,6 +59,9 @@
                             <option value="SN019" {{ $isEdit && $invoice->scenario_id === 'SN019' ? 'selected' : '' }}>
                                 SN019
                             </option>
+                        </select> --}}
+                        <select name="scenarioId" class="form-select" id="scenarioId">
+                            {!! renderScenarioOptions($isEdit ? $invoice->scenario_id : null) !!}
                         </select>
                     </div>
                 </div>
@@ -339,8 +342,8 @@
                 <div class="col-md-4">
                     <label class="form-label required">Sale Type <i class="bi bi-info-circle" data-bs-toggle="tooltip"
                             title=" Important: Describes the nature of sale.Could be: 'Goods at reduced rate', 'Exempt', 'Zero-rated', 'Services', etc."></i></label>
-                    <input type="text" name="items[][saleType]" id="saleTypeInput" class="form-control"
-                        value="Services (FED in ST Mode)" placeholder="e.g. Goods at standard rate" required />
+                    <input type="text" name="items[][saleType]" class="form-control saleTypeInput"
+                        placeholder="e.g. Goods at standard rate" required readonly />
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Discount (Optional) <i class="bi bi-info-circle" data-bs-toggle="tooltip"
@@ -424,20 +427,6 @@
                             loader?.classList.add("d-none");
                         }
                     });
-                });
-            }
-            // ===== Scenario ID to Sale Type Auto-fill =====
-            const scenarioSelect = document.getElementById('scenarioId');
-            if (scenarioSelect) {
-                scenarioSelect.addEventListener('change', function() {
-                    let saleTypeField = document.getElementById('saleTypeInput');
-                    if (this.value === 'SN018') {
-                        saleTypeField.value = 'Services (FED in ST Mode)';
-                    } else if (this.value === 'SN019') {
-                        saleTypeField.value = 'Services';
-                    } else {
-                        saleTypeField.value = '';
-                    }
                 });
             }
             // ===== Invoice Date → Due Date Restriction =====

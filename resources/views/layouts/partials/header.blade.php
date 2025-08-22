@@ -46,6 +46,14 @@
                                         </div>
                                     </li>
                                     <li class="header-apps">
+                                        <div class="flex-grow-1 ps-2">
+                                            <h6 class="mb-0 text-uppercase">
+                                                @if (auth()->check())
+                                                    {{ auth()->user()->name }}
+                                                @endif
+                                            </h6>
+                                        </div>
+
                                     </li>
                                     <li class="header-profile">
                                         <div class="flex-shrink-0 dropdown">

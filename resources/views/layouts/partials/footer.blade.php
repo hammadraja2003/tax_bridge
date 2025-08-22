@@ -1,19 +1,20 @@
-<footer>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-sm-9 col-12">
-        <ul class="footer-text">
-          <li>
-            <p class="mb-0">2025 © Securesim. All rights reserved.</p>
-          </li>
-          <li> <a href="#"> V1.0 </a></li>
-        </ul>
-      </div>
-      {{-- <div class="col-sm-3">
-        <ul class="footer-text text-end">
-          <li> <a href="mailto:teqlathemes@gmail.com."> Need Help <i class="ti ti-help"></i></a></li>
-        </ul>
-      </div> --}}
+<footer class="text-center py-3 mt-5 border-top">
+    <div class="d-flex flex-column align-items-center">
+        <span class="small text-muted">
+            &copy; {{ date('Y') }} Secureism | All rights reserved V1.0
+        </span>
+        <div class="mt-2 small">
+            We are compliant with:
+            <span class="px-3 py-2 me-1 text-success">
+                ✅ VAPT
+            </span>
+            <span class="px-3 py-2 me-1 text-success">
+                ✅ OWASP Standards
+            </span>
+            <span class="px-3 py-2 text-success">
+                ✅ Secureism Policies
+            </span>
+        </div>
+
     </div>
-  </div>
 </footer>

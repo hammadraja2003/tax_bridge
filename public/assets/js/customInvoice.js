@@ -5,6 +5,28 @@ if (sessionStorage.getItem("justSubmittedForm") === "1") {
     window.skipBuyerFetch = true; // ✅ use this later
 }
 
+/* ----------------- Scenario Handling ----------------- */
+function updateSaleType(targetSelect) {
+    const selectedOption = targetSelect.options[targetSelect.selectedIndex];
+    const saleType = selectedOption.getAttribute("data-sale-type");
+
+    // update ALL saleTypeInput fields in all rows
+    $(".saleTypeInput").val(saleType ? saleType : "");
+}
+
+function initScenarioHandler() {
+    const scenarioSelect = document.getElementById("scenarioId");
+    if (!scenarioSelect) return;
+
+    // On change
+    scenarioSelect.addEventListener("change", function () {
+        updateSaleType(this);
+    });
+
+    // On page load (edit mode)
+    updateSaleType(scenarioSelect);
+}
+
 let lastClickedSubmitButton = null;
 document.addEventListener("DOMContentLoaded", function () {
     initBuyerChangeHandler();
@@ -13,6 +35,8 @@ document.addEventListener("DOMContentLoaded", function () {
     initEditInvoiceItems();
     initFormBehavior();
     initBuyerChangeDispatchIfNeeded(); // <-- add this here
+    // 👇 add scenario logic here
+    initScenarioHandler();
 });
 
 function initBuyerChangeHandler() {
@@ -248,6 +272,9 @@ function addItem() {
     $("#itemsContainer").append($template);
     itemIndex++;
     updateSubmitButton();
+    // ✅ update all saleType inputs for new row also
+    const scenarioSelect = document.getElementById("scenarioId");
+    if (scenarioSelect) updateSaleType(scenarioSelect);
 }
 
 function updateSubmitButton() {
@@ -398,11 +425,58 @@ function initBuyerChangeDispatchIfNeeded() {
     }
 }
 
+// function initFormBehavior() {
+//     const form = document.getElementById("invoiceForm");
+//     const submitBtn = form?.querySelector('button[type="submit"]');
+//     if (!form || !submitBtn) return;
+
+//     form.addEventListener("keydown", function (e) {
+//         if (e.key === "Enter" && e.target.tagName !== "TEXTAREA") {
+//             e.preventDefault();
+//         }
+//     });
+
+//     form.addEventListener("submit", function (e) {
+//         // ✅ Only proceed if one of the real submit buttons was clicked
+//         if (
+//             lastClickedSubmitButton === "draft" ||
+//             lastClickedSubmitButton === "fbr"
+//         ) {
+//             sessionStorage.setItem("justSubmittedForm", "1");
+//             window.formIsSubmitting = true;
+
+//             form.querySelectorAll('input[type="text"], textarea').forEach(
+//                 (input) => {
+//                     input.value = input.value.trim();
+//                 }
+//             );
+
+//             // Disable both buttons
+//             const draftBtn = document.getElementById("draftBtn");
+//             const submitBtn = document.getElementById("submitBtn");
+//             draftBtn.disabled = true;
+//             submitBtn.disabled = true;
+
+//             // Apply spinner to clicked button
+//             if (lastClickedSubmitButton === "draft") {
+//                 draftBtn.innerHTML =
+//                     '<span class="spinner-border spinner-border-sm me-1"></span> Saving as Draft...';
+//             } else {
+//                 submitBtn.innerHTML =
+//                     '<span class="spinner-border spinner-border-sm me-1"></span> Posting to FBR...';
+//             }
+//         } else {
+//             e.preventDefault(); // block unwanted submits
+//         }
+//     });
+// }
+
 function initFormBehavior() {
-    const form = document.querySelector("form");
+    const form = document.getElementById("invoiceForm");
     const submitBtn = form?.querySelector('button[type="submit"]');
     if (!form || !submitBtn) return;
 
+    // Prevent accidental submit on Enter except textarea
     form.addEventListener("keydown", function (e) {
         if (e.key === "Enter" && e.target.tagName !== "TEXTAREA") {
             e.preventDefault();
@@ -410,7 +484,7 @@ function initFormBehavior() {
     });
 
     form.addEventListener("submit", function (e) {
-        // ✅ Only proceed if one of the real submit buttons was clicked
+        // Allow submit ONLY if Draft or FBR button was clicked
         if (
             lastClickedSubmitButton === "draft" ||
             lastClickedSubmitButton === "fbr"
@@ -418,25 +492,27 @@ function initFormBehavior() {
             sessionStorage.setItem("justSubmittedForm", "1");
             window.formIsSubmitting = true;
 
+            // Trim text/textarea values
             form.querySelectorAll('input[type="text"], textarea').forEach(
                 (input) => {
                     input.value = input.value.trim();
                 }
             );
 
-            const clickedBtn =
-                lastClickedSubmitButton === "draft"
-                    ? document.getElementById("draftBtn")
-                    : document.getElementById("submitBtn");
+            // Disable both buttons
+            const draftBtn = document.getElementById("draftBtn");
+            const fbrBtn = document.getElementById("submitBtn");
+            draftBtn.disabled = true;
+            fbrBtn.disabled = true;
 
-            document.getElementById("draftBtn").disabled = true;
-            document.getElementById("submitBtn").disabled = true;
-
-            clickedBtn.disabled = true;
-            clickedBtn.innerHTML =
-                lastClickedSubmitButton === "draft"
-                    ? '<span class="spinner-border spinner-border-sm me-1"></span> Saving to Draft...'
-                    : '<span class="spinner-border spinner-border-sm me-1"></span> Posting to FBR...';
+            // Apply spinner to clicked button
+            if (lastClickedSubmitButton === "draft") {
+                draftBtn.innerHTML =
+                    '<span class="spinner-border spinner-border-sm me-1"></span> Saving as Draft...';
+            } else {
+                fbrBtn.innerHTML =
+                    '<span class="spinner-border spinner-border-sm me-1"></span> Posting to FBR...';
+            }
         } else {
             e.preventDefault(); // block unwanted submits
         }

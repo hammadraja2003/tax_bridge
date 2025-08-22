@@ -64,3 +64,21 @@ if (!function_exists('logActivity')) {
         return true;
     }
 }
+function renderScenarioOptions($selectedCode = null)
+{
+    $scenarios = DB::table('sandbox_scenarios')
+        ->orderBy('scenario_code', 'asc')
+        ->get();
+
+    $options = '<option value="">Select Scenario</option>';
+
+    foreach ($scenarios as $scenario) {
+        $isSelected = ($selectedCode === $scenario->scenario_code) ? 'selected' : '';
+        $options .= '<option value="' . $scenario->scenario_code . '" 
+                        data-sale-type="' . e($scenario->sale_type) . '" ' . $isSelected . '>'
+            . $scenario->scenario_code . ' - ' . $scenario->scenario_description
+            . '</option>';
+    }
+
+    return $options;
+}
