@@ -56,14 +56,18 @@ class FbrInvoiceService
             $dated = $data['dated'];
             $statusCode = $data['validationResponse']['statusCode'];
             $status = $data['validationResponse']['status'];
-            // $errorCode = $data['validationResponse']['errorCode'];
+            $errorCode = $data['validationResponse']['errorCode'];
             $error = $data['validationResponse']['error'];
             $invoiceStatuses = $data['validationResponse']['invoiceStatuses'];
 
             return [
                 'success' => $statusCode === '00'
                     && $status === 'Valid',
+                'dated' => $dated,
                 'data' => $data,
+                'statusCode' => $statusCode,
+                'status' => $status,
+                'errorCode' => $errorCode,
                 'error' => $error ?? 'Unknown error',
                 'invoiceStatuses' => $invoiceStatuses ?? ''
             ];

@@ -1,5 +1,6 @@
 @extends('layouts.login')
 @section('content')
+
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-7 col-xl-8 d-none d-lg-block p-0">
@@ -8,15 +9,15 @@
                 </div>
             </div>
             <div class="col-lg-5 col-xl-4 p-0 bg-white">
+                 @if ($errors->any())
+                    <div class="alert alert-danger">
+                        @foreach ($errors->all() as $error)
+                            <div>{{ $error }}</div>
+                        @endforeach
+                    </div>
+                    
+                @endif
                 <div class="form-container">
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            @foreach ($errors->all() as $error)
-                                <div>{{ $error }}</div>
-                            @endforeach
-                        </div>
-                    @endif
-
                     <form class="app-form needs-validation" novalidate method="POST" action="{{ route('login') }}">
                         @csrf
                         <div class="row">

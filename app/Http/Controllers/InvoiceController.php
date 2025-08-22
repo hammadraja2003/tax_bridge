@@ -17,6 +17,7 @@ use App\Services\FbrInvoiceService;
 use Illuminate\Support\Facades\Log;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Str;
+use App\Models\FbrPostError;
 use Carbon\Carbon;
 
 class InvoiceController extends Controller
@@ -28,6 +29,34 @@ class InvoiceController extends Controller
         $items = Item::all();
         return view('invoices.create', compact('seller', 'buyers', 'items'));
     }
+    public function storeFbrError(string $type, array $response)
+    {
+        try {
+            DB::table('fbr_post_error')->insert([
+                'type' => $type,
+                'status_code' => $response['data']['validationResponse']['statusCode'] ?? null,
+                'status' => $response['data']['validationResponse']['status'] ?? null,
+                'error_code' => $response['data']['validationResponse']['errorCode'] ?? null,
+                'error' => $response['error'] 
+                           ?? ($response['data']['validationResponse']['error'] ?? 'Unknown error'),
+
+                'invoice_statuses' => !empty($response['invoiceStatuses'])
+                    ? json_encode($response['invoiceStatuses'], JSON_UNESCAPED_UNICODE)
+                    : json_encode([]),
+
+                'raw_response' => json_encode($response, JSON_UNESCAPED_UNICODE),
+                'error_time' => now(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error("FBR Error store failed: " . $e->getMessage(), [
+                'response' => $response
+            ]);
+        }
+    }
+
     public function index(Request $request)
     {
         $query = Invoice::with(['buyer', 'seller', 'details.item']);
@@ -138,6 +167,7 @@ class InvoiceController extends Controller
             'items.*.rate' => 'required|string',
             'items.*.uoM' => 'required|string',
         ]);
+        
         DB::beginTransaction();
         try {
             $isDraft = $data['invoice_status'] == 1;
@@ -196,6 +226,7 @@ class InvoiceController extends Controller
                     'sro_item_serial_no' => $item['sroItemSerialNo'] ?? '',
                 ]);
             }
+             DB::commit();
             // FBR posting if not draft
             if (!$isDraft) {
                 $fbrPayload = [
@@ -238,6 +269,18 @@ class InvoiceController extends Controller
                 // Step 1: Validate
                 $validation = $fbrService->validateInvoice($fbrPayload);
                 if (!$validation['success']) {
+                 $insertData = [
+                    'type' => $validation['type'] ?? 'validation',
+                    'status_code' => $validation['status_code'] ?? null,
+                    'status' => $validation['status'] ?? null,
+                    'error_code' => $validation['error_code'] ?? null,
+                    'error' => $validation['error'] ?? null,
+                    'invoiceStatuses' => isset($validation['invoiceStatuses']) ? json_encode($validation['invoiceStatuses']) : null,
+                    'raw_response' => isset($validation['data']),
+                    'error_time' =>  now()->format('Y-m-d H:i:s'),
+                ];
+                DB::table('fbr_post_error')->insert($insertData);
+
                     $errorMessage = $validation['error']
                         ?? ($validation['data']['validationResponse']['error'] ?? null);
                     // If still empty, check invoiceStatuses errors
@@ -248,6 +291,18 @@ class InvoiceController extends Controller
                 }
                 // Step 2: Post
                 $posting = $fbrService->postInvoice($fbrPayload);
+                 if (!$posting['success']) {
+                    // Log or save posting errors
+                    DB::table('fbr_post_error')->insert([
+                    'type' => 'posting',
+                    'status_code' => $fbrResponse['status_code'] ?? null,
+                    'error_code' => $fbrResponse['error_code'] ?? null,
+                    'error' => $e->getMessage(),
+                    'raw_response' => isset($fbrResponse['raw_response']) ? json_encode($fbrResponse['raw_response']) : null,
+                    'error_time' => now()->format('Y-m-d H:i:s'),
+                ]);
+                    return back()->with('error', 'Failed to post invoice to FBR. Please check the error log.');
+                }
                 if ($posting['success']) {
                     $invoice->update([
                         'fbr_invoice_number' => $posting['data']['invoiceNumber'] ?? null,
@@ -279,7 +334,8 @@ class InvoiceController extends Controller
                     $invoice->update([
                         'qr_code' => $qrFileName
                     ]);
-                } else {
+                } 
+                else {
                     DB::rollBack();
                     throw new \Exception('FBR Posting Failed: ' . $posting['error']);
                 }
@@ -287,10 +343,24 @@ class InvoiceController extends Controller
             DB::commit();
             return redirect()->route('invoices.index')->with('message', $id ? 'Invoice updated successfully.' : 'Invoice created successfully');
         } catch (\Exception $e) {
+                   DB::table('fbr_post_error')->insert([
+                    'type' => 'posting',
+                    'status_code' => $posting['status_code'] ?? null,
+                    'error_code' => $posting['error_code'] ?? null,
+                    'error' => $e->getMessage(),
+                    'raw_response' => isset($posting['raw_response']) ? json_encode($posting['raw_response']) : null,
+                    'error_time' => now()->format('Y-m-d H:i:s'),
+                ]);
             DB::rollBack();
             return back()->with('error', 'Error: ' . $e->getMessage());
         }
     }
+    public function showErrors()
+    {
+        $errors = FbrPostError::latest()->paginate(20);
+        return view('invoices.fbr_post_error', compact('errors'));
+    }
+
     public function edit($id)
     {
         $invoiceId = Crypt::decryptString($id);

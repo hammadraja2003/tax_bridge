@@ -55,7 +55,7 @@
                             <div class="app-scroll overflow-auto">
                                 <table id="projectTableT" class="table table-striped table-bordered m-0">
                                     <thead>
-                                        <tr>
+                                        <tr class="app-sort">
                                             <th>Logo</th>
                                             <th>Name</th>
                                             <th>Type</th>
@@ -93,10 +93,10 @@
                                                 <td class="contact">{{ $buyer->byr_contact_person }}</td>
                                                 <td class="contact">{{ $buyer->byr_contact_num }}</td>
                                                 <td class="contact">{{ $buyer->byr_IBAN }}</td>
-                                                <td class="contact">{{ $buyer->byr_account_title }}</td>
+                                                <td class="employee">{{ $buyer->byr_account_title }}</td>
                                                 <td class="contact">{{ $buyer->byr_account_number }}</td>
-                                                <td class="contact">{{ $buyer->byr_address }}</td>
-                                                <td>
+                                                <td class="employee">{{ $buyer->byr_address }}</td>
+                                                <td class="status">
                                                     @if ($buyer->tampered)
                                                         <span class="text-danger fw-bold">⚠ Data tampered!</span>
                                                     @else

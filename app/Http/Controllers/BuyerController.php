@@ -30,7 +30,8 @@ class BuyerController extends Controller
         }
 
         // ✅ Now apply filters
-        $buyers = $query->latest()->paginate(10);
+        // $buyers = $query->latest()->paginate(10);
+         $buyers = $query->orderByDesc('byr_id')->paginate(10);
 
         // 🔐 Tampering check
         foreach ($buyers as $buyer) {
