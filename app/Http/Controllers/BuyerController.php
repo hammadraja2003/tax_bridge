@@ -30,7 +30,7 @@ class BuyerController extends Controller
         }
 
         // ✅ Now apply filters
-        $buyers = $query->latest()->paginate(3);
+        $buyers = $query->latest()->paginate(5);
 
         // 🔐 Tampering check
         foreach ($buyers as $buyer) {
@@ -40,17 +40,6 @@ class BuyerController extends Controller
 
         return view('buyers.index', compact('buyers'));
     }
-
-    // public function filter(Request $request)
-    // {
-    //     session([
-    //         'buyers_filters' => [
-    //             'byr_type' => $request->byr_type,
-    //             'search' => $request->search,
-    //         ]
-    //     ]);
-    //     return redirect()->route('buyers.index');
-    // }
     public function fetch($id)
     {
         return response()->json(Buyer::findOrFail($id));

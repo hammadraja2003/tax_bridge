@@ -31,7 +31,7 @@
                     </div>
                     {{-- Client ID Type --}}
                     <div class="col-md-4">
-                        <label for="byr_id_type" class="form-label">Client ID Type</label>
+                        <label for="byr_id_type" class="form-label">Select ID Type</label>
                         <select name="byr_id_type" id="byr_id_type"
                             class="form-select @error('byr_id_type') is-invalid @enderror">
                             <option value="">-- Select ID Type --</option>
@@ -204,36 +204,43 @@
     @push('scripts')
         <script nonce="{{ $nonce }}">
             document.addEventListener('DOMContentLoaded', function() {
-                // Buyer field validation
                 const buyerTypeSelect = document.getElementById('byr_id_type');
                 const buyerInput = document.getElementById('byr_ntn_cnic');
+
                 if (buyerTypeSelect && buyerInput) {
+
                     function applyBuyerValidation() {
-                        const val = buyerInput.value.trim();
-                        const isNTN = buyerTypeSelect.value === 'NTN'; // Define regex patterns
-                        const patternNTN = /^[0-9]{7}$/;
-                        const patternCNIC =
-                            /^[0-9]{13}$/; // Clear input only if current value does NOT match the new pattern
-                        if ((isNTN && !patternNTN.test(val)) || (!isNTN && !patternCNIC.test(val))) {
-                            buyerInput.value = "";
-                        } // Apply attributes
+                        const isNTN = buyerTypeSelect.value === 'NTN';
+
                         if (isNTN) {
-                            buyerInput.setAttribute('pattern', '[0-9]{7}');
+                            buyerInput.setAttribute('pattern', '^[0-9]{7}$');
+                            buyerInput.setAttribute('minlength', '7');
                             buyerInput.setAttribute('maxlength', '7');
                             buyerInput.setAttribute('title', 'NTN must be exactly 7 digits');
                             buyerInput.placeholder = 'Enter 7-digit NTN';
                         } else {
-                            buyerInput.setAttribute('pattern', '[0-9]{13}');
+                            buyerInput.setAttribute('pattern', '^[0-9]{13}$');
+                            buyerInput.setAttribute('minlength', '13');
                             buyerInput.setAttribute('maxlength', '13');
                             buyerInput.setAttribute('title', 'CNIC must be exactly 13 digits (without dashes)');
                             buyerInput.placeholder = 'Enter 13-digit CNIC';
                         }
+
+                        // Clear value when changing type
+                        buyerInput.value = "";
                     }
+
+                    // ✅ Prevent non-digit input
+                    buyerInput.addEventListener('input', function(e) {
+                        this.value = this.value.replace(/\D/g, ""); // only digits
+                    });
+
                     buyerTypeSelect.addEventListener('change', applyBuyerValidation);
-                    applyBuyerValidation(); // Initialize
+                    applyBuyerValidation();
                 }
             });
         </script>
+
         <script nonce="{{ $nonce }}">
             document.addEventListener('DOMContentLoaded', function() {
                 const clientTypeSelect = document.querySelector('select[name="byr_type"]');

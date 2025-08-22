@@ -16,11 +16,6 @@ class FbrInvoiceService
         $this->env = $env;
         $this->baseUrl = 'https://gw.fbr.gov.pk/di_data/v1/di/';
 
-        // if ($env === 'sandbox') {
-        //     $this->token = env('FBR_API_TOKEN_SANDBOX');
-        // } else {
-        //     $this->token = env('FBR_API_TOKEN_PROD');
-        // }
         if ($this->env === 'production') {
             $this->token = env('FBR_API_TOKEN_PROD');
         } else {
