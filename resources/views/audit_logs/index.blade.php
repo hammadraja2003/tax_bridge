@@ -37,7 +37,8 @@
                             @endif
                         </td>
                         <td>
-                            <a href="{{ route('audit_logs.show', $log->audit_id) }}" class="btn btn-sm btn-primary">
+                            <a href="{{ route('audit_logs.show', ['id' => encrypt($log->audit_id)]) }}"
+                                class="btn btn-sm btn-primary">
                                 View
                             </a>
                         </td>

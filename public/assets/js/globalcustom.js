@@ -74,4 +74,24 @@ document.addEventListener("click", function (e) {
     }
 });
 
+// custom.js
 
+document.addEventListener("DOMContentLoaded", function () {
+    // Select all alert messages
+    const alerts = document.querySelectorAll(".alert");
+
+    alerts.forEach(function (alert) {
+        setTimeout(function () {
+            // Fade out effect
+            alert.style.transition = "opacity 0.5s ease";
+            alert.style.opacity = "0";
+
+            // Remove element from DOM after fade out
+            setTimeout(function () {
+                if (alert.parentNode) {
+                    alert.parentNode.removeChild(alert);
+                }
+            }, 500); // match fade duration
+        }, 3000); // wait 3 seconds
+    });
+});

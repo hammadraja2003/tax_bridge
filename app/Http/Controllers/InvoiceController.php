@@ -37,8 +37,8 @@ class InvoiceController extends Controller
                 'status_code' => $response['data']['validationResponse']['statusCode'] ?? null,
                 'status' => $response['data']['validationResponse']['status'] ?? null,
                 'error_code' => $response['data']['validationResponse']['errorCode'] ?? null,
-                'error' => $response['error'] 
-                           ?? ($response['data']['validationResponse']['error'] ?? 'Unknown error'),
+                'error' => $response['error']
+                    ?? ($response['data']['validationResponse']['error'] ?? 'Unknown error'),
 
                 'invoice_statuses' => !empty($response['invoiceStatuses'])
                     ? json_encode($response['invoiceStatuses'], JSON_UNESCAPED_UNICODE)
@@ -49,7 +49,6 @@ class InvoiceController extends Controller
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
-
         } catch (\Exception $e) {
             Log::error("FBR Error store failed: " . $e->getMessage(), [
                 'response' => $response
@@ -95,6 +94,7 @@ class InvoiceController extends Controller
                 }
             }
             $invoice->tampered_lines = $tamperedLines;
+            $invoice->fbr_environment = $invoice->fbr_env;
         }
 
         return view('invoices.index', compact('invoices'));
@@ -167,7 +167,7 @@ class InvoiceController extends Controller
             'items.*.rate' => 'required|string',
             'items.*.uoM' => 'required|string',
         ]);
-        
+
         DB::beginTransaction();
         try {
             $isDraft = $data['invoice_status'] == 1;
@@ -196,6 +196,7 @@ class InvoiceController extends Controller
                 'discount_amount' => $data['discount_amount'] ?? null,
                 'payment_status' => $data['payment_status'] ?? null,
                 'notes' => $data['notes'] ?? null,
+                'fbr_env' => env('FBR_ENV', 'sandbox'),
             ]);
             $invoice->save();
             if (!$isDraft && !$invoice->invoice_no) {
@@ -226,7 +227,6 @@ class InvoiceController extends Controller
                     'sro_item_serial_no' => $item['sroItemSerialNo'] ?? '',
                 ]);
             }
-             DB::commit();
             // FBR posting if not draft
             if (!$isDraft) {
                 $fbrPayload = [
@@ -269,46 +269,68 @@ class InvoiceController extends Controller
                 // Step 1: Validate
                 $validation = $fbrService->validateInvoice($fbrPayload);
                 if (!$validation['success']) {
-                 $insertData = [
-                    'type' => $validation['type'] ?? 'validation',
-                    'status_code' => $validation['status_code'] ?? null,
-                    'status' => $validation['status'] ?? null,
-                    'error_code' => $validation['error_code'] ?? null,
-                    'error' => $validation['error'] ?? null,
-                    'invoiceStatuses' => isset($validation['invoiceStatuses']) ? json_encode($validation['invoiceStatuses']) : null,
-                    'raw_response' => isset($validation['data']),
-                    'error_time' =>  now()->format('Y-m-d H:i:s'),
-                ];
-                DB::table('fbr_post_error')->insert($insertData);
+                    // ❌ Invoice should not stay
+                    DB::rollBack();
+                    // ✅ Log error after rollback
+                    DB::afterCommit(function () use ($validation) {
+                        FbrPostError::logError([
+                            'type'             => 'validation',
+                            'status_code'      => $validation['statusCode'] ?? null,
+                            'status'           => $validation['status'] ?? 'failed',
+                            'error_code'       => $validation['errorCode'] ?? null,
+                            'error'            => $validation['error'] ?? 'Unknown error',
+                            'invoice_statuses' => $validation['invoiceStatuses'] ?? null, // ← array ok
+                            'raw_response'     => $validation['data'] ?? null,            // ← array ok
+                            'fbr_env'          => env('FBR_ENV', 'sandbox'),
+                        ]);
+                    });
 
-                    $errorMessage = $validation['error']
-                        ?? ($validation['data']['validationResponse']['error'] ?? null);
-                    // If still empty, check invoiceStatuses errors
-                    if (!$errorMessage && !empty($validation['invoiceStatuses'][0]['error'])) {
-                        $errorMessage = $validation['invoiceStatuses'][0]['error'];
-                    }
-                    throw new \Exception('FBR Validation Failed: ' . ($errorMessage ?: 'Unknown validation error'));
+                    throw new \Exception(
+                        'FBR Validation Failed: ' . (
+                            $validation['error']
+                            ?? ($validation['invoiceStatuses'][0]['error'] ?? 'Unknown validation error')
+                        )
+                    );
                 }
                 // Step 2: Post
                 $posting = $fbrService->postInvoice($fbrPayload);
-                 if (!$posting['success']) {
-                    // Log or save posting errors
-                    DB::table('fbr_post_error')->insert([
-                    'type' => 'posting',
-                    'status_code' => $fbrResponse['status_code'] ?? null,
-                    'error_code' => $fbrResponse['error_code'] ?? null,
-                    'error' => $e->getMessage(),
-                    'raw_response' => isset($fbrResponse['raw_response']) ? json_encode($fbrResponse['raw_response']) : null,
-                    'error_time' => now()->format('Y-m-d H:i:s'),
-                ]);
-                    return back()->with('error', 'Failed to post invoice to FBR. Please check the error log.');
+                if (!$posting['success']) {
+                    DB::rollBack();
+                    // Log after rollback
+                    DB::afterCommit(function () use ($posting) {
+                        FbrPostError::logError([
+                            'type'             => 'posting',
+                            'status_code'      => $posting['statusCode'] ?? null,
+                            'status'           => $posting['status'] ?? 'failed',
+                            'error_code'       => $posting['errorCode'] ?? null,
+                            'error'            => $posting['error'] ?? 'Unknown error',
+                            'invoice_statuses' => $posting['invoiceStatuses'] ?? null,
+                            'raw_response'     => $posting['data'] ?? null,
+                            'fbr_env'          => env('FBR_ENV', 'sandbox'),
+                        ]);
+                    });
+
+                    // Build friendly message
+                    // $errorMessage = $posting['error']
+                    //     ?? ($posting['data']['validationResponse']['error'] ?? null)
+                    //     ?? ($posting['invoiceStatuses'][0]['error'] ?? null)
+                    //     ?? 'Unknown posting error';
+
+                    // throw new \Exception('FBR Posting Failed: ' . $errorMessage);
+                    throw new \Exception(
+                        'FBR Posting Failed: ' . (
+                            $posting['error']
+                            ?? ($posting['invoiceStatuses'][0]['error'] ?? 'Unknown posting error')
+                        )
+                    );
                 }
                 if ($posting['success']) {
+                    // ✅ Update invoice
                     $invoice->update([
                         'fbr_invoice_number' => $posting['data']['invoiceNumber'] ?? null,
-                        'is_posted_to_fbr' => 1,
-                        'response_status' => 'Success',
-                        'response_message' => 'Posted successfully to FBR ' . strtoupper(env('FBR_ENV', 'sandbox')),
+                        'is_posted_to_fbr'   => 1,
+                        'response_status'    => 'Success',
+                        'response_message'   => 'Posted successfully to FBR ' . strtoupper(env('FBR_ENV', 'sandbox')),
                     ]);
                     // ✅ Log activity
                     logActivity(
@@ -334,33 +356,16 @@ class InvoiceController extends Controller
                     $invoice->update([
                         'qr_code' => $qrFileName
                     ]);
-                } 
-                else {
-                    DB::rollBack();
-                    throw new \Exception('FBR Posting Failed: ' . $posting['error']);
                 }
             }
             DB::commit();
             return redirect()->route('invoices.index')->with('message', $id ? 'Invoice updated successfully.' : 'Invoice created successfully');
-        } catch (\Exception $e) {
-                   DB::table('fbr_post_error')->insert([
-                    'type' => 'posting',
-                    'status_code' => $posting['status_code'] ?? null,
-                    'error_code' => $posting['error_code'] ?? null,
-                    'error' => $e->getMessage(),
-                    'raw_response' => isset($posting['raw_response']) ? json_encode($posting['raw_response']) : null,
-                    'error_time' => now()->format('Y-m-d H:i:s'),
-                ]);
+        } catch (\Throwable $e) {
+            // rollback if not already rolled back
             DB::rollBack();
-            return back()->with('error', 'Error: ' . $e->getMessage());
+            throw $e; // bubble up to be handled by Laravel’s exception handler
         }
     }
-    public function showErrors()
-    {
-        $errors = FbrPostError::latest()->paginate(20);
-        return view('invoices.fbr_post_error', compact('errors'));
-    }
-
     public function edit($id)
     {
         $invoiceId = Crypt::decryptString($id);
@@ -386,7 +391,6 @@ class InvoiceController extends Controller
             'nonce'   => $nonce,
         ]);
     }
-
 
     // public function showForm()
     // {

@@ -16,6 +16,13 @@
                                         <span class="badge bg-success me-2">Production Environment</span>
                                     @endif
                                 </div>
+                                <div class="header-searchbar">
+                                    @if (config('app.env') === 'local')
+                                        <span class="badge bg-info text-dark ms-2">
+                                            Tenant DB: {{ session('tenant_db') }}
+                                        </span>
+                                    @endif
+                                </div>
                             </div>
 
                             <div class="col-6 d-flex align-items-center justify-content-end header-right">

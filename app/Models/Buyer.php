@@ -6,9 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Buyer extends Model
 {
+    protected $connection = 'tenant';
     protected $table = 'buyers';
     protected $primaryKey = 'byr_id';
     public $timestamps = true;
+
     protected $fillable = [
         'byr_name',
         'byr_type',
@@ -27,21 +29,31 @@ class Buyer extends Model
         'byr_acc_branch_code',
         'hash',
     ];
+
+    // 🔗 Relation: Buyer → Invoices
+    // public function invoices()
+    // {
+    //     return $this->hasMany(Invoice::class, 'buyer_id', 'byr_id')
+    //         ->setConnection('tenant'); // 👈 force tenant DB
+    // }
     public function invoices()
     {
-        return $this->hasMany(\App\Models\Invoice::class, 'buyer_id', 'byr_id');
+        return $this->hasMany(Invoice::class, 'buyer_id', 'byr_id'); // ✅
     }
-    // 🔑 Hash generation
+
+    // 🔑 Auto-generate hash
     protected static function booted()
     {
         static::creating(function ($buyer) {
             $buyer->hash = $buyer->generateHash();
         });
+
         static::updating(function ($buyer) {
             $buyer->hash = $buyer->generateHash();
         });
     }
-    // ✅ Function to generate hash based on critical fields
+
+    // ✅ Generate hash from critical fields
     public function generateHash()
     {
         return md5(

@@ -6,7 +6,25 @@ use Illuminate\Database\Eloquent\Model;
 
 class ActivityLog extends Model
 {
+    protected $connection = 'tenant';  // 👈 important
     protected $table = 'activity_logs';
+
+    // ✅ allow mass assignment
+    protected $fillable = [
+        'user_id',
+        'user_name',
+        'ip_address',
+        'device_id',
+        'action',
+        'description',
+        'record_id',
+        'table_name',
+        'data_hash',
+        'hash_changed',
+        'data',
+        'created_at',
+    ];
+
     protected $casts = [
         'data' => 'array', // ensures $log->data is automatically decoded from JSON
     ];

@@ -8,7 +8,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class InvoiceDetail extends Model
 {
     use HasFactory;
+
+    protected $connection = 'tenant';  // 👈 important
     protected $primaryKey = 'invoice_detail_id';
+
     protected $fillable = [
         'invoice_id',
         'item_id',
@@ -27,27 +30,37 @@ class InvoiceDetail extends Model
         'sro_item_serial_no',
         'hash',
     ];
+
     // 🔗 Relationships
     public function invoice()
     {
         return $this->belongsTo(Invoice::class, 'invoice_id', 'invoice_id');
     }
+
     public function item()
     {
         return $this->belongsTo(Item::class, 'item_id', 'item_id');
     }
+
     // 🔐 Generate hash for detail-level integrity check
     public function generateHash(): string
     {
         $fields = [
             'invoice_id',
             'item_id',
-            'description',
             'quantity',
-            'unit_price',
-            'tax_rate',
-            'tax_amount',
-            'total_amount',
+            'total_value',
+            'value_excl_tax',
+            'retail_price',
+            'sales_tax_applicable',
+            'sales_tax_withheld',
+            'extra_tax',
+            'further_tax',
+            'fed_payable',
+            'discount',
+            'sale_type',
+            'sro_schedule_no',
+            'sro_item_serial_no',
         ];
 
         $data = [];
@@ -82,14 +95,6 @@ class InvoiceDetail extends Model
     public function isTampered(): bool
     {
         $current = $this->generateHash();
-        if ($current !== $this->hash) {
-            \Log::warning('Invoice Detail tampered', [
-                'id'            => $this->id ?? null,
-                'invoice_id'    => $this->invoice_id,
-                'stored_hash'   => $this->hash,
-                'calculated_hash' => $current,
-            ]);
-        }
         return $current !== $this->hash;
     }
 

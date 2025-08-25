@@ -56,10 +56,9 @@
                         <a class="{{ $isAuditRoute ? 'activeTab' : '' }}" href="{{ route('audit_logs.index') }}">Audit
                             Logs</a>
                     </li>
-                   <li>
-                        <a class="{{ $isFbrErrorRoute ? 'activeTab' : '' }}" 
-                        href="{{ route('invoice.fbr-response-errors') }}">
-                        Fbr Posting Errors
+                    <li>
+                        <a class="{{ $isFbrErrorRoute ? 'activeTab' : '' }}" href="{{ route('fbr.errors') }}">
+                            Fbr Posting Errors
                         </a>
                     </li>
                     {{-- <li>

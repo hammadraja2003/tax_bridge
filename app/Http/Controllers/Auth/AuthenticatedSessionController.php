@@ -21,12 +21,6 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    // public function store(LoginRequest $request): RedirectResponse
-    // {
-    //     $request->authenticate();
-    //     $request->session()->regenerate();
-    //     return redirect()->intended(route('dashboard', absolute: false))->with('message', 'Signed in successfully!');
-    // }
     public function store(Request $request)
     {
         $credentials = $request->only('email', 'password');
@@ -44,13 +38,22 @@ class AuthenticatedSessionController extends Controller
                 return redirect()->route('2fa.verify');
             }
 
-            // No 2FA → normal login
+            // ✅ No 2FA → normal login
             $request->session()->regenerate();
-            return redirect()->intended('dashboard')->with('message','User Login Successfull');
+
+            // 🔹 Initialize tenant after login
+            $tenantId = $user->tenant_id ?? null;
+            if ($tenantId) {
+                app(\App\Services\TenantManager::class)->setTenant($tenantId);
+                $request->session()->put('tenant_id', $tenantId); // persist for middleware
+            }
+
+            return redirect()->intended('dashboard')->with('message', 'User Login Successfull');
         }
 
         return redirect()->back()->withErrors(['toast_error' => 'Invalid credentials.']);
     }
+
     /**
      * Destroy an authenticated session.
      */

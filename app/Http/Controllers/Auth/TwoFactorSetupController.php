@@ -7,25 +7,32 @@ use Illuminate\Http\Request;
 use PragmaRX\Google2FA\Google2FA;
 use Illuminate\Support\Facades\Auth;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Support\Facades\Crypt;
 
 class TwoFactorSetupController extends Controller
 {
+    // Show the 2FA setup page
     public function showSetupForm()
     {
         $user = Auth::user();
         $google2fa = new Google2FA();
 
-        // If enabling for first time, prepare a fresh secret (but don't save yet)
-        $secret = $user->twofa_secret ?: $google2fa->generateSecretKey();
+        // If user has never set up 2FA, redirect to profile to start setup
+        if (!$user->twofa_secret) {
+            $encryptedId = Crypt::encrypt($user->id);
+            return redirect()->route('edit-profile', $encryptedId)
+                ->with('status', 'You need to set up Two-Factor Authentication first.');
+        }
 
-        // Build the otpauth URL (what authenticator apps scan)
+        // Use existing secret
+        $secret = $user->twofa_secret;
+
         $otpauth = $google2fa->getQRCodeUrl(
-            'SecureismInvoiceManagment',    // issuer (shows in the authenticator app)
-            $user->email,     // account name
+            'SecureismInvoiceManagment',
+            $user->email,
             $secret
         );
 
-        // Render QR as SVG/PNG (you already have the QR package set up)
         $qrSvg = QrCode::format('svg')->size(200)->generate($otpauth);
 
         return view('auth.2fa-setup', [
@@ -35,6 +42,7 @@ class TwoFactorSetupController extends Controller
         ]);
     }
 
+    // Enable 2FA
     public function enable(Request $request)
     {
         $request->validate([
@@ -50,20 +58,29 @@ class TwoFactorSetupController extends Controller
         }
 
         $user = Auth::user();
-        $user->twofa_secret = $request->secret;
+
+        // Set secret if not already set
+        if (!$user->twofa_secret) {
+            $user->twofa_secret = $request->secret;
+        }
+
         $user->twofa_enabled = true;
         $user->save();
-
-        return redirect()->route('2fa.setup')->with('status', 'Two-factor authentication enabled.');
+        // 🔹 Encrypt the user ID for the route
+        $encryptedId = Crypt::encrypt($user->id);
+        return redirect()->route('edit-profile', $encryptedId)
+            ->with('status', 'Two-factor authentication enabled.');
     }
 
+    // Disable 2FA
     public function disable()
     {
         $user = Auth::user();
         $user->twofa_enabled = false;
-        $user->twofa_secret = null; // optionally keep the secret if you want quick re-enable
         $user->save();
 
-        return redirect()->route('2fa.setup')->with('status', 'Two-factor authentication disabled.');
+        $encryptedId = Crypt::encrypt($user->id);
+        return redirect()->route('edit-profile', $encryptedId)
+            ->with('status', 'Two-factor authentication disabled.');
     }
 }

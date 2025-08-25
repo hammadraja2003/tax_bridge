@@ -9,6 +9,7 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FbrPostErrorController;
 use Illuminate\Support\Facades\Crypt;
 
 // use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -27,7 +28,7 @@ Route::get('/', function () {
 | Authenticated Routes
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth', 'verified', 'security.headers'])->group(function () {
+Route::middleware(['auth', 'verified', 'security.headers', 'set.tenant', 'business.configured'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -47,7 +48,6 @@ Route::middleware(['auth', 'verified', 'security.headers'])->group(function () {
     Route::post('/invoicedddd', [InvoiceController::class, 'storeOrUpdate'])->name('create-new-invoice');
     Route::get('/invoices/{invoice}/edit', [InvoiceController::class, 'edit'])->name('invoices.edit');
     Route::put('/invoice/{id}', [InvoiceController::class, 'storeOrUpdate'])->name('invoice.update');
-     Route::get('/fbr-reponse-error', [InvoiceController::class, 'showErrors'])->name('invoice.fbr-response-errors');
     //Excel Import
     // Route::get('/invoices/import', [InvoiceController::class, 'showForm'])->name('invoices.import.form');
     // Route::post('/invoices/import', [InvoiceController::class, 'importInvoice'])->name('invoices.import.process');
@@ -70,13 +70,14 @@ Route::middleware(['auth', 'verified', 'security.headers'])->group(function () {
     Route::delete('/items/delete/{id}', [ItemController::class, 'delete'])->name('items.delete');
 
     //ActivityLog
-    Route::get('/activity-logs', [ActivityLogController::class, 'index'])
-        ->name('activity.logs')
-        ->middleware('auth');
+    Route::get('/activity-logs', [ActivityLogController::class, 'index'])->name('activity.logs');
 
-    // /AuditLog
+    //AuditLog
     Route::get('/audit-logs', [AuditLogController::class, 'index'])->name('audit_logs.index');
     Route::get('/audit-logs/{id}', [AuditLogController::class, 'show'])->name('audit_logs.show');
+
+    //FBR Error Logs
+    Route::get('/fbr-errors', [FbrPostErrorController::class, 'showErrors'])->name('fbr.errors');
 });
 /*
 |--------------------------------------------------------------------------

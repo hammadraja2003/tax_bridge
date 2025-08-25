@@ -12,7 +12,8 @@ use App\Models\Item;
 class DashboardController extends Controller
 {
     public function index()
-    {
+    {  // Get current tenant DB
+        // $tenantDb = DB::connection('master')->getDatabaseName();
         $totalClients = Buyer::count();
         $totalInvoices = Invoice::count();
         $fbrPostedInvoices = Invoice::where('is_posted_to_fbr', 1)->count();
@@ -112,43 +113,43 @@ class DashboardController extends Controller
         //     'series' => $data,
         // ];
         // Monthly labels (Jan, Feb, ... Dec)
-            $months = collect(range(1, 12))->map(function ($month) {
-                return Carbon::create()->month($month)->format('M');
-            });
+        $months = collect(range(1, 12))->map(function ($month) {
+            return Carbon::create()->month($month)->format('M');
+        });
 
-            // Query invoices per month
-            $monthlyInvoicesCreated = Invoice::selectRaw('MONTH(invoice_date) as month, COUNT(*) as total')
-                ->groupByRaw('MONTH(invoice_date)')
-                ->pluck('total', 'month');
+        // Query invoices per month
+        $monthlyInvoicesCreated = Invoice::selectRaw('MONTH(invoice_date) as month, COUNT(*) as total')
+            ->groupByRaw('MONTH(invoice_date)')
+            ->pluck('total', 'month');
 
-            // Query FBR posted invoices per month
-            $monthlyInvoicesFbrPosted = Invoice::selectRaw('MONTH(invoice_date) as month, COUNT(*) as total')
-                ->where('is_posted_to_fbr', 1)
-                ->groupByRaw('MONTH(invoice_date)')
-                ->pluck('total', 'month');
+        // Query FBR posted invoices per month
+        $monthlyInvoicesFbrPosted = Invoice::selectRaw('MONTH(invoice_date) as month, COUNT(*) as total')
+            ->where('is_posted_to_fbr', 1)
+            ->groupByRaw('MONTH(invoice_date)')
+            ->pluck('total', 'month');
 
-            // Build dataset
-            $createdData = [];
-            $fbrData = [];
+        // Build dataset
+        $createdData = [];
+        $fbrData = [];
 
-            for ($m = 1; $m <= 12; $m++) {
-                $createdData[] = (int) ($monthlyInvoicesCreated[$m] ?? 0);
-                $fbrData[]     = (int) ($monthlyInvoicesFbrPosted[$m] ?? 0);
-            }
+        for ($m = 1; $m <= 12; $m++) {
+            $createdData[] = (int) ($monthlyInvoicesCreated[$m] ?? 0);
+            $fbrData[]     = (int) ($monthlyInvoicesFbrPosted[$m] ?? 0);
+        }
 
-            $invoiceMonthlyStats = [
-                'months' => $months,
-                'series' => [
-                    [
-                        'name' => 'Total Invoices Created',
-                        'data' => $createdData,
-                    ],
-                    [
-                        'name' => 'FBR Posted Invoices',
-                        'data' => $fbrData,
-                    ],
+        $invoiceMonthlyStats = [
+            'months' => $months,
+            'series' => [
+                [
+                    'name' => 'Total Invoices Created',
+                    'data' => $createdData,
                 ],
-            ];
+                [
+                    'name' => 'FBR Posted Invoices',
+                    'data' => $fbrData,
+                ],
+            ],
+        ];
 
         // End Monthly Top 5 Clients Ranked by Sales Tax Generated
 
@@ -160,7 +161,7 @@ class DashboardController extends Controller
             ->groupBy('items.item_id', 'items.item_description')
             ->selectRaw('SUM(invoice_details.total_value) as total_revenue')
             ->orderByDesc('total_revenue')
-            ->limit(5)  
+            ->limit(5)
             ->get();
 
         // Extract service names and totals
@@ -192,7 +193,7 @@ class DashboardController extends Controller
             'topServiceNamesRevenue',
             'topServiceTotalsRevenue',
             'topServicePercentagesRevenue',
-            'invoiceMonthlyStats'
+            'invoiceMonthlyStats',
         ));
     }
 }

@@ -1,4 +1,4 @@
-@extends('layouts.admin') {{-- or your settings layout --}}
+@extends('layouts.admin')
 
 @section('content')
     <div class="container" style="max-width:700px">
@@ -16,10 +16,9 @@
                 <button class="btn btn-outline-danger">Disable 2FA</button>
             </form>
         @else
-            <p>Scan this QR code with Google Authenticator / Authy, then enter the current 6-digit code to enable.</p>
+            <p>Scan this QR code with your authenticator app, then enter the 6-digit code to enable.</p>
 
             <div class="my-3">{!! $qrSvg !!}</div>
-
             <p><strong>Or enter key manually:</strong> <code>{{ $secret }}</code></p>
 
             @if ($errors->any())

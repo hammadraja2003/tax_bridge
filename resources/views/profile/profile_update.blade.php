@@ -76,23 +76,36 @@
                     <div class="text-end">
                         <button type="submit" class="btn btn-primary">Update Profile</button>
                     </div>
-
-                    <!-- 2FA Button -->
-                    <div class="mt-4">
-                        @if (Auth::user()->twofa_enabled)
-                            <a href="{{ route('2fa.setup') }}" class="btn btn-outline-danger w-100">
-                                Manage Two-Factor Authentication (Enabled)
-                            </a>
-                        @else
-                            <a href="{{ route('2fa.setup') }}" class="btn btn-outline-primary w-100">
-                                Enable Two-Factor Authentication
-                            </a>
-                        @endif
-                    </div>
-
                 </div> <!-- end card-body -->
             </div> <!-- end card -->
         </form>
+        <!-- 2FA Controls (separate form) -->
+        <!-- 2FA Controls -->
+        <div class="mt-4 text-center">
+            @php $user = Auth::user(); @endphp
+
+            @if ($user->twofa_enabled)
+                <p class="text-success mb-2">Two-Factor Authentication is <strong>Enabled</strong></p>
+                <form method="POST" action="{{ route('2fa.disable') }}"
+                    onsubmit="return confirm('Disable 2FA for your account?')">
+                    @csrf
+                    <button type="submit" class="btn btn-outline-danger w-100">
+                        Disable Two-Factor Authentication
+                    </button>
+                </form>
+            @elseif($user->twofa_secret)
+                <p class="text-warning mb-2">Two-Factor Authentication is <strong>Disabled</strong></p>
+                <a href="{{ route('2fa.setup') }}" class="btn btn-outline-primary w-100">
+                    Enable Two-Factor Authentication
+                </a>
+            @else
+                <p class="text-danger mb-2">You have not set up Two-Factor Authentication yet.</p>
+                <a href="{{ route('edit-profile', Crypt::encrypt($user->id)) }}" class="btn btn-outline-primary w-100">
+                    Set up 2FA
+                </a>
+            @endif
+        </div>
+
     </div> <!-- end container -->
 
     <script nonce="{{ $nonce }}">
