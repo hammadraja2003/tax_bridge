@@ -42,7 +42,7 @@
     <!-- Toatify css-->
     <link rel="stylesheet" href="{{ asset('assets/vendor/notifications/toastify.min.css') }}">
     <link rel="preload" as="style" href="{{ asset('build/assets/style-BVr_C8ru.css') }}" />
-    <link rel="stylesheet" href="{{ asset('build/assets/style-BVr_C8ru.css') }}" /><!-- css end-->
+    <link rel="stylesheet" href="{{ asset('assets/style-BVr_C8ru.css') }}" /><!-- css end-->
 </head>
 
 <body>

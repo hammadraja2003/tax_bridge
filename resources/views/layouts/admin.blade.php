@@ -44,7 +44,7 @@
     <!-- data table-->
     <script src="{{ asset('assets/vendor/datatable/jquery.dataTables.min.js') }}"></script>
     <link rel="preload" as="style" href="{{ asset('build/assets/style-BVr_C8ru.css') }}" />
-    <link rel="stylesheet" href="{{ asset('build/assets/style-BVr_C8ru.css') }}" /><!-- css end-->
+    <link rel="stylesheet" href="{{ asset('/assets/style-BVr_C8ru.css') }}" /><!-- css end-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <!-- Custom Css -->
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}" />
