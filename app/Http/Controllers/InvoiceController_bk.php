@@ -46,7 +46,6 @@ class InvoiceController extends Controller
         } elseif ($request->filled('date_to')) {
             $query->whereDate('invoice_date', '<=', Carbon::parse($request->date_to)->toDateString());
         }
-
         // ✅ Filter by FBR posting status
         if ($request->has('is_posted_to_fbr') && $request->is_posted_to_fbr !== '' && $request->is_posted_to_fbr !== null) {
             $query->where('is_posted_to_fbr', $request->is_posted_to_fbr);
@@ -56,7 +55,6 @@ class InvoiceController extends Controller
         foreach ($invoices as $invoice) {
             // Header tampering
             $invoice->tampered = $invoice->isTampered();
-
             // Details tampering
             $tamperedLines = false;
             foreach ($invoice->details as $detail) {
@@ -67,7 +65,6 @@ class InvoiceController extends Controller
             }
             $invoice->tampered_lines = $tamperedLines;
         }
-
         return view('invoices.index', compact('invoices'));
     }
     public function filter(Request $request)
@@ -234,7 +231,7 @@ class InvoiceController extends Controller
                         ];
                     }, $data['items']),
                 ];
-                $fbrService = new FbrInvoiceService(env('FBR_ENV', 'sandbox'));
+                $fbrService = new FbrInvoiceService();
                 // Step 1: Validate
                 $validation = $fbrService->validateInvoice($fbrPayload);
                 if (!$validation['success']) {
@@ -253,7 +250,7 @@ class InvoiceController extends Controller
                         'fbr_invoice_number' => $posting['data']['invoiceNumber'] ?? null,
                         'is_posted_to_fbr' => 1,
                         'response_status' => 'Success',
-                        'response_message' => 'Posted successfully to FBR ' . strtoupper(env('FBR_ENV', 'sandbox')),
+                        'response_message' => 'Posted successfully to FBR ' . strtoupper(getFbrEnv()),
                     ]);
                     // ✅ Log activity
                     logActivity(
@@ -308,16 +305,12 @@ class InvoiceController extends Controller
             'seller',
             'details.item'
         ])->findOrFail($invoiceId);
-
         $nonce = bin2hex(random_bytes(16));
-
         return view('invoices.print', [
             'invoice' => $invoice,
             'nonce'   => $nonce,
         ]);
     }
-
-
     // public function showForm()
     // {
     //     return view('invoices.import');

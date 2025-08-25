@@ -10,7 +10,7 @@
                                     <i class="ti ti-category"></i>
                                 </span>
                                 <div class="header-searchbar">
-                                    @if (env('FBR_ENV') === 'sandbox')
+                                    @if (getFbrEnv() === 'sandbox')
                                         <span class="badge bg-warning me-2">Sandbox Environment</span>
                                     @else
                                         <span class="badge bg-success me-2">Production Environment</span>
@@ -24,7 +24,6 @@
                                     @endif
                                 </div>
                             </div>
-
                             <div class="col-6 d-flex align-items-center justify-content-end header-right">
                                 <ul class="d-flex align-items-center">
                                     <li class="header-search">
@@ -60,7 +59,6 @@
                                                 @endif
                                             </h6>
                                         </div>
-
                                     </li>
                                     <li class="header-profile">
                                         <div class="flex-shrink-0 dropdown">
@@ -102,7 +100,6 @@
                                                     </li>
                                                 @endif
                                                 <li class="app-divider-v dotted py-1"></li>
-
                                                 <li>
                                                     <form method="POST" action="{{ route('logout') }}"
                                                         id="logout-form">
@@ -113,7 +110,6 @@
                                                         </button>
                                                     </form>
                                                 </li>
-
                                             </ul>
                                         </div>
                                     </li>

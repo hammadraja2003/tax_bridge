@@ -1,7 +1,10 @@
 <nav class="dark-sidebar semi-nav">
     <div class="app-logo">
         <a class="logo d-none d-sm-inline-block" href="#">
-            <img src="{{ asset('assets/images/logo/secureism_logo.svg') }}" alt="#" class="dark-logo">
+            {{-- <img src="{{ asset('assets/images/logo/secureism_logo.svg') }}" alt="#" class="dark-logo"> --}}
+            <img src="{{ businessLogo() }}" alt="Company Logo" class="dark-logo">
+
+
             <img src="{{ asset('assets/images/logo/1.png') }}" alt="#" class="light-logo">
         </a>
         <span class="bg-light-light toggle-semi-nav">

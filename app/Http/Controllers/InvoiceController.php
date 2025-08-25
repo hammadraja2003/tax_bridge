@@ -19,46 +19,16 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Str;
 use App\Models\FbrPostError;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class InvoiceController extends Controller
 {
-    public function create()
-    {
-        $seller = BusinessConfiguration::first(); // Single config
-        $buyers = Buyer::all();
-        $items = Item::all();
-        return view('invoices.create', compact('seller', 'buyers', 'items'));
-    }
-    public function storeFbrError(string $type, array $response)
-    {
-        try {
-            DB::table('fbr_post_error')->insert([
-                'type' => $type,
-                'status_code' => $response['data']['validationResponse']['statusCode'] ?? null,
-                'status' => $response['data']['validationResponse']['status'] ?? null,
-                'error_code' => $response['data']['validationResponse']['errorCode'] ?? null,
-                'error' => $response['error']
-                    ?? ($response['data']['validationResponse']['error'] ?? 'Unknown error'),
-
-                'invoice_statuses' => !empty($response['invoiceStatuses'])
-                    ? json_encode($response['invoiceStatuses'], JSON_UNESCAPED_UNICODE)
-                    : json_encode([]),
-
-                'raw_response' => json_encode($response, JSON_UNESCAPED_UNICODE),
-                'error_time' => now(),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        } catch (\Exception $e) {
-            Log::error("FBR Error store failed: " . $e->getMessage(), [
-                'response' => $response
-            ]);
-        }
-    }
-
     public function index(Request $request)
     {
-        $query = Invoice::with(['buyer', 'seller', 'details.item']);
+        $fbrEnv = getFbrEnv();
+        // filter by FBR environment
+        $query = Invoice::with(['buyer', 'seller', 'details.item'])->where('fbr_env', $fbrEnv);
         // 🔎 Filter by invoice type
         if ($request->filled('invoice_type')) {
             $query->where('invoice_type', trim($request->invoice_type));
@@ -74,17 +44,15 @@ class InvoiceController extends Controller
         } elseif ($request->filled('date_to')) {
             $query->whereDate('invoice_date', '<=', Carbon::parse($request->date_to)->toDateString());
         }
-
         // ✅ Filter by FBR posting status
         if ($request->has('is_posted_to_fbr') && $request->is_posted_to_fbr !== '' && $request->is_posted_to_fbr !== null) {
             $query->where('is_posted_to_fbr', $request->is_posted_to_fbr);
         }
         // Fetch with latest invoice_date
-        $invoices = $query->orderByDesc('invoice_id')->paginate(7);
+        $invoices = $query->orderByDesc('invoice_id')->paginate(10);
         foreach ($invoices as $invoice) {
             // Header tampering
             $invoice->tampered = $invoice->isTampered();
-
             // Details tampering
             $tamperedLines = false;
             foreach ($invoice->details as $detail) {
@@ -96,8 +64,45 @@ class InvoiceController extends Controller
             $invoice->tampered_lines = $tamperedLines;
             $invoice->fbr_environment = $invoice->fbr_env;
         }
-
         return view('invoices.index', compact('invoices'));
+    }
+    public function create()
+    {
+        $tenantId = Auth::user()->tenant_id ?? session('tenant_id');
+        $seller = BusinessConfiguration::where('bus_config_id', $tenantId)->first();
+
+        if (! $seller) {
+            return redirect()->route('company.configuration')
+                ->with('error', 'Please configure your business first before creating an invoice.');
+        }
+        $buyers = Buyer::all();
+        $items = Item::all();
+
+        return view('invoices.create', compact('seller', 'buyers', 'items'));
+    }
+    public function storeFbrError(string $type, array $response)
+    {
+        try {
+            DB::table('fbr_post_error')->insert([
+                'type' => $type,
+                'status_code' => $response['data']['validationResponse']['statusCode'] ?? null,
+                'status' => $response['data']['validationResponse']['status'] ?? null,
+                'error_code' => $response['data']['validationResponse']['errorCode'] ?? null,
+                'error' => $response['error']
+                    ?? ($response['data']['validationResponse']['error'] ?? 'Unknown error'),
+                'invoice_statuses' => !empty($response['invoiceStatuses'])
+                    ? json_encode($response['invoiceStatuses'], JSON_UNESCAPED_UNICODE)
+                    : json_encode([]),
+                'raw_response' => json_encode($response, JSON_UNESCAPED_UNICODE),
+                'error_time' => now(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        } catch (\Exception $e) {
+            Log::error("FBR Error store failed: " . $e->getMessage(), [
+                'response' => $response
+            ]);
+        }
     }
     public function filter(Request $request)
     {
@@ -153,8 +158,18 @@ class InvoiceController extends Controller
         $request->validate([
             'invoiceType' => 'required|string',
             'invoiceDate' => 'required|date',
-            'seller_id' => 'required|integer|exists:business_configurations,bus_config_id',
-            'byr_id' => 'required|integer|exists:buyers,byr_id',
+            'seller_id' => [
+                'required',
+                'integer',
+                Rule::exists('business_configurations', 'bus_config_id')
+                    ->where(fn($query) => $query->where('bus_config_id', session('tenant_id'))),
+            ],
+            // 'byr_id' => [
+            //     'required',
+            //     'integer',
+            //     Rule::exists(session('tenant_db') . 'buyers', 'byr_id')
+            //         ->where(fn($query) => $query->where('tenant_id', session('tenant_id'))),
+            // ],
             'buyerRegistrationType' => 'required|string',
             'items.*.item_id' => 'required|integer',
             'items.*.quantity' => 'required|numeric|min:0.01',
@@ -196,7 +211,7 @@ class InvoiceController extends Controller
                 'discount_amount' => $data['discount_amount'] ?? null,
                 'payment_status' => $data['payment_status'] ?? null,
                 'notes' => $data['notes'] ?? null,
-                'fbr_env' => env('FBR_ENV', 'sandbox'),
+                'fbr_env' => getFbrEnv(),
             ]);
             $invoice->save();
             if (!$isDraft && !$invoice->invoice_no) {
@@ -265,7 +280,9 @@ class InvoiceController extends Controller
                         ];
                     }, $data['items']),
                 ];
-                $fbrService = new FbrInvoiceService(env('FBR_ENV', 'sandbox'));
+
+
+                $fbrService = new FbrInvoiceService();
                 // Step 1: Validate
                 $validation = $fbrService->validateInvoice($fbrPayload);
                 if (!$validation['success']) {
@@ -281,10 +298,9 @@ class InvoiceController extends Controller
                             'error'            => $validation['error'] ?? 'Unknown error',
                             'invoice_statuses' => $validation['invoiceStatuses'] ?? null, // ← array ok
                             'raw_response'     => $validation['data'] ?? null,            // ← array ok
-                            'fbr_env'          => env('FBR_ENV', 'sandbox'),
+                            'fbr_env'          => getFbrEnv(),
                         ]);
                     });
-
                     throw new \Exception(
                         'FBR Validation Failed: ' . (
                             $validation['error']
@@ -306,17 +322,9 @@ class InvoiceController extends Controller
                             'error'            => $posting['error'] ?? 'Unknown error',
                             'invoice_statuses' => $posting['invoiceStatuses'] ?? null,
                             'raw_response'     => $posting['data'] ?? null,
-                            'fbr_env'          => env('FBR_ENV', 'sandbox'),
+                            'fbr_env'          => getFbrEnv(),
                         ]);
                     });
-
-                    // Build friendly message
-                    // $errorMessage = $posting['error']
-                    //     ?? ($posting['data']['validationResponse']['error'] ?? null)
-                    //     ?? ($posting['invoiceStatuses'][0]['error'] ?? null)
-                    //     ?? 'Unknown posting error';
-
-                    // throw new \Exception('FBR Posting Failed: ' . $errorMessage);
                     throw new \Exception(
                         'FBR Posting Failed: ' . (
                             $posting['error']
@@ -330,7 +338,7 @@ class InvoiceController extends Controller
                         'fbr_invoice_number' => $posting['data']['invoiceNumber'] ?? null,
                         'is_posted_to_fbr'   => 1,
                         'response_status'    => 'Success',
-                        'response_message'   => 'Posted successfully to FBR ' . strtoupper(env('FBR_ENV', 'sandbox')),
+                        'response_message'   => 'Posted successfully to FBR ' . strtoupper(getFbrEnv()),
                     ]);
                     // ✅ Log activity
                     logActivity(
@@ -372,7 +380,9 @@ class InvoiceController extends Controller
         $invoice = Invoice::with(['items', 'buyer', 'seller'])->findOrFail($invoiceId);
         $buyers = Buyer::all();
         $items = Item::all();
-        $seller = BusinessConfiguration::first();
+        // $seller = BusinessConfiguration::first();
+        $tenantId = Auth::user()->tenant_id ?? session('tenant_id');
+        $seller = BusinessConfiguration::where('bus_config_id', $tenantId)->first();
         return view('invoices.create', compact('invoice', 'buyers', 'items', 'seller'));
     }
     public function print($id)
@@ -383,15 +393,12 @@ class InvoiceController extends Controller
             'seller',
             'details.item'
         ])->findOrFail($invoiceId);
-
         $nonce = bin2hex(random_bytes(16));
-
         return view('invoices.print', [
             'invoice' => $invoice,
             'nonce'   => $nonce,
         ]);
     }
-
     // public function showForm()
     // {
     //     return view('invoices.import');

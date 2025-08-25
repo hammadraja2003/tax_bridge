@@ -4,6 +4,8 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use App\Models\BusinessConfiguration;
 
 class FbrInvoiceService
 {
@@ -15,13 +17,7 @@ class FbrInvoiceService
     {
         $this->env = $env;
         $this->baseUrl = 'https://gw.fbr.gov.pk/di_data/v1/di/';
-
-        if ($this->env === 'production') {
-            $this->token = env('FBR_API_TOKEN_PROD');
-        } else {
-            $this->token = env('FBR_API_TOKEN_SANDBOX');
-            $this->env = 'sandbox';
-        }
+        $this->setToken();
     }
     public function validateInvoice(array $payload): array
     {
@@ -159,5 +155,21 @@ class FbrInvoiceService
             'Authorization' => 'Bearer ' . $this->token,
             'Content-Type' => 'application/json',
         ];
+    }
+
+    protected function setToken()
+    {
+        $tenantId = Auth::user()->tenant_id;
+        $config = BusinessConfiguration::where('bus_config_id', $tenantId)->first();
+
+        if (!$config) {
+            throw new \Exception("Business configuration not found for tenant ID {$tenantId}");
+        }
+
+        $this->token = $config->fbr_env === 'production'
+            ? $config->fbr_api_token_prod
+            : $config->fbr_api_token_sandbox;
+
+        $this->env = $config->fbr_env ?? 'sandbox';
     }
 }

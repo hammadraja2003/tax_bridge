@@ -10,7 +10,6 @@ class AuditLog extends Model
     protected $table = 'audit_logs';
     protected $primaryKey = 'audit_id';
     public $timestamps = false; // You already have changed_at, so disable default timestamps
-
     protected $fillable = [
         'table_name',
         'row_id',
@@ -24,16 +23,13 @@ class AuditLog extends Model
         'ip_address',
         'device_info'
     ];
-
     protected $casts = [
         'old_data' => 'array',
         'new_data' => 'array',
         'changed_at' => 'datetime',
     ];
-
     // 👇 This makes $log->changes auto-available in JSON/Blade
     protected $appends = ['changes'];
-
     /**
      * Compute field-wise changes between old_data and new_data
      */
@@ -42,7 +38,6 @@ class AuditLog extends Model
         $changes = [];
         $old = $this->old_data ?? [];
         $new = $this->new_data ?? [];
-
         foreach ($new as $key => $value) {
             if (!array_key_exists($key, $old) || $old[$key] != $value) {
                 $changes[$key] = [
@@ -51,17 +46,14 @@ class AuditLog extends Model
                 ];
             }
         }
-
         return $changes;
     }
-
     // 👇 Relation to Master DB User (by email)
     public function user()
     {
         return $this->setConnection('master')
             ->belongsTo(User::class, 'db_user', 'email');
     }
-
     // 👇 Scope for newest-first ordering
     public function scopeLatestFirst($query)
     {

@@ -9,6 +9,12 @@
             @endif
         </div>
         {{-- Show success/error messages --}}
+        @if ($errors->has('db_error'))
+            <div class="alert alert-danger">
+                {{ $errors->first('db_error') }}
+            </div>
+        @endif
+
         @if (session('error'))
             <div class="alert alert-danger">
                 {{ session('error') }}

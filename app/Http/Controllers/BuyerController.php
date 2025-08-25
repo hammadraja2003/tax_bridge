@@ -13,12 +13,10 @@ class BuyerController extends Controller
     public function index(Request $request)
     {
         $query = Buyer::query();
-
         // 🔎 Filter by Client Type
         if ($request->filled('byr_type')) {
             $query->where('byr_type', $request->byr_type);
         }
-
         // 🔎 Search filter (name, CNIC, address, etc.)
         if ($request->filled('search')) {
             $search = $request->search;
@@ -28,16 +26,13 @@ class BuyerController extends Controller
                     ->orWhere('byr_address', 'like', "%{$search}%");
             });
         }
-
         // ✅ Now apply filters
-        $buyers = $query->latest()->paginate(5);
-
+        $buyers = $query->latest()->paginate(10);
         // 🔐 Tampering check
         foreach ($buyers as $buyer) {
             $calculatedHash = $buyer->generateHash();
             $buyer->tampered = $calculatedHash !== $buyer->hash;
         }
-
         return view('buyers.index', compact('buyers'));
     }
     public function fetch($id)
