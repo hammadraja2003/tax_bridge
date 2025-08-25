@@ -45,7 +45,7 @@
     <!-- data table-->
     <script src="{{ asset('assets/vendor/datatable/jquery.dataTables.min.js') }}"></script>
     <link rel="preload" as="style" href="{{ asset('build/assets/style-BVr_C8ru.css') }}" />
-    <link rel="stylesheet" href="{{ asset('/assets/style-BVr_C8ru.css') }}" /><!-- css end-->
+    <link rel="stylesheet" href="{{ asset('assets/style-BVr_C8ru.css') }}" /><!-- css end-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <!-- Custom Css -->
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}" />
@@ -81,6 +81,7 @@
     </div>
     <!--customizer-->
     <div id="myChart"></div>
+    <!-- scripts start-->
     <!-- Bootstrap js-->
     <script src="{{ asset('assets/vendor/bootstrap/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/js/formvalidation.js') }}"></script>
@@ -108,6 +109,7 @@
     {{-- <script src="{{asset('assets/js/advance_table.js')}}"></script> --}}
     <!-- List js -->
     <script src="{{ asset('assets/vendor/listJs/list-jquery.min.js') }}"></script>
+      <script src="{{ asset('assets/js/select2.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/listJs/list.min.js') }}"></script>
     <!-- list table js -->
     <script src="{{ asset('assets/js/list_js.js') }}"></script>
