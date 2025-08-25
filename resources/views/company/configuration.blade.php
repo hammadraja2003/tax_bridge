@@ -336,8 +336,6 @@
                                 @endforeach
                             </select>
                         </div>
-
-
                     </div>
                     <div class="text-end">
                         <button type="submit" class="btn btn-primary">Save Configuration</button>
@@ -346,7 +344,6 @@
             </div>
         </form>
     </div>
-    <script src="{{ asset('assets/js/select2.min.js') }}"></script>
     @push('scripts')
         <script nonce="{{ $nonce }}">
             document.addEventListener('DOMContentLoaded', function() {
@@ -382,11 +379,7 @@
         </script>
         <script nonce="{{ $nonce }}">
             $(document).ready(function() {
-                $('#scenario_ids').select2({
-                    placeholder: "Select Scenarios",
-                    allowClear: true,
-                    width: '100%'
-                });
+                $('#scenario_ids').select2();
             });
         </script>
     @endpush
