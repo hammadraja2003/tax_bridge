@@ -48,6 +48,7 @@
 <body>
     @include('layouts.partials.errors')
     @yield('content')
+     @include('layouts.partials.footer')
 </body>
 <!--customizer-->
 <div id="customizer"></div>

@@ -59,5 +59,4 @@
 </div>
 </div>
 @stack('scripts')
-@endstack
 @endsection
