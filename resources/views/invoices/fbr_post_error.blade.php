@@ -14,7 +14,7 @@
             </tr>
         </thead>
         <tbody>
-            @forelse($errors as $err)
+          @forelse($fbrErrors as $err)
             <tr>
                 <td>{{ \Carbon\Carbon::parse($err->error_time)->format('M-d-Y H:i:s') }}</td>
                 <td>{{ $err->type }}</td>
@@ -30,5 +30,8 @@
             @endforelse
         </tbody>
     </table>
+        <div class="paginationtble-bottom">   
+            {{ $fbrErrors->links() }} 
+        </div>
 </div>
 @endsection

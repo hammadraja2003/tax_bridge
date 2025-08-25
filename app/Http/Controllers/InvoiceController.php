@@ -355,10 +355,10 @@ class InvoiceController extends Controller
             return back()->with('error', 'Error: ' . $e->getMessage());
         }
     }
-    public function showErrors()
+   public function showErrors()
     {
-        $errors = FbrPostError::latest()->paginate(20);
-        return view('invoices.fbr_post_error', compact('errors'));
+        $fbrErrors = FbrPostError::latest()->paginate(10);
+        return view('invoices.fbr_post_error', compact('fbrErrors'));
     }
 
     public function edit($id)

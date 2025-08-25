@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Crypt;
 */
 
 Route::get('/', function () {
+    //  return phpinfo();
     return view('welcome');
 });
 
@@ -72,6 +73,9 @@ Route::middleware(['auth', 'verified', 'security.headers'])->group(function () {
     //ActivityLog
     Route::get('/activity-logs', [ActivityLogController::class, 'index'])
         ->name('activity.logs')
+        ->middleware('auth');
+    Route::get('/test-logs', [ActivityLogController::class, 'test'])
+        ->name('test.logs')
         ->middleware('auth');
 
     // /AuditLog
