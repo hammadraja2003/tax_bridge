@@ -85,6 +85,7 @@
                                             <th>Invoice Date</th>
                                             <th>Invoice #</th>
                                             <th>Posted to FBR</th>
+                                            <th>FBR Env</th>
                                             <th>FBR Invoice #</th>
                                             <th>Invoice Status</th>
                                             <th>Type</th>
@@ -113,6 +114,7 @@
                                                         <span class="badge text-bg-secondary">N/A</span>
                                                     @endif
                                                 </td>
+                                                <td>{{ $inv->fbr_environment }}</td>
                                                 <td class="contact">{{ $inv->fbr_invoice_number ?? 'N/A' }}</td>
                                                 <td class="employee">
                                                     @if ($inv->invoice_status === 1)

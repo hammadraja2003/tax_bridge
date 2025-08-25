@@ -11,17 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('fbr_post_error', function (Blueprint $table) {
-           $table->id();
-            $table->string('type')->comment('validation | posting'); 
-            $table->string('status_code')->nullable();
-            $table->string('status')->nullable();
+        Schema::create('fbr_post_errors', function (Blueprint $table) {
+            $table->id();
+            $table->enum('type', ['validation', 'posting'])->comment('validation | posting');
+            $table->unsignedSmallInteger('status_code')->nullable()->comment('HTTP status code');
+            $table->enum('status', ['success', 'failed'])->nullable();
             $table->string('error_code')->nullable();
-            $table->text('error')->nullable();
+            $table->longText('error')->nullable();
             $table->json('invoice_statuses')->nullable(); // array save karne k liye
-            $table->json('raw_response')->nullable(); // pura json store for debugging
+            $table->json('raw_response')->nullable();    // pura json store for debugging
             $table->timestamp('error_time')->useCurrent();
             $table->timestamps();
+
+            // Indexes for better query performance
+            $table->index('type');
+            $table->index('status_code');
         });
     }
 
@@ -30,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('fbr_post_error');
+        Schema::dropIfExists('fbr_post_errors');
     }
 };

@@ -51,15 +51,6 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Scenario ID (Optional)</label>
-                        {{-- <select name="scenarioId" class="form-select" id="scenarioId">
-                            <option value="">Select Scenario</option>
-                            <option value="SN018" {{ $isEdit && $invoice->scenario_id === 'SN018' ? 'selected' : '' }}>
-                                SN018
-                            </option>
-                            <option value="SN019" {{ $isEdit && $invoice->scenario_id === 'SN019' ? 'selected' : '' }}>
-                                SN019
-                            </option>
-                        </select> --}}
                         <select name="scenarioId" class="form-select" id="scenarioId">
                             {!! renderScenarioOptions($isEdit ? $invoice->scenario_id : null) !!}
                         </select>

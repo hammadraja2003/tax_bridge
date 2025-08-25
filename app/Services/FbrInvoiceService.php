@@ -52,24 +52,30 @@ class FbrInvoiceService
             curl_close($curl);
             $data = json_decode($response, true);
 
-            // Access top-level values
-            $dated = $data['dated'];
-            $statusCode = $data['validationResponse']['statusCode'];
-            $status = $data['validationResponse']['status'];
-            $errorCode = $data['validationResponse']['errorCode'];
-            $error = $data['validationResponse']['error'];
-            $invoiceStatuses = $data['validationResponse']['invoiceStatuses'];
+            $dated = $data['dated'] ?? null;
+            $invoiceStatuses = $data['validationResponse']['invoiceStatuses'] ?? [];
+            $firstInvoiceStatus = $invoiceStatuses[0] ?? [];
+
+            $error = !empty($data['validationResponse']['error'])
+                ? $data['validationResponse']['error']
+                : ($firstInvoiceStatus['error'] ?? 'Unknown error');
+
+            $errorCode = !empty($data['validationResponse']['errorCode'])
+                ? $data['validationResponse']['errorCode']
+                : ($firstInvoiceStatus['errorCode'] ?? null);
+
+            $status = $data['validationResponse']['status'] ?? null;
+            $statusCode = $data['validationResponse']['statusCode'] ?? null;
 
             return [
-                'success' => $statusCode === '00'
-                    && $status === 'Valid',
-                'dated' => $dated,
-                'data' => $data,
-                'statusCode' => $statusCode,
-                'status' => $status,
-                'errorCode' => $errorCode,
-                'error' => $error ?? 'Unknown error',
-                'invoiceStatuses' => $invoiceStatuses ?? ''
+                'success'         => $statusCode === '00' && $status === 'Valid',
+                'dated'           => $dated,
+                'data'            => $data,
+                'statusCode'      => $statusCode,
+                'status'          => $status,
+                'errorCode'       => $errorCode,
+                'error'           => $error,
+                'invoiceStatuses' => $invoiceStatuses,
             ];
         } catch (\Exception $e) {
             Log::error('Invoice Posting Failed: ' . $e->getMessage());
@@ -107,22 +113,37 @@ class FbrInvoiceService
             curl_close($curl);
             $data = json_decode($response, true);
 
-            // Access top-level values
-            $dated = $data['dated'];
-            $invoiceNumber = $data['invoiceNumber'];
-            $statusCode = $data['validationResponse']['statusCode'];
-            $status = $data['validationResponse']['status'];
-            // $errorCode = $data['validationResponse']['errorCode'];
-            $error = $data['validationResponse']['error'];
-            $invoiceStatuses = $data['validationResponse']['invoiceStatuses'];
+            // Extract fields safely
+            $dated         = $data['dated'] ?? null;
+            $invoiceNumber = $data['invoiceNumber'] ?? null;
+
+            $validationResponse = $data['validationResponse'] ?? [];
+            $invoiceStatuses    = $validationResponse['invoiceStatuses'] ?? [];
+            $firstInvoiceStatus = $invoiceStatuses[0] ?? [];
+
+            // Error fallback handling
+            $error = !empty($validationResponse['error'])
+                ? $validationResponse['error']
+                : ($firstInvoiceStatus['error'] ?? 'Unknown error');
+
+            $errorCode = !empty($validationResponse['errorCode'])
+                ? $validationResponse['errorCode']
+                : ($firstInvoiceStatus['errorCode'] ?? null);
+
+            $status     = $validationResponse['status'] ?? null;
+            $statusCode = $validationResponse['statusCode'] ?? null;
 
             return [
-                'success' => $statusCode === '00'
+                'success'        => $statusCode === '00'
                     && $status === 'Valid'
-                    && isset($invoiceNumber),
-                'data' => $data,
-                'error' => $error ?? 'Unknown error',
-                'invoiceStatuses' => $invoiceStatuses ?? ''
+                    && !empty($invoiceNumber),
+                'dated'          => $dated,
+                'data'           => $data,
+                'statusCode'     => $statusCode,
+                'status'         => $status,
+                'errorCode'      => $errorCode,
+                'error'          => $error,
+                'invoiceStatuses' => $invoiceStatuses,
             ];
         } catch (\Exception $e) {
             Log::error('Invoice Posting Failed: ' . $e->getMessage());

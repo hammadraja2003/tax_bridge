@@ -7,10 +7,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Invoice extends Model
 {
-    public const STATUS_DRAFT = 1;
-    public const STATUS_POSTED = 2;
     use HasFactory;
+
+    public const STATUS_DRAFT  = 1;
+    public const STATUS_POSTED = 2;
+
+    protected $connection = 'tenant';  // 👈 important
+    protected $table = 'invoices';     // 👈 add for clarity
     protected $primaryKey = 'invoice_id';
+
     protected $fillable = [
         'invoice_type',
         'invoice_date',
@@ -29,7 +34,6 @@ class Invoice extends Model
         'totalSalesTax',
         'totalfurtherTax',
         'totalextraTax',
-        // Newly added fields
         'invoice_status',
         'shipping_charges',
         'other_charges',
@@ -38,24 +42,31 @@ class Invoice extends Model
         'notes',
         'qr_code',
         'hash',
+        'fbr_env',
     ];
+
     // 🧾 Relationships
     public function buyer()
     {
         return $this->belongsTo(Buyer::class, 'buyer_id', 'byr_id');
     }
+
     public function seller()
     {
         return $this->belongsTo(BusinessConfiguration::class, 'seller_id', 'bus_config_id');
     }
+
     public function details()
     {
         return $this->hasMany(InvoiceDetail::class, 'invoice_id', 'invoice_id');
     }
+
     public function items()
     {
-        return $this->hasMany(\App\Models\InvoiceDetail::class, 'invoice_id', 'invoice_id');
+        return $this->hasMany(InvoiceDetail::class, 'invoice_id', 'invoice_id');
     }
+
+    // 🔑 Hash generation
     public function generateHash(): string
     {
         $fields = [
@@ -101,7 +112,7 @@ class Invoice extends Model
 
             // Normalize numbers
             if (is_numeric($val)) {
-                $val = number_format((float)$val, 2, '.', '');
+                $val = number_format((float) $val, 2, '.', '');
             }
 
             $data[$field] = (string) $val;
@@ -112,20 +123,18 @@ class Invoice extends Model
             json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
         );
     }
-    // 🚨 Check if tampered
+
+    // 🚨 Tamper detection
     public function isTampered(): bool
     {
         return $this->generateHash() !== $this->hash;
     }
 
-    // 🔄 Automatically update hash on create/update
+    // 🔄 Auto-update hash
     protected static function booted()
     {
         static::saving(function (self $invoice) {
-            $newHash = $invoice->generateHash();
-            if ($invoice->hash !== $newHash) {
-                $invoice->hash = $newHash;
-            }
+            $invoice->hash = $invoice->generateHash();
         });
     }
 }

@@ -5,23 +5,49 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\BusinessConfiguration;
+use App\Models\SandboxScenario;
 
 class CompanyController extends Controller
 {
     public function index()
     {
-        $config = BusinessConfiguration::first();
-        if ($config) {
-            $calculatedHash = $config->generateHash();
-            $config->tampered = $calculatedHash !== $config->hash;
+        // Get bus_config_id from session
+        $busConfigId = session('bus_config_id');
+        $config = null;
+        $selectedScenarios = [];
+        if ($busConfigId) {
+            // Fetch specific business configuration by bus_config_id
+            $config = BusinessConfiguration::with('scenarios')->find($busConfigId);
+
+            if ($config) {
+                // Calculate tampering
+                $config->tampered = $config->generateHash() !== $config->hash;
+                // Get already selected scenarios
+                $selectedScenarios = $config->scenarios->pluck('scenario_id')->toArray();
+            }
         }
-        return view('company.configuration', compact('config'));
+
+
+        // Load all available scenarios from master DB
+        $scenarios = SandboxScenario::all();
+
+        // If no config, set a flash message
+        if (!$config) {
+            session()->flash('error', 'Please configure your business first.');
+        }
+
+        return view('company.configuration', compact('config', 'scenarios', 'selectedScenarios'));
     }
+
+
+
+
     public function storeOrUpdate(Request $request)
     {
         DB::beginTransaction();
         try {
             $config = BusinessConfiguration::first();
+
             $request->validate([
                 'id_type' => 'required|in:NTN,CNIC',
                 'bus_ntn_cnic' => [
@@ -46,9 +72,22 @@ class CompanyController extends Controller
                 'bus_acc_branch_code' => 'nullable|string|max:255',
                 'bus_logo' => $config && $config->bus_logo
                     ? 'nullable|mimes:jpg,jpeg,png,svg|max:2048'
-                    : 'required|mimes:jpg,jpeg,png,svg|max:2048'
+                    : 'required|mimes:jpg,jpeg,png,svg|max:2048',
+                'db_host' => 'required|string|max:255',
+                'db_name' => 'required|string|max:255',
+                'db_username' => 'required|string|max:255',
+                'db_password' => 'required|string|max:255',
+                'fbr_env' => 'required|in:sandbox,production',
+                'fbr_api_token_sandbox' => 'nullable|string',
+                'fbr_api_token_prod' => 'nullable|string',
+
+                // 🔹 validate scenario_ids array
+                'scenario_ids'   => 'nullable|array',
+                'scenario_ids.*' => 'exists:sandbox_scenarios,scenario_id'
             ]);
+
             $data = $request->all();
+
             // Upload logo if provided
             if ($request->hasFile('bus_logo')) {
                 $file = $request->file('bus_logo');
@@ -57,31 +96,46 @@ class CompanyController extends Controller
                 $file->move(public_path('uploads/company'), $filename);
                 $data['bus_logo'] = $filename;
             }
+
             if ($config) {
-                // Keep old data for logging
                 $oldData = $config->toArray();
                 $config->update($data);
-                // ✅ Log activity for update
-                logActivity(
-                    'update',
-                    'Updated company configuration',
-                    ['old' => $oldData, 'new' => $config->toArray()],
-                    $config->id,
-                    'business_configurations'
-                );
+
+                // ✅ Sync scenarios
+                if ($request->has('scenario_ids')) {
+                    $config->scenarios()->sync($request->scenario_ids);
+                } else {
+                    $config->scenarios()->detach();
+                }
                 $msg = 'Company configuration updated.';
             } else {
                 $config = BusinessConfiguration::create($data);
-                // ✅ Log activity for create
-                logActivity(
-                    'add',
-                    'Added new company configuration',
-                    $config->toArray(),
-                    $config->id,
-                    'business_configurations'
-                );
+
+                // ✅ Attach scenarios
+                if ($request->has('scenario_ids')) {
+                    $config->scenarios()->sync($request->scenario_ids);
+                }
                 $msg = 'Company configuration saved.';
             }
+            config([
+                'database.connections.tenant.host'     => $config->db_host,
+                'database.connections.tenant.database' => $config->db_name,
+                'database.connections.tenant.username' => $config->db_username,
+                'database.connections.tenant.password' => $config->db_password,
+            ]);
+
+            DB::purge('tenant');
+            DB::reconnect('tenant');
+
+            // ✅ Now tenant DB is active → activity_logs will insert correctly
+            logActivity(
+                $config->wasRecentlyCreated ? 'add' : 'update',
+                $config->wasRecentlyCreated ? 'Added new company configuration' : 'Updated company configuration',
+                $config->wasRecentlyCreated ? $config->toArray() : ['old' => $oldData, 'new' => $config->toArray()],
+                $config->id,
+                'business_configurations'
+            );
+
             DB::commit();
             return redirect()->route('company.configuration')->with('message', $msg);
         } catch (\Illuminate\Validation\ValidationException $e) {

@@ -15,6 +15,8 @@ $app = Application::configure(basePath: dirname(__DIR__))
         // Register your custom middleware alias here
         $middleware->alias([
             'security.headers' => \App\Http\Middleware\SecurityHeadersMiddleware::class,
+            'set.tenant' => \App\Http\Middleware\SetTenant::class,
+            'business.configured' => \App\Http\Middleware\EnsureBusinessConfigured::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

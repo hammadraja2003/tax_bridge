@@ -8,7 +8,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class BusinessConfiguration extends Model
 {
     use HasFactory;
+
+    // 🔹 This model belongs to master DB
+    protected $connection = 'master';
+
     protected $primaryKey = 'bus_config_id';
+
     protected $fillable = [
         'bus_name',
         'bus_ntn_cnic',
@@ -25,22 +30,51 @@ class BusinessConfiguration extends Model
         'bus_acc_branch_name',
         'bus_acc_branch_code',
         'hash',
+
+        // 🔹 Tenant DB credentials
+        'db_host',
+        'db_name',
+        'db_username',
+        'db_password',
+
+        // 🔹 FBR configuration
+        'fbr_env',
+        'fbr_api_token_sandbox',
+        'fbr_api_token_prod',
     ];
+    // public function invoices()
+    // {
+    //     return $this->hasMany(Invoice::class, 'seller_id', 'bus_config_id')
+    //         ->setConnection('tenant'); // 👈 ensure invoices come from tenant DB
+    // }
     public function invoices()
     {
-        return $this->hasMany(Invoice::class, 'seller_id', 'bus_config_id');
+        return $this->hasMany(Invoice::class, 'seller_id', 'bus_config_id'); // ✅
     }
+    public function scenarios()
+    {
+        return $this->belongsToMany(
+            SandboxScenario::class,
+            'business_scenarios',
+            'bus_config_id',
+            'scenario_id'
+        )->withTimestamps();
+    }
+
+
     // 🔑 Auto-hash on create/update
     protected static function booted()
     {
         static::creating(function ($config) {
             $config->hash = $config->generateHash();
         });
+
         static::updating(function ($config) {
             $config->hash = $config->generateHash();
         });
     }
-    // ✅ Function to generate hash from critical fields
+
+    // ✅ Generate hash from critical fields
     public function generateHash()
     {
         return md5(
