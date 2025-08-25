@@ -11,7 +11,6 @@ use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FbrPostErrorController;
 use Illuminate\Support\Facades\Crypt;
-
 // use SimpleSoftwareIO\QrCode\Facades\QrCode;
 /*
 |--------------------------------------------------------------------------
@@ -23,14 +22,12 @@ Route::get('/', function () {
     //  return phpinfo();
     return view('welcome');
 });
-
 /*
 |--------------------------------------------------------------------------
 | Authenticated Routes
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', 'verified', 'security.headers', 'set.tenant', 'business.configured'])->group(function () {
-
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -40,7 +37,6 @@ Route::middleware(['auth', 'verified', 'security.headers', 'set.tenant', 'busine
     //Company OR Bussiness Configuration
     Route::get('/company/configuration', [CompanyController::class, 'index'])->name('company.configuration');
     Route::post('/company/configuration', [CompanyController::class, 'storeOrUpdate'])->name('company.configuration.save');
-
     //Invoices
     Route::get('/invoices', [InvoiceController::class, 'index'])->name('invoices.index');
     Route::post('/invoices/filter', [InvoiceController::class, 'filter'])->name('invoices.filter');
@@ -52,7 +48,6 @@ Route::middleware(['auth', 'verified', 'security.headers', 'set.tenant', 'busine
     //Excel Import
     // Route::get('/invoices/import', [InvoiceController::class, 'showForm'])->name('invoices.import.form');
     // Route::post('/invoices/import', [InvoiceController::class, 'importInvoice'])->name('invoices.import.process');
-
     //Buyers
     Route::get('/buyers', [BuyerController::class, 'index'])->name('buyers.index');
     Route::get('/buyer/create', [BuyerController::class, 'create'])->name('buyer.create');
@@ -61,7 +56,6 @@ Route::middleware(['auth', 'verified', 'security.headers', 'set.tenant', 'busine
     Route::post('/buyers/update/{id}', [BuyerController::class, 'update'])->name('buyers.update');
     Route::delete('/buyers/delete/{id}', [BuyerController::class, 'delete'])->name('buyers.delete');
     Route::get('/buyers/fetch/{id}', [BuyerController::class, 'fetch'])->name('buyers.fetch');
-
     //Items
     Route::get('/items', [ItemController::class, 'index'])->name('items.index');
     Route::get('/items/create', [ItemController::class, 'create'])->name('items.create');
@@ -69,14 +63,11 @@ Route::middleware(['auth', 'verified', 'security.headers', 'set.tenant', 'busine
     Route::get('/items/edit/{id}', [ItemController::class, 'edit'])->name('items.edit');
     Route::post('/items/update/{id}', [ItemController::class, 'update'])->name('items.update');
     Route::delete('/items/delete/{id}', [ItemController::class, 'delete'])->name('items.delete');
-
     //ActivityLog
     Route::get('/activity-logs', [ActivityLogController::class, 'index'])->name('activity.logs');
-
     //AuditLog
     Route::get('/audit-logs', [AuditLogController::class, 'index'])->name('audit_logs.index');
     Route::get('/audit-logs/{id}', [AuditLogController::class, 'show'])->name('audit_logs.show');
-
     //FBR Error Logs
     Route::get('/fbr-errors', [FbrPostErrorController::class, 'showErrors'])->name('fbr.errors');
 });

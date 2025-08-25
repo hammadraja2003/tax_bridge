@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\BusinessConfiguration;
+use Illuminate\Support\Facades\Auth;
 use App\Models\SandboxScenario;
 
 class CompanyController extends Controller
@@ -18,7 +19,6 @@ class CompanyController extends Controller
         if ($busConfigId) {
             // Fetch specific business configuration by bus_config_id
             $config = BusinessConfiguration::with('scenarios')->find($busConfigId);
-
             if ($config) {
                 // Calculate tampering
                 $config->tampered = $config->generateHash() !== $config->hash;
@@ -26,27 +26,25 @@ class CompanyController extends Controller
                 $selectedScenarios = $config->scenarios->pluck('scenario_id')->toArray();
             }
         }
-
-
         // Load all available scenarios from master DB
         $scenarios = SandboxScenario::all();
-
         // If no config, set a flash message
         if (!$config) {
             session()->flash('error', 'Please configure your business first.');
         }
-
         return view('company.configuration', compact('config', 'scenarios', 'selectedScenarios'));
     }
-
-
-
-
     public function storeOrUpdate(Request $request)
     {
         DB::beginTransaction();
         try {
-            $config = BusinessConfiguration::first();
+            $tenantId = Auth::user()->tenant_id ?? session('tenant_id');
+            $config = BusinessConfiguration::where('bus_config_id', $tenantId)->first();
+
+            // Fallback if no tenant ID is set
+            if (!$config) {
+                $config = null;
+            }
 
             $request->validate([
                 'id_type' => 'required|in:NTN,CNIC',
@@ -80,14 +78,11 @@ class CompanyController extends Controller
                 'fbr_env' => 'required|in:sandbox,production',
                 'fbr_api_token_sandbox' => 'nullable|string',
                 'fbr_api_token_prod' => 'nullable|string',
-
                 // 🔹 validate scenario_ids array
                 'scenario_ids'   => 'nullable|array',
                 'scenario_ids.*' => 'exists:sandbox_scenarios,scenario_id'
             ]);
-
             $data = $request->all();
-
             // Upload logo if provided
             if ($request->hasFile('bus_logo')) {
                 $file = $request->file('bus_logo');
@@ -96,11 +91,9 @@ class CompanyController extends Controller
                 $file->move(public_path('uploads/company'), $filename);
                 $data['bus_logo'] = $filename;
             }
-
             if ($config) {
                 $oldData = $config->toArray();
                 $config->update($data);
-
                 // ✅ Sync scenarios
                 if ($request->has('scenario_ids')) {
                     $config->scenarios()->sync($request->scenario_ids);
@@ -110,7 +103,6 @@ class CompanyController extends Controller
                 $msg = 'Company configuration updated.';
             } else {
                 $config = BusinessConfiguration::create($data);
-
                 // ✅ Attach scenarios
                 if ($request->has('scenario_ids')) {
                     $config->scenarios()->sync($request->scenario_ids);
@@ -123,10 +115,8 @@ class CompanyController extends Controller
                 'database.connections.tenant.username' => $config->db_username,
                 'database.connections.tenant.password' => $config->db_password,
             ]);
-
             DB::purge('tenant');
             DB::reconnect('tenant');
-
             // ✅ Now tenant DB is active → activity_logs will insert correctly
             logActivity(
                 $config->wasRecentlyCreated ? 'add' : 'update',
@@ -135,7 +125,6 @@ class CompanyController extends Controller
                 $config->id,
                 'business_configurations'
             );
-
             DB::commit();
             return redirect()->route('company.configuration')->with('message', $msg);
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -143,7 +132,9 @@ class CompanyController extends Controller
             return redirect()->back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
             DB::rollBack();
-            dd($e->getMessage(), $e->getFile(), $e->getLine());
+            return back()->withErrors([
+                'db_error' => 'Something went wrong while saving company data. (' . $e->getMessage() . ')'
+            ]);
         }
     }
 }

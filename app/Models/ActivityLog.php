@@ -8,7 +8,6 @@ class ActivityLog extends Model
 {
     protected $connection = 'tenant';  // 👈 important
     protected $table = 'activity_logs';
-
     // ✅ allow mass assignment
     protected $fillable = [
         'user_id',
@@ -24,7 +23,6 @@ class ActivityLog extends Model
         'data',
         'created_at',
     ];
-
     protected $casts = [
         'data' => 'array', // ensures $log->data is automatically decoded from JSON
     ];
