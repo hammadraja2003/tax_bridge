@@ -1,4 +1,4 @@
-<nav class="dark-sidebar">
+<nav class="dark-sidebar semi-nav">
     <div class="app-logo">
         <a class="logo d-none d-sm-inline-block" href="#">
             <img src="{{ asset('assets/images/logo/secureism_logo.svg') }}" alt="#" class="dark-logo">

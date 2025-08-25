@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Crypt;
 */
 
 Route::get('/', function () {
+    //  return phpinfo();
     return view('welcome');
 });
 

@@ -9,10 +9,18 @@
                     </div>
                     <div class="card-body p-0">
                         <div id="myTable">
+                             <div class="list-table-header d-flex justify-content-end align-items-center p-3">
+                                <form class="app-form app-icon-form" action="#">
+                                    <div class="position-relative">
+                                        <input type="search" class="form-control search" placeholder="Search..."
+                                            aria-label="Search">
+                                    </div>
+                                </form>
+                            </div>
                             <div class="app-scroll overflow-auto">
                                 <table id="projectTableT" class="table table-striped table-bordered m-0">
                                     <thead>
-                                        <tr>
+                                        <tr class="app-sort">
                                             <th>Date</th>
                                             <th>User</th>
                                             <th>IP</th>
@@ -23,17 +31,17 @@
                                             <th>Changed Data</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody class="list" id="t-data">
                                         @forelse($logs as $log)
-                                            <tr @if ($log->hash_changed) class="table-warning" @endif>
-                                                <td>{{ $log->created_at->format('d-M-Y H:i:s') }}</td>
-                                                <td>{{ $log->user_name ?? 'System' }}</td>
-                                                <td>{{ $log->ip_address }}</td>
-                                                <td>{{ $log->device_id ?? '-' }}</td>
+                                            <tr  @if ($log->hash_changed) class="table-warning" @endif>
+                                                <td class="date">{{ $log->created_at->format('d-M-Y H:i:s') }}</td>
+                                                <td class="email">{{ $log->user_name ?? 'System' }}</td>
+                                                <td class="email">{{ $log->ip_address }}</td>
+                                                <td class="contact">{{ $log->device_id ?? '-' }}</td>
                                                 <td>{{ ucfirst($log->action) }}</td>
-                                                <td>{{ $log->table_name }}</td>
-                                                <td>{{ $log->description }}</td>
-                                                <td>
+                                                <td class="status">{{ $log->table_name }}</td>
+                                                <td class="email">{{ $log->description }}</td>
+                                                <td class="status">
                                                     @if ($log->action === 'update' && !empty($log->diff))
                                                         <ul class="mb-0">
                                                             @foreach ($log->diff as $field => $values)
@@ -66,18 +74,10 @@
                                         @endforelse
                                     </tbody>
                                 </table>
+                                 <div class="paginationtble-bottom">   
+                                        {{ $logs->links() }} 
+                                </div>
                             </div>
-                            {{-- Pagination Section --}}
-                            {{-- <div class="d-flex justify-content-between align-items-center px-3 py-2 small text-muted">
-                                <div id="table-count-info">
-                                    Showing {{ $logs->firstItem() ?? 0 }} to {{ $logs->lastItem() ?? 0 }} of
-                                    {{ $logs->total() }} entries
-                                </div>
-                                <div class="list-pagination">
-                                    {!! $logs->links() !!}
-                                </div>
-                            </div> --}}
-
                         </div>
                     </div>
                 </div>

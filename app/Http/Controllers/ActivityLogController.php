@@ -8,12 +8,24 @@ class ActivityLogController extends Controller
 {
     public function index()
     {
-        $logs = ActivityLog::latest()->get();
+        $logs = ActivityLog::latest()->paginate(7);
+        
         // ->paginate(20);
         foreach ($logs as $log) {
             $currentHash = hash('sha256', json_encode($log->data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK));
             $log->hash_changed = $currentHash !== $log->data_hash;
         }
         return view('activity_logs.index', compact('logs'));
+    }
+    public function test()
+    {
+        $logs = ActivityLog::latest()->paginate(7);
+        
+        // ->paginate(20);
+        foreach ($logs as $log) {
+            $currentHash = hash('sha256', json_encode($log->data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK));
+            $log->hash_changed = $currentHash !== $log->data_hash;
+        }
+        return view('activity_logs.test-pagination',compact('logs'));
     }
 }

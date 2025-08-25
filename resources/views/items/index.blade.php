@@ -37,9 +37,9 @@
                                         @forelse  ($items as $item)
                                             <tr @if ($item->tampered) class="table-warning" @endif>
                                                 <td class="employee">{{ $item->item_description }}</td>
-                                                <td>{{ $item->item_hs_code }}</td>
-                                                <td>{{ $item->item_price }}</td>
-                                                <td>{{ $item->item_tax_rate }}</td>
+                                                <td class="email">{{ $item->item_hs_code }}</td>
+                                                <td class="contact">{{ $item->item_price }}</td>
+                                                <td class="status">{{ $item->item_tax_rate }}</td>
                                                 <td>{{ $item->item_uom }}</td>
                                                 <td>
                                                     @if ($item->tampered)
@@ -71,14 +71,8 @@
                                         @endforelse
                                     </tbody>
                                 </table>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center px-3 py-2 small text-muted">
-                                <div id="table-count-info">
-                                    Showing {{ $items->firstItem() ?? 0 }} to {{ $items->lastItem() ?? 0 }} of
-                                    {{ $items->total() }} entries
-                                </div>
-                                <div class="list-pagination">
-                                    {{ $items->links() }} {{-- Laravel built-in pagination UI --}}
+                                <div class="paginationtble-bottom">   
+                                        {{ $items->links() }} 
                                 </div>
                             </div>
                         </div>
