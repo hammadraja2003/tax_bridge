@@ -9,14 +9,6 @@
                 </div>
             </div>
             <div class="col-lg-5 col-xl-4 p-0 bg-white">
-                 @if ($errors->any())
-                    <div class="alert alert-danger">
-                        @foreach ($errors->all() as $error)
-                            <div>{{ $error }}</div>
-                        @endforeach
-                    </div>
-                    
-                @endif
                 <div class="form-container">
                     <form class="app-form needs-validation" novalidate method="POST" action="{{ route('login') }}">
                         @csrf
@@ -57,6 +49,13 @@
 
                             </div>
                         </div>
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                @foreach ($errors->all() as $error)
+                                    <div>{{ $error }}</div>
+                                @endforeach
+                            </div>
+                        @endif
                         <div class="col-12 mt-2">
                             <div class="mb-3">
                                 <button type="submit" role="button" class="btn btn-primary w-100">Sign In</button>
@@ -68,5 +67,22 @@
         </div>
     </div>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const alerts = document.querySelectorAll(".alert");
+
+            alerts.forEach(function(alert) {
+                setTimeout(function() {
+                    alert.style.transition = "opacity 0.5s ease";
+                    alert.style.opacity = "0";
+                    setTimeout(function() {
+                        if (alert.parentNode) {
+                            alert.parentNode.removeChild(alert);
+                        }
+                    }, 500);
+                }, 3000);
+            });
+        });
+    </script>
     @stack('scripts')
 @endsection

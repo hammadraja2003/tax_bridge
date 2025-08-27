@@ -16,14 +16,11 @@ class DashboardController extends Controller
         $fbrEnv = getFbrEnv();
 
         $totalClients = Buyer::count();
-        // $totalInvoices = Invoice::count();
         $totalInvoices = Invoice::where('fbr_env', $fbrEnv)->count();
-        // $fbrPostedInvoices = Invoice::where('is_posted_to_fbr', 1)->count();
         $fbrPostedInvoices = Invoice::where('fbr_env', $fbrEnv)->where('is_posted_to_fbr', 1)->count();
         $fbrpostedPercentage = $totalInvoices > 0
             ? round(($fbrPostedInvoices / $totalInvoices) * 100, 2)
             : 0;
-        // $draftInvoices = Invoice::where('invoice_status', Invoice::STATUS_DRAFT)->count();
         $draftInvoices = Invoice::where('fbr_env', $fbrEnv)->where('invoice_status', Invoice::STATUS_DRAFT)->count();
         $draftPercentage = $totalInvoices > 0
             ? round(($draftInvoices / $totalInvoices) * 100, 2)

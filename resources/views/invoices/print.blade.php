@@ -139,7 +139,7 @@
     <div class="container" id="invoiceArea">
         <div class="header">
             <div class="logo">
-                <img src="{{ asset('uploads/company/' . $invoice->seller->bus_logo) }}" alt="Secureism Logo"
+                <img src="{{ asset('uploads/company/' . $invoice->seller->bus_logo) }}" alt="Logo"
                     style="height: 45px;">
             </div>
         </div>
@@ -159,7 +159,6 @@
             </div>
             <div class="top-section text-right">
                 <p><strong>{{ $invoice->seller->bus_name }}</strong><br>
-                    Innovation & Incubation<br>
                     {{ $invoice->seller->bus_address }}<br>
                     Reg No: {{ $invoice->seller->bus_reg_num }}<br>
                     NTN:{{ $invoice->seller->bus_ntn_cnic }}</p>
@@ -302,7 +301,6 @@
             <div style="display: flex; justify-content: space-between; gap: 20px;">
                 <div style="width: 48%;">
                     <p><strong>To:</strong> {{ $invoice->seller->bus_name }}<br>
-                        Innovation & Incubation<br>
                         {{ $invoice->seller->bus_address }}<br>
                         Company Reg No: {{ $invoice->seller->bus_reg_num }}<br>
                         NTN: {{ $invoice->seller->bus_ntn_cnic }}</p>
@@ -339,11 +337,9 @@
         </div>
         </br>
         <!-- Footer -->
-        <div class="footer" style="text-align: justify;">
-            Company Registration No: 0119999 | Registered Office: SECUREISM (PRIVATE) LIMITED, Innovation & Incubation,
-            3rd
-            Floor, F3, Centre of Information & Cyber Security, Sector B, Zaraj Housing Scheme, Islamabad, 46000,
-            Pakistan.
+        <div class="footer" style="text-align: center;">
+            Company Registration No: {{ $invoice->seller->bus_reg_num }} | Registered Office:
+            {{ $invoice->seller->bus_address }}
         </div>
     </div>
 </body>

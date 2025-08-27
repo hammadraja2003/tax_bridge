@@ -12,7 +12,6 @@ class CompanyController extends Controller
 {
     public function index()
     {
-        // Get bus_config_id from session
         $busConfigId = session('bus_config_id');
         $config = null;
         $selectedScenarios = [];

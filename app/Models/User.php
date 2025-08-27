@@ -25,6 +25,7 @@ class User extends Authenticatable
         'password',
         'twofa_enabled',
         'twofa_secret',
+        'tenant_id',
     ];
     /**
      * The attributes that should be hidden for serialization.

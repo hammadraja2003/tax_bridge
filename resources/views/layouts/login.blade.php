@@ -42,30 +42,28 @@
     <!-- Toatify css-->
     <link rel="stylesheet" href="{{ asset('assets/vendor/notifications/toastify.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/style-BVr_C8ru.css') }}" /><!-- css end-->
-      <link href="{{ asset('assets/css/select2.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/css/select2.min.css') }}" rel="stylesheet" />
+    <!-- latest jquery-->
+    <script src="{{ asset('assets/js/jquery-3.6.3.min.js') }}"></script>
 </head>
 
 <body>
     @include('layouts.partials.errors')
     @yield('content')
-     @include('layouts.partials.footer')
+    @include('layouts.partials.footer')
 </body>
 <!--customizer-->
 <div id="customizer"></div>
 <div id="myChart"></div>
 <!-- scripts start-->
 
-<!-- latest jquery-->
-<script src="{{ asset('assets/js/jquery-3.6.3.min.js') }}"></script>
+
 <!-- Bootstrap js-->
 <script src="{{ asset('assets/vendor/bootstrap/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('assets/js/formvalidation.js') }}"></script>
-<!-- Simple bar js-->
-{{-- <script src="{{asset('assets/vendor/simplebar/simplebar.js')}}"></script> --}}
-<!-- prism js-->
+
 <script src="{{ asset('assets/vendor/prism/prism.min.js') }}"></script>
 <!-- App js-->
-{{-- <script src="{{ asset('assets/js/script.js') }}"></script> --}}
 <!-- slick-file -->
 <script src="{{ asset('assets/vendor/slick/slick.min.js') }}"></script>
 <!-- vector map plugin js -->
@@ -87,10 +85,5 @@
 <!-- js -->
 <script src="{{ asset('assets/js/sweet_alert.js') }}"></script>
 <!-- scripts end-->
-<script>
-    $(document).ready(function() {
-        $('#scenario_ids').select2();
-    });
-</script>
 
 </html>

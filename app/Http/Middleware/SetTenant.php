@@ -17,23 +17,40 @@ class SetTenant
     public function handle($request, Closure $next)
     {
         $tenantManager = app(\App\Services\TenantManager::class);
-        // user has tenant_id in users table
+
         $tenantId = Auth::user()->tenant_id ?? session('tenant_id');
+
         if ($tenantId) {
-            // Map tenant_id → bus_config_id
             $business = DB::connection('master')
                 ->table('business_configurations')
-                ->where('bus_config_id', $tenantId) // ✅ match with bus_config_id
+                ->where('bus_config_id', $tenantId)
                 ->first();
+
             if ($business) {
+                $dbName = $business->db_name;
+
+                // ✅ Check if database actually exists
+                $dbExists = DB::select("SHOW DATABASES LIKE '{$dbName}'");
+
+                if (empty($dbExists)) {
+                    // logout + redirect back to login with error
+                    Auth::logout();
+                    return redirect()->route('login')
+                        ->withErrors([
+                            'db' => "Your tenant database has not been created yet. Please contact admin."
+                        ]);
+                }
+
+                // If DB exists → proceed normally
                 $tenantManager->setTenant($business->bus_config_id);
                 session([
-                    'tenant_id'    => $tenantId,
+                    'tenant_id'     => $tenantId,
                     'bus_config_id' => $business->bus_config_id,
-                    'tenant_db'    => $business->db_name,
+                    'tenant_db'     => $business->db_name,
                 ]);
             }
         }
+
         return $next($request);
     }
 }

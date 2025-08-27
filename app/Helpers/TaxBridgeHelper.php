@@ -106,7 +106,6 @@ if (!function_exists('getFbrEnv')) {
         return $config->fbr_env ?? 'sandbox';
     }
 }
-
 if (!function_exists('getBusinessConfig')) {
     function getBusinessConfig()
     {
@@ -118,7 +117,6 @@ if (!function_exists('getBusinessConfig')) {
         return BusinessConfiguration::where('bus_config_id', $tenantId)->first();
     }
 }
-
 if (!function_exists('businessLogo')) {
     function businessLogo()
     {

@@ -52,7 +52,15 @@ class RegisteredUserController extends Controller
             'bus_contact_person' => 'required|string|max:255',
             'bus_province' => 'required|string|max:50',
             'bus_address' => 'required|string|max:500',
-            'bus_logo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'bus_logo' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+
+            // Banking Details
+            'bus_acc_branch_name'   => 'required|string|max:255',
+            'bus_acc_branch_code'   => 'required|string|max:50',
+            'bus_account_title'     => 'required|string|max:255',
+            'bus_account_number'    => 'required|string|max:50',
+            'bus_IBAN'              => 'required|string|max:34',
+            'bus_swift_code'        => 'nullable|string|max:50',
 
             // FBR / Config
             'fbr_env' => 'required|in:sandbox,production',
@@ -63,17 +71,28 @@ class RegisteredUserController extends Controller
             // User
             'name' => 'required|string|max:255',
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
-            'password' => 'nullable|string|min:6', // removed "confirmed"
+            'password' => 'required|string|min:6', // removed "confirmed"
         ]);
 
         DB::beginTransaction();
         try {
             $data = $request->only([
-                'bus_name', 'bus_ntn_cnic', 'bus_reg_num', 'bus_contact_num',
-                'bus_contact_person', 'bus_province', 'bus_address',
-                'bus_acc_branch_name', 'bus_acc_branch_code', 'bus_account_title',
-                'bus_account_number', 'bus_IBAN', 'bus_swift_code',
-                'fbr_env', 'fbr_api_token_sandbox', 'fbr_api_token_prod'
+                'bus_name',
+                'bus_ntn_cnic',
+                'bus_reg_num',
+                'bus_contact_num',
+                'bus_contact_person',
+                'bus_province',
+                'bus_address',
+                'bus_acc_branch_name',
+                'bus_acc_branch_code',
+                'bus_account_title',
+                'bus_account_number',
+                'bus_IBAN',
+                'bus_swift_code',
+                'fbr_env',
+                'fbr_api_token_sandbox',
+                'fbr_api_token_prod'
             ]);
 
             // Handle logo upload
@@ -90,20 +109,18 @@ class RegisteredUserController extends Controller
             $data['db_username'] = 'root';
             $data['db_password'] = 'Admin';
 
-            $cleanBusName = strtolower($request->bus_name); 
+            $cleanBusName = strtolower($request->bus_name);
             $cleanBusName = preg_replace('/[^a-z0-9]+/i', '_', $cleanBusName);
-            $cleanBusName = trim($cleanBusName, '_'); 
+            $cleanBusName = trim($cleanBusName, '_');
             $cleanBusName = preg_replace('/_+/', '_', $cleanBusName);
-
-            $randomPrefix = substr(str_shuffle('abcdefghijklmnopqrstuvwxyz0123456789'), 0, 4);
-
-            // Final db_name
-            $data['db_name'] = $randomPrefix . '_' . $cleanBusName . '_db';
+            // Unique suffix (timestamp + random string for safety)
+            $uniqueSuffix = substr(sha1(uniqid(mt_rand(), true)), 0, 6);
+            // Add fixed prefix "fbr"
+            $data['db_name'] = 'fbr_' . $cleanBusName . '_' . $uniqueSuffix . '_db';
 
             // Insert into business_configurations
             $business = BusinessConfiguration::create($data);
             $busConfigId = $business->bus_config_id;
-
             // Insert scenarios (many to many)
             if (!empty($request->scenario_ids)) {
                 foreach ($request->scenario_ids as $scenarioId) {
@@ -127,14 +144,9 @@ class RegisteredUserController extends Controller
             event(new Registered($user));
 
             DB::commit();
-
-            // Auto login
-            auth()->login($user);
-
-            return redirect()->route('dashboard')->with('success', 'Configuration saved successfully!');
+            return redirect()->route('login')->with('success', 'Configuration saved successfully! Please log in to continue.');
         } catch (\Exception $e) {
             DB::rollBack();
-            // Debugging (optional): dd($e->getMessage());
             return back()->withErrors(['error' => 'Something went wrong: ' . $e->getMessage()])->withInput();
         }
     }
