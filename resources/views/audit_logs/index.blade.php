@@ -46,7 +46,8 @@
                 @endforeach
             </tbody>
         </table>
-
-        {{-- {{ $logs->links() }} --}}
+            <div class="paginationtble-bottom">   
+            {{ $logs->links() }} 
+            </div>
     </div>
 @endsection

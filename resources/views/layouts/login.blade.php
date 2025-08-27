@@ -41,8 +41,8 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/vector-map/jquery-jvectormap.css') }}">
     <!-- Toatify css-->
     <link rel="stylesheet" href="{{ asset('assets/vendor/notifications/toastify.min.css') }}">
-    <link rel="preload" as="style" href="{{ asset('build/assets/style-BVr_C8ru.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/style-BVr_C8ru.css') }}" /><!-- css end-->
+      <link href="{{ asset('assets/css/select2.min.css') }}" rel="stylesheet" />
 </head>
 
 <body>
@@ -73,6 +73,7 @@
 <script src="{{ asset('assets/vendor/vector-map/jquery-jvectormap-world-mill.js') }}"></script>
 <!--cleave js  -->
 <script src="{{ asset('assets/vendor/cleavejs/cleave.min.js') }}"></script>
+<script src="{{ asset('assets/js/select2.min.js') }}"></script>
 <!-- Glight js -->
 <script src="{{ asset('assets/vendor/glightbox/glightbox.min.js') }}"></script>
 <!-- data table-->
@@ -86,5 +87,10 @@
 <!-- js -->
 <script src="{{ asset('assets/js/sweet_alert.js') }}"></script>
 <!-- scripts end-->
+<script>
+    $(document).ready(function() {
+        $('#scenario_ids').select2();
+    });
+</script>
 
 </html>

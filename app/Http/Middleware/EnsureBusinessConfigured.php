@@ -33,7 +33,7 @@ class EnsureBusinessConfigured
             'db_host',
             'db_name',
             'db_username',
-            'db_password',
+            // 'db_password',
             'fbr_env'
         ];
         foreach ($requiredFields as $field) {

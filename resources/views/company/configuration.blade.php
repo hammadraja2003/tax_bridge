@@ -40,9 +40,9 @@
                             <label class="form-label required">Name</label>
                             <input type="text" name="bus_name" placeholder="Enter a Buissness Name" class="form-control"
                                 required value="{{ old('bus_name', $config->bus_name ?? '') }}">
-                            <div class="invalid-feedback">
-                                Please Enter Business Configuration.
-                            </div>
+                                <div class="invalid-feedback">
+                                    Please Enter Business Configuration.
+                                </div>
                             @error('bus_name')
                                 <div class="invalid-feedback">
                                     {{ $message }}

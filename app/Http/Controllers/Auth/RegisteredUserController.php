@@ -10,7 +10,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use App\Models\SandboxScenario;
+use App\Models\BusinessConfiguration;
 
 class RegisteredUserController extends Controller
 {
@@ -19,38 +22,120 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        $scenarios = SandboxScenario::all();
+        return view('auth.register', compact('scenarios'));
     }
     /**
      * Handle an incoming registration request.
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ], [
-            'name.required' => 'Name is required.',
-            'email.required' => 'Email is required.',
-            'email.email' => 'Please enter a valid email address.',
-            'email.unique' => 'This email is already registered.',
-            'password.required' => 'Password is required.',
-            'password.confirmed' => 'Passwords do not match.',
+            // Company Details
+            'id_type' => 'required|in:NTN,CNIC',
+            'bus_ntn_cnic' => [
+                'required',
+                function ($attribute, $value, $fail) use ($request) {
+                    if ($request->id_type === 'NTN' && !preg_match('/^[0-9]{7}$/', $value)) {
+                        $fail('NTN must be exactly 7 digits.');
+                    }
+                    if ($request->id_type === 'CNIC' && !preg_match('/^[0-9]{13}$/', $value)) {
+                        $fail('CNIC must be exactly 13 digits (without dashes).');
+                    }
+                }
+            ],
+            'bus_name' => 'required|string|max:255',
+            'bus_reg_num' => 'required|string|max:50',
+            'bus_contact_num' => 'required|string|max:20',
+            'bus_contact_person' => 'required|string|max:255',
+            'bus_province' => 'required|string|max:50',
+            'bus_address' => 'required|string|max:500',
+            'bus_logo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+
+            // FBR / Config
+            'fbr_env' => 'required|in:sandbox,production',
+            'fbr_api_token_sandbox' => 'required|string',
+            'fbr_api_token_prod' => 'nullable|string',
+            'scenario_ids' => 'required|array',
+
+            // User
+            'name' => 'required|string|max:255',
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+            'password' => 'nullable|string|min:6', // removed "confirmed"
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        DB::beginTransaction();
+        try {
+            $data = $request->only([
+                'bus_name', 'bus_ntn_cnic', 'bus_reg_num', 'bus_contact_num',
+                'bus_contact_person', 'bus_province', 'bus_address',
+                'bus_acc_branch_name', 'bus_acc_branch_code', 'bus_account_title',
+                'bus_account_number', 'bus_IBAN', 'bus_swift_code',
+                'fbr_env', 'fbr_api_token_sandbox', 'fbr_api_token_prod'
+            ]);
 
-        event(new Registered($user));
-        Auth::login($user);
+            // Handle logo upload
+            if ($request->hasFile('bus_logo')) {
+                $file = $request->file('bus_logo');
+                $extension = $file->getClientOriginalExtension();
+                $filename = time() . '.' . $extension;
+                $file->move(public_path('uploads/company'), $filename);
+                $data['bus_logo'] = $filename;
+            }
 
-        return redirect(route('dashboard', absolute: false));
+            // DB credentials
+            $data['db_host'] = '127.0.0.1';
+            $data['db_username'] = 'root';
+            $data['db_password'] = 'Admin';
+
+            $cleanBusName = strtolower($request->bus_name); 
+            $cleanBusName = preg_replace('/[^a-z0-9]+/i', '_', $cleanBusName);
+            $cleanBusName = trim($cleanBusName, '_'); 
+            $cleanBusName = preg_replace('/_+/', '_', $cleanBusName);
+
+            $randomPrefix = substr(str_shuffle('abcdefghijklmnopqrstuvwxyz0123456789'), 0, 4);
+
+            // Final db_name
+            $data['db_name'] = $randomPrefix . '_' . $cleanBusName . '_db';
+
+            // Insert into business_configurations
+            $business = BusinessConfiguration::create($data);
+            $busConfigId = $business->bus_config_id;
+
+            // Insert scenarios (many to many)
+            if (!empty($request->scenario_ids)) {
+                foreach ($request->scenario_ids as $scenarioId) {
+                    DB::table('business_scenarios')->insert([
+                        'bus_config_id' => $busConfigId,
+                        'scenario_id'   => $scenarioId,
+                        'created_at'    => now(),
+                        'updated_at'    => now(),
+                    ]);
+                }
+            }
+            // Insert user
+            $user = User::create([
+                'name' => $request->name,
+                'password' => !empty($request->password) ? Hash::make($request->password) : Hash::make('123456'),
+                'tenant_id' => $busConfigId,
+                'email' => $request->email ?? null,
+            ]);
+
+            // Fire registered event (optional)
+            event(new Registered($user));
+
+            DB::commit();
+
+            // Auto login
+            auth()->login($user);
+
+            return redirect()->route('dashboard')->with('success', 'Configuration saved successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            // Debugging (optional): dd($e->getMessage());
+            return back()->withErrors(['error' => 'Something went wrong: ' . $e->getMessage()])->withInput();
+        }
     }
 }

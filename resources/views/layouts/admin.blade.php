@@ -109,7 +109,7 @@
     {{-- <script src="{{asset('assets/js/advance_table.js')}}"></script> --}}
     <!-- List js -->
     <script src="{{ asset('assets/vendor/listJs/list-jquery.min.js') }}"></script>
-      <script src="{{ asset('assets/js/select2.min.js') }}"></script>
+    <script src="{{ asset('assets/js/select2.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/listJs/list.min.js') }}"></script>
     <!-- list table js -->
     <script src="{{ asset('assets/js/list_js.js') }}"></script>
