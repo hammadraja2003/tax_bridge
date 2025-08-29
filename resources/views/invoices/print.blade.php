@@ -126,15 +126,6 @@
 </head>
 
 <body onload="window.print()">
-
-    {{-- @push('scripts')
-        <script nonce="{{ $nonce }}">
-            const invoiceNumber = @json($invoice->invoice_number);
-        </script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
-            nonce="{{ $nonce }}"></script>
-        <script src="{{ asset('assets/js/print.js') }}" nonce="{{ $nonce }}"></script>
-    @endpush --}}
     <!-- Printable Area -->
     <div class="container" id="invoiceArea">
         <div class="header">
@@ -266,13 +257,13 @@
                 </table>
             </div>
         </div>
-        @php
+        {{-- @php
             $qrCodePath = public_path('uploads/qr_codes/' . $invoice->qr_code);
             $logoPath = public_path('uploads/fbr-digital-invoicing-logo.png');
         @endphp
         @if ($invoice->is_posted_to_fbr == 1)
             <div style="margin-top: 30px;text-align: right;">
-                {{-- FBR Logo --}}
+             
                 @if (file_exists($logoPath))
                     <img src="{{ asset('uploads/fbr-digital-invoicing-logo.png') }}"
                         alt="FBR Digital Invoicing System Logo"
@@ -280,13 +271,41 @@
                 @else
                     <p>No FBR Logo available</p>
                 @endif
-                {{-- QR Code --}}
                 @if (file_exists($qrCodePath))
                     <img src="{{ asset('uploads/qr_codes/' . $invoice->qr_code) }}" alt="QR Code"
                         style="width:1in; height:1in; object-fit:contain; margin-left:10px;">
                 @else
                     <p>No QR Code available</p>
                 @endif
+                @if (!empty($invoice->fbr_invoice_number))
+                    <p style="margin-top: 5px; font-weight: bold;">
+                        FBR Invoice #: {{ $invoice->fbr_invoice_number }}
+                    </p>
+                @endif
+            </div>
+        @endif --}}
+        @php
+            // Public URLs (for <img src>)
+            $qrCodeUrl = url('uploads/qr_codes/' . $invoice->qr_code);
+            $logoUrl = url('uploads/fbr-digital-invoicing-logo.png');
+
+            // Server paths (for file_exists)
+            $qrCodePath = public_path('uploads/qr_codes/' . $invoice->qr_code);
+            $logoPath = public_path('uploads/fbr-digital-invoicing-logo.png');
+        @endphp
+
+        @if ($invoice->is_posted_to_fbr == 1)
+            <div style="margin-top: 30px; text-align: right;">
+                {{-- FBR Logo --}}
+
+                <img src="{{ $logoUrl }}" alt="FBR Digital Invoicing System Logo"
+                    style="width:1in; height:1in; object-fit:contain; margin-left:10px;">
+
+
+                {{-- QR Code --}}
+                <img src="{{ $qrCodeUrl }}" alt="QR Code"
+                    style="width:1in; height:1in; object-fit:contain; margin-left:10px;">
+
                 {{-- FBR Invoice Number --}}
                 @if (!empty($invoice->fbr_invoice_number))
                     <p style="margin-top: 5px; font-weight: bold;">

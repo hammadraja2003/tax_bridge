@@ -11,7 +11,11 @@ use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FbrPostErrorController;
 use Illuminate\Support\Facades\Crypt;
-// use SimpleSoftwareIO\QrCode\Facades\QrCode;
+// use Endroid\QrCode\QrCode;
+// use Endroid\QrCode\Writer\PngWriter;
+// use Illuminate\Support\Facades\App;
+
+
 /*
 |--------------------------------------------------------------------------
 | Public Routes
@@ -22,6 +26,32 @@ Route::get('/', function () {
     //  return phpinfo();
     return view('welcome');
 });
+// Route::get('/test-qr', function () {
+//     $qr = QrCode::create('Hello Secureism!')
+//         ->setSize(200);
+
+//     $writer = new PngWriter();
+//     $qrResult = $writer->write($qr);
+
+//     $qrFileName = 'qr_' . time() . '.png';
+
+//     // Detect correct public path (local vs cPanel)
+//     $publicRoot = $_SERVER['DOCUMENT_ROOT'] ?? public_path();
+//     $qrPath = $publicRoot . '/uploads/qr_codes/' . $qrFileName;
+
+//     // Ensure directory exists
+//     if (!file_exists(dirname($qrPath))) {
+//         mkdir(dirname($qrPath), 0755, true);
+//     }
+
+//     // Save the file
+//     $qrResult->saveToFile($qrPath);
+
+//     // Generate a public URL
+//     $qrUrl = url('uploads/qr_codes/' . $qrFileName);
+
+//     return "QR Generated: <a href='$qrUrl' target='_blank'>View QR</a>";
+// });
 /*
 |--------------------------------------------------------------------------
 | Authenticated Routes

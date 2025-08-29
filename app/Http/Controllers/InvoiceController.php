@@ -15,12 +15,15 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
 use App\Services\FbrInvoiceService;
 use Illuminate\Support\Facades\Log;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
+// use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Str;
 use App\Models\FbrPostError;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Writer\PngWriter;
 
 class InvoiceController extends Controller
 {
@@ -349,17 +352,45 @@ class InvoiceController extends Controller
                         'invoices'
                     );
                     // Generate QR code
+                    // $qrData = $posting['data']['invoiceNumber']; // Or full JSON if FBR requires
+                    // $qrFileName = 'qr_' . $invoice->invoice_no . '_' . time() . '.png';
+                    // $qrPath = public_path('uploads/qr_codes/' . $qrFileName);
+                    // // Make sure the folder exists
+                    // if (!file_exists(public_path('uploads/qr_codes'))) {
+                    //     mkdir(public_path('uploads/qr_codes'), 0755, true);
+                    // }
+                    // // Generate and save QR
+                    // QrCode::format('png')
+                    //     ->size(200)
+                    //     ->generate($qrData, $qrPath);
+                    // // Save QR code filename in invoice
+                    // $invoice->update([
+                    //     'qr_code' => $qrFileName
+                    // ]);
+
+                    // Generate QR code
                     $qrData = $posting['data']['invoiceNumber']; // Or full JSON if FBR requires
                     $qrFileName = 'qr_' . $invoice->invoice_no . '_' . time() . '.png';
-                    $qrPath = public_path('uploads/qr_codes/' . $qrFileName);
+
+                    // Detect correct public path (works on local & cPanel)
+                    $publicRoot = $_SERVER['DOCUMENT_ROOT'] ?? public_path();
+                    $qrDir = $publicRoot . '/uploads/qr_codes';
+                    $qrPath = $qrDir . '/' . $qrFileName;
+
                     // Make sure the folder exists
-                    if (!file_exists(public_path('uploads/qr_codes'))) {
-                        mkdir(public_path('uploads/qr_codes'), 0755, true);
+                    if (!file_exists($qrDir)) {
+                        mkdir($qrDir, 0755, true);
                     }
+
                     // Generate and save QR
-                    QrCode::format('png')
+                    $result = Builder::create()
+                        ->writer(new PngWriter())
+                        ->data($qrData)
                         ->size(200)
-                        ->generate($qrData, $qrPath);
+                        ->build();
+
+                    $result->saveToFile($qrPath);
+
                     // Save QR code filename in invoice
                     $invoice->update([
                         'qr_code' => $qrFileName
